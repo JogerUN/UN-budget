@@ -16,6 +16,8 @@ párrafo corto que explica qué estas proponiendo
 el propósito de esta sección es articular de una manera sencilla el valor de la decision que vamos a tomar
 -->
 
+Una gran cantidad de personas en Colombia carece de una adecuada educación financiera, lo que dificulta la gestión de sus finanzas personales. Por tal motivo, muchas personas desconocen su estado financiero actual, sus ingresos y la forma en que administran sus gastos, especialmente cuando no cuentan con un presupuesto personal unificado. Además, registrar y hacer seguimiento de los movimientos en distintas entidades bancarias suele ser un desafío.
+
 ## 3 Propuesta de implementación
 
 <!--
