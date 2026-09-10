@@ -9,6 +9,9 @@ Autores:
 párrafo corto que explica qué estas proponiendo
 -->
 
+Con el fin de ofrecer una herramienta de software intuitiva, proponemos crear una aplicación web para la gestión y el seguimiento de las finanzas personales. Esta permitirá generar un informe mensual de ingresos y gastos, en el que sea posible detallar los ingresos, los gastos del mes por categorías, las cuentas o medios de pago utilizados y el balance mensual del presupuesto. Todo ello estará apoyado en representaciones gráficas, como diagramas de torta, dentro de un dashboard. Como una funcionalidad adicional a futuro, queremos ofrecer un asistente de inversiones potenciado por IA que permita conocer el perfil de inversionista y, con base en este, recomendar distintos instrumentos financieros disponibles en el mercado
+
+
 ## 2 Motivación
 
 <!--
@@ -32,8 +35,6 @@ El proposito de esta sección se resume en:
 
 
 PROPUESTA UN-Budget
-
-Con el fin de ofrecer una herramienta de software intuitiva, proponemos crear una aplicación web para la gestión y el seguimiento de las finanzas personales. Esta permitirá generar un informe mensual de ingresos y gastos, en el que sea posible detallar los ingresos, los gastos del mes por categorías, las cuentas o medios de pago utilizados y el balance mensual del presupuesto. Todo ello estará apoyado en representaciones gráficas, como diagramas de torta, dentro de un dashboard. Como una funcionalidad adicional a futuro, queremos ofrecer un asistente de inversiones potenciado por IA que permita conocer el perfil de inversionista y, con base en este, recomendar distintos instrumentos financieros disponibles en el mercado
 
  -->
 
