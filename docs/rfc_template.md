@@ -5,7 +5,7 @@ Autores:
  - @mguativa
  - @AnimaKevin10
  - @desainea
- - JogerUN
+ - @JogerUN
 
 ## 1 TL;DR
 
