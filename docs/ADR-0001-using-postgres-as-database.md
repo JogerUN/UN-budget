@@ -80,7 +80,7 @@ introducida, dependencia nueva, curva de aprendizaje del equipo).
 
 Utilizar PostgreSQL implica una curva de aprendizaje para el equipo un poco más pronunciada, puesto que tiene reglas claras de sintaxis, manejo de usuarios, esquemás, etc. Sin embargo se opta por su escalibilidad y uso reconocido en el sector tecnológico.
 
-### Diferencia con un RFC (referencia rápida)
+<!--### Diferencia con un RFC (referencia rápida)-->
 
 <!--
 Elimina esta sección en el ADR final; queda aquí solo como recordatorio
