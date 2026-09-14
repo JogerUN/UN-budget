@@ -1,4 +1,4 @@
-# docs/adr/0002-usar-python-como-lenguage-backend-principal.md
+# ADR-0002: Python como lenguage de desarrollo para el backend.
  
 <!--
 Nombra el archivo con el número consecutivo y un slug corto, por ejemplo:
