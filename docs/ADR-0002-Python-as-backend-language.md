@@ -1,4 +1,4 @@
-# docs/adr/0001-usar-python-como-lenguage-backend-principal.md
+# docs/adr/0002-usar-python-como-lenguage-backend-principal.md
  
 <!--
 Nombra el archivo con el número consecutivo y un slug corto, por ejemplo:
