@@ -75,7 +75,7 @@ justificación ya quedó en "Contexto" y las alternativas descartadas
 van abajo.
 -->
 
-Para el presente proyecto se propone usar Python como lenguage de programacion para el desarrollo del backend de UN-Budget.
+Para el presente proyecto se propone usar **Python** como lenguage de programacion para el desarrollo del backend de UN-Budget.
  
 ## Alternativas consideradas
  
