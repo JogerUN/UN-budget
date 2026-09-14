@@ -1,11 +1,12 @@
-# UN-Budget 
-   
+# UN-Budget
+
 Autores:
- - @sabenitez-unal
- - @mguativa
- - @AnimaKevin10
- - @desainea
- - @JogerUN
+
+- @sabenitez-unal
+- @mguativa
+- @AnimaKevin10
+- @desainea
+- @JogerUN
 
 ## 1 TL;DR
 
@@ -14,7 +15,6 @@ párrafo corto que explica qué estas proponiendo
 -->
 
 Con el fin de ofrecer una herramienta de software intuitiva, proponemos crear una aplicación web para la gestión y el seguimiento de las finanzas personales. Esta permitirá generar un informe mensual de ingresos y gastos, en el que sea posible detallar los ingresos, los gastos del mes por categorías, las cuentas o medios de pago utilizados y el balance mensual del presupuesto. Todo ello estará apoyado en representaciones gráficas, como diagramas de torta, dentro de un dashboard. Como una funcionalidad adicional a futuro, queremos ofrecer un asistente de inversiones potenciado por IA que permita conocer el perfil de inversionista y, con base en este, recomendar distintos instrumentos financieros disponibles en el mercado
-
 
 ## 2 Motivación
 
@@ -38,7 +38,6 @@ Escribir es pensar https://medium.learningbyshipping.com/writing-is-thinking-an-
 
 El proposito de esta sección se resume en:
 "Esta es la dirección en la que nos voy a llevar, alguién ve huecos en mi propuesta o tiene comentarios sobre cómo mejorarla?
-
 
 PROPUESTA UN-Budget
 
@@ -74,7 +73,6 @@ Por ejemplo, cuando interactuamos con un sistema externo que tipo de latencia es
   Aquí buscamos ser concientes del ambiente en el que operamos y generar empatía hacia otros que pueden verse afectados por nuestra decisión.
  -->
 
-
 ## 8 Preguntas sin resolver
 
 <!--
@@ -82,7 +80,6 @@ Por ejemplo, cuando interactuamos con un sistema externo que tipo de latencia es
 -->
 
 ## 9 Conclusión
-
 
 ## 10 El proceso (elimina esta sección)
 
@@ -117,7 +114,6 @@ Este documento no es
 - [ ] Comunica un limite de tiempo razonable dependiendo de la complejidad de la decisión
 - [ ] Pidele a dos personas que entiendan el probelma que lo revisen por tí, o pidele ayuda a tu manager
 - [ ] Hazle merge con dos +1
-
 
 ### Recomendaciones
 
