@@ -1,4 +1,4 @@
-# ADR-000X: Título corto de la decisión
+# ADR-0001: PostgreSQL como database del stack del proyecto.
 
 <!--
 Nombra el archivo con el número consecutivo y un slug corto, por ejemplo:
