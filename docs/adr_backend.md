@@ -1,12 +1,12 @@
-# ADR-000X: Selección del framework de backend para el sistema de finanzas personales
+# ADR-0003: Selección del framework de backend para el sistema de finanzas personales
 
 Autores:
-Autores:
- - @sabenitez-unal
- - @mguativa
- - @KevinDFH
  - @desainea
  - @JogerUN
+ - @KevinDFH
+ - @mguativa
+ - @sabenitez-unal
+ 
 Fecha: 2026-09-13
 
 ## Estado
