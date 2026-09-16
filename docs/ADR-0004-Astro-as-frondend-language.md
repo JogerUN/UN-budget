@@ -4,8 +4,8 @@ Uso de Astro como framework de desarrollo para el frontend del sistema de finanz
 
 Autores:
 
-- @githubusername
-Fecha: AAAA-MM-DD
+- @desainea
+Fecha: 2025-09-14
 
 ## Estado
 
