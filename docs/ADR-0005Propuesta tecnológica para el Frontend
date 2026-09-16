@@ -1,0 +1,67 @@
+# ADR0005 — Propuesta tecnológica para el Frontend
+
+**Estado:** Propuesto
+
+## Contexto
+
+El proyecto consiste en desarrollar una aplicación web para la gestión y seguimiento de las finanzas personales. La aplicación permitirá registrar y consultar ingresos y gastos, organizarlos por categorías, gestionar cuentas o medios de pago y generar informes mensuales sobre el comportamiento financiero del usuario.
+
+Además, se contempla un dashboard que permita visualizar la información mediante elementos gráficos, como diagramas de torta, con el objetivo de facilitar la interpretación de los datos.
+
+Debido a que la aplicación tendrá una interfaz web interactiva, se requiere seleccionar una tecnología para el desarrollo del frontend que permita construir una interfaz organizada, mantenible y adaptable a diferentes tamaños de pantalla.
+
+También se busca que la tecnología seleccionada facilite la construcción de componentes reutilizables y permita desarrollar las funcionalidades necesarias para el MVP sin dedicar una cantidad excesiva de tiempo a la implementación de estilos y elementos básicos de la interfaz.
+
+## Decisión
+
+Se propone utilizar **React** como tecnología principal para el desarrollo del frontend y **Bootstrap** como framework CSS.
+
+React permitirá construir la interfaz mediante componentes reutilizables, facilitando la organización de elementos como formularios, tablas, tarjetas, menús y el dashboard.
+
+Bootstrap proporcionará componentes y estilos predefinidos para elementos comunes de la interfaz, además de herramientas para desarrollar una aplicación adaptable a diferentes tamaños de pantalla.
+
+Esta combinación permitirá separar el desarrollo del frontend de la lógica del backend, comunicándose mediante una API.
+
+La elección está orientada principalmente a cumplir con las funcionalidades definidas para el MVP y facilitar el desarrollo de una interfaz funcional y visualmente consistente.
+
+## Alternativas consideradas
+
+### React + Tailwind CSS
+
+Se consideró utilizar React junto con Tailwind CSS. Esta alternativa ofrece un alto nivel de personalización de los estilos y permite construir interfaces con diseños más específicos.
+
+Sin embargo, requiere mayor trabajo en la definición y combinación de clases para construir los diferentes elementos visuales de la aplicación.
+
+### HTML, CSS y JavaScript sin framework
+
+También se consideró desarrollar el frontend utilizando directamente HTML, CSS y JavaScript.
+
+Aunque esta alternativa reduce la cantidad de dependencias, puede requerir una mayor cantidad de código para organizar componentes, manejar cambios dinámicos en la interfaz y mantener una estructura consistente a medida que aumenta el tamaño de la aplicación.
+
+### React junto con otra biblioteca de componentes
+
+Otra posibilidad es utilizar React acompañado de una biblioteca de componentes diferente a Bootstrap.
+
+Esta alternativa podría ofrecer componentes adicionales, pero implicaría evaluar y aprender otra herramienta, además de determinar si sus características son necesarias para el alcance definido para el proyecto.
+
+## Consecuencias
+
+### Consecuencias positivas
+
+- Permite construir la interfaz mediante componentes reutilizables.
+- Facilita el desarrollo de formularios, tablas, tarjetas y elementos de navegación.
+- Bootstrap proporciona componentes y estilos prediseñados.
+- Facilita la creación de una interfaz adaptable a diferentes tamaños de pantalla.
+- React permite actualizar dinámicamente elementos del dashboard.
+- Reduce el tiempo necesario para desarrollar estilos básicos de la aplicación.
+- Facilita la separación entre frontend y backend mediante una API.
+- Permite concentrar mayor parte del esfuerzo del MVP en las funcionalidades de gestión financiera.
+
+### Consecuencias negativas
+
+- El equipo deberá aprender y utilizar React.
+- Será necesario comprender el funcionamiento de los componentes y el manejo del estado en React.
+- Bootstrap puede producir una apariencia visual similar a otras aplicaciones si no se realizan modificaciones o estilos propios.
+- Puede ser necesario utilizar CSS adicional para adaptar determinados componentes a las necesidades del proyecto.
+- Se incorporan dependencias externas que deberán mantenerse durante el desarrollo.
+
