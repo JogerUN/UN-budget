@@ -9,7 +9,7 @@ Fecha: 2025-09-14
 
 ## Estado
 
-Propuesto
+Aceptado
 
 ## Contexto
 
