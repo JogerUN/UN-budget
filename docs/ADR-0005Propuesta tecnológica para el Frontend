@@ -1,67 +1,86 @@
-# ADR0005 — Propuesta tecnológica para el Frontend
+# ADR-0005: Selección del framework CSS para el frontend
 
-**Estado:** Propuesto
+## Uso de Bootstrap como framework CSS para el frontend del sistema de finanzas personales
+
+**Autores:**
+
+* @mguativa
+
+**Fecha:** 2026-09-28
+
+## Estado
+
+Propuesto
 
 ## Contexto
 
-El proyecto consiste en desarrollar una aplicación web para la gestión y seguimiento de las finanzas personales. La aplicación permitirá registrar y consultar ingresos y gastos, organizarlos por categorías, gestionar cuentas o medios de pago y generar informes mensuales sobre el comportamiento financiero del usuario.
+El sistema de finanzas personales requiere una interfaz web clara, organizada y adaptable a diferentes tamaños de pantalla. El frontend será desarrollado utilizando Astro, decisión establecida en el ADR-0004, y deberá proporcionar las interfaces necesarias para el registro y consulta de ingresos y gastos, gestión de categorías y cuentas, visualización de balances, generación de reportes y presentación de información mediante un dashboard.
 
-Además, se contempla un dashboard que permita visualizar la información mediante elementos gráficos, como diagramas de torta, con el objetivo de facilitar la interpretación de los datos.
+Para el desarrollo de la interfaz se requiere una solución que facilite la implementación de elementos visuales comunes, como botones, formularios, tablas, tarjetas, menús de navegación y estructuras responsivas, de tal forma que se pueda
+reducir el tiempo dedicado a la implementación de estilos básicos
 
-Debido a que la aplicación tendrá una interfaz web interactiva, se requiere seleccionar una tecnología para el desarrollo del frontend que permita construir una interfaz organizada, mantenible y adaptable a diferentes tamaños de pantalla.
-
-También se busca que la tecnología seleccionada facilite la construcción de componentes reutilizables y permita desarrollar las funcionalidades necesarias para el MVP sin dedicar una cantidad excesiva de tiempo a la implementación de estilos y elementos básicos de la interfaz.
+Por lo tanto, se debe seleccionar un framework CSS que pueda integrarse con Astro.
 
 ## Decisión
 
-Se propone utilizar **React** como tecnología principal para el desarrollo del frontend y **Bootstrap** como framework CSS.
+Se propone utilizar **Bootstrap como framework CSS para el desarrollo de la interfaz del sistema**, integrado con Astro.
 
-React permitirá construir la interfaz mediante componentes reutilizables, facilitando la organización de elementos como formularios, tablas, tarjetas, menús y el dashboard.
+Astro continuará siendo el framework encargado de estructurar y desarrollar las páginas y componentes del frontend, mientras que Bootstrap proporcionará estilos, componentes visuales y herramientas para facilitar el diseño responsivo de la aplicación.
 
-Bootstrap proporcionará componentes y estilos predefinidos para elementos comunes de la interfaz, además de herramientas para desarrollar una aplicación adaptable a diferentes tamaños de pantalla.
+Bootstrap será utilizado para elementos como:
 
-Esta combinación permitirá separar el desarrollo del frontend de la lógica del backend, comunicándose mediante una API.
+* Botones.
+* Formularios.
+* Tablas.
+* Tarjetas.
+* Menús de navegación.
+* Alertas.
+* Contenedores y sistemas de distribución.
+* Elementos adaptables a diferentes tamaños de pantalla.
 
-La elección está orientada principalmente a cumplir con las funcionalidades definidas para el MVP y facilitar el desarrollo de una interfaz funcional y visualmente consistente.
+Cuando los componentes proporcionados por Bootstrap no sean suficientes para las necesidades específicas del proyecto, se podrá utilizar CSS personalizado de manera complementaria.
+
+Esta decisión no modifica la elección de Astro establecida en el ADR-0004. Ambas tecnologías tendrán responsabilidades diferentes dentro del frontend.
 
 ## Alternativas consideradas
 
-### React + Tailwind CSS
+### Tailwind CSS
 
-Se consideró utilizar React junto con Tailwind CSS. Esta alternativa ofrece un alto nivel de personalización de los estilos y permite construir interfaces con diseños más específicos.
+Tailwind CSS fue considerado como alternativa debido a que proporciona clases utilitarias que permiten construir interfaces con un alto nivel de personalización.
 
-Sin embargo, requiere mayor trabajo en la definición y combinación de clases para construir los diferentes elementos visuales de la aplicación.
+Sin embargo, su enfoque requiere definir una mayor cantidad de clases directamente en los elementos de la interfaz y puede implicar un mayor trabajo inicial para establecer los estilos y componentes visuales del sistema, lo cual sería innecesario para nuestro proyecto teniendo en cuenta que bootstrap también permite realizar diseños personalizados.
 
-### HTML, CSS y JavaScript sin framework
+### CSS sin framework
 
-También se consideró desarrollar el frontend utilizando directamente HTML, CSS y JavaScript.
+También se consideró utilizar únicamente CSS desarrollado por el equipo.
 
-Aunque esta alternativa reduce la cantidad de dependencias, puede requerir una mayor cantidad de código para organizar componentes, manejar cambios dinámicos en la interfaz y mantener una estructura consistente a medida que aumenta el tamaño de la aplicación.
+Esta alternativa permitiría un control completo sobre los estilos y evitaría depender de un framework externo. Sin embargo, requeriría implementar manualmente componentes y comportamientos visuales comunes, además de establecer desde cero elementos relacionados con el diseño responsivo.
 
-### React junto con otra biblioteca de componentes
-
-Otra posibilidad es utilizar React acompañado de una biblioteca de componentes diferente a Bootstrap.
-
-Esta alternativa podría ofrecer componentes adicionales, pero implicaría evaluar y aprender otra herramienta, además de determinar si sus características son necesarias para el alcance definido para el proyecto.
 
 ## Consecuencias
 
-### Consecuencias positivas
+### Positivas
 
-- Permite construir la interfaz mediante componentes reutilizables.
-- Facilita el desarrollo de formularios, tablas, tarjetas y elementos de navegación.
-- Bootstrap proporciona componentes y estilos prediseñados.
-- Facilita la creación de una interfaz adaptable a diferentes tamaños de pantalla.
-- React permite actualizar dinámicamente elementos del dashboard.
-- Reduce el tiempo necesario para desarrollar estilos básicos de la aplicación.
-- Facilita la separación entre frontend y backend mediante una API.
-- Permite concentrar mayor parte del esfuerzo del MVP en las funcionalidades de gestión financiera.
+* Facilita la creación de una interfaz consistente.
+* Proporciona componentes y estilos previamente desarrollados.
+* Reduce el tiempo necesario para implementar elementos visuales comunes.
+* Facilita la creación de interfaces adaptables a diferentes tamaños de pantalla.
+* Permite desarrollar rápidamente formularios, tablas, tarjetas y elementos de navegación.
+* Se integra como una capa de presentación complementaria a Astro.
+* Permite que el equipo concentre mayor esfuerzo en las funcionalidades principales del sistema.
+* Se puede complementar con CSS personalizado cuando sea necesario.
 
-### Consecuencias negativas
+### Negativas / Riesgos
 
-- El equipo deberá aprender y utilizar React.
-- Será necesario comprender el funcionamiento de los componentes y el manejo del estado en React.
-- Bootstrap puede producir una apariencia visual similar a otras aplicaciones si no se realizan modificaciones o estilos propios.
-- Puede ser necesario utilizar CSS adicional para adaptar determinados componentes a las necesidades del proyecto.
-- Se incorporan dependencias externas que deberán mantenerse durante el desarrollo.
+* La interfaz puede presentar una apariencia similar a otras aplicaciones que utilizan Bootstrap si no se realizan personalizaciones.
+* El equipo deberá familiarizarse con las clases, componentes y sistema de diseño proporcionados por Bootstrap.
+* Algunas necesidades específicas del proyecto pueden requerir CSS adicional.
+* Se incorpora una dependencia externa que deberá mantenerse durante el desarrollo del proyecto.
+
+
+
+
+
+
+
 
