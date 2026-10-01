@@ -70,7 +70,6 @@ Sanic podría ser otra opción para crear APIs con Python y trabajar con operaci
 También podríamos utilizar JavaScript o TypeScript en el backend.
 Esta opción podría ser útil si quisiéramos manejar el frontend y el backend con tecnologías similares. Sin embargo, nosotros estaríamos considerando Python para el backend, por lo que utilizar Node.js podría implicar cambiar parte del enfoque tecnológico.
 
-### Comparación general
 
 ### Comparación general
 
