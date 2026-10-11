@@ -13,7 +13,7 @@ HOW TO USE THIS TEMPLATE
    reference before you start.
 -->
 
-# [REQ-ID] — [Short Requirement Title]
+# [REQ-F-01] — Design of a personal monthly budget.
 
 | | |
 | --- | --- |
@@ -61,41 +61,33 @@ HOW TO USE THIS TEMPLATE
 
 ### Business Rule(s)
 
-> What rule(s) exist in the business/domain, independent of software, that this
-> requirement supports or enforces? Remember: Business Rule ≠ Software
-> Requirement — not every rule needs one.
+> BR-01 — Para que un usuario pueda gestionar sus finanzas personales en el sistema, es obligatorio contar con un presupuesto mensual de ingresos y gastos activo.
+
+> BR-05 — Todos los gastos categorías presupuestadas deben pertenecer, obligatoriamente, a uno de los siguientes tres tipos: Necesidad; Deseo; Ahorro, Inversión y/o Deuda.
+
+> BR-06 — Todos los montos de dinero se manejan exclusivamente en Pesos Colombianos (COP).
 
 ### Constraint(s)
 
-> What limits how this requirement can be solved (regulation, existing
-> technology, contract, interoperability, organizational policy)? A constraint
-> reduces the available design space — it doesn't describe what must be
-> satisfied, it describes what limits the solution.
+> El presupuesto mensual personal sólo puede diseñarse y planearse utilizando un único tipo de cambio: el Peso Colombiano (COP).
 
 ### Assumption(s)
 
-> What are we currently treating as true, without full verification, to keep moving? (Assumption ≠ Fact.)
+> Quien diseñe su presupuesto mensual *ya cuenta* con una serie de ingresos y gastos mensuales estimados que debe planear.
 
 ### Dependenc(ies)
 
-> What does this requirement rely on to be satisfied (another requirement, an
-> external system/API, a data source, a third party, an organizational
-> process)?
+> Es necesaria la autenticación previa de la sesión del usuario.
 
 ### Risk(s)
 
-> What uncertain event or condition could negatively affect this requirement or
-> its delivery? For each risk, note a rough Likelihood and Impact (High /
-> Medium / Low) and, if you have one, a brief mitigation note.
-
 | Risk | Likelihood | Impact | Mitigation (optional) |
 | --- | --- | --- | --- |
-| | | | |
+|El usuario final considera tediosa la planeación de cada categoría y abandona el sistema | Medio | Alto | Ofrecer categorías básicas de gasto que pueden asignarse por defecto, sin perjuicio de que el usuario final pueda modificar o añadir nuevas |
 
 ### Open Questions
 
-> Anything still unresolved — ambiguity, a question no stakeholder has answered
-> yet, a missing piece of evidence. List it here instead of guessing.
+> ¿Qué debe hacer el sistema en caso de que el usuario final asigne un monto a una categoría de gasto provocando que supere el total de ingresos estimados para el mes correspondiente? ¿una alerta al usuario, un límite de asignación para la categoría o un impedir que se guarde el presupuesto? Pendiente de discusión con el equipo de trabajo.
 
 ---
 
