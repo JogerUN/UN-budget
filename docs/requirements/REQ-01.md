@@ -1,5 +1,6 @@
 # REQ-01 — Design of a personal monthly budget.
 
+| | |
 |---|---|
 | **Status** | In Review |
 | **Team / Author(s)** | Kevin Daniel Flórez Hernández, Samuel Benitez Culma |
