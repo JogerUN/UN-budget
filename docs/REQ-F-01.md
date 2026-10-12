@@ -106,11 +106,18 @@ HOW TO USE THIS TEMPLATE
 comparison if you need to decide which.)*
 
 **Priority assigned:**
-> Because during this firts phase of the project our goal/objective was to build the basics logic for our aplication works, we assigned a priority of **[5.3]** using **RICE** and **[must have]** using **MoSCoW**, accepting the trade-off of not build more advance funtions. We considered the Registro de Ingresos and Gestión de Presupuesto Mensual requiremets next in line of priority which we didn't use.
-> because those others funtions need to be .
+
+> **Priority model used:** RICE and MoSCoW
+
+> **Priority assigned:** 5.3 (RICE) / Must-have (MoSCoW)  
+
+> Because the main objective of this firts phase was to establish the core logic required fro our application to function, we assigned the ***Registro de Gastos*** requirement a **RICE** score of **5.3** and classified it as a **Must-have** using **MoSCoW**. We accepted the trade-off of postponing more advanced features to focus on implementing the application's essential functionality first.
+> We considered ***Registro de Ingresos*** and ***Gestion de Presupuesto Mensual*** as the next requirementes in the priority order. However, we decided to implement ***Registro de Gastos*** first because it provides a foundation for other requirements.
+
 
 **Estimate (confidence):** High / Medium / Low
-> How sure are we about the size and shape of this work? We selected a level of 80% [High] because it's a primary function that the system needed to perform well, but I don't have evidence that support my estimations.
+> **Estimate (confidance): 80% (High)**
+> We assigned an 80% confidence level because the requirement convers a core system funtion. Howeverm since the estiamte is not yet supported by suffient evidence or validation.
 
 ---
 
