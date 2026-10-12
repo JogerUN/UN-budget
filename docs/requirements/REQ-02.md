@@ -17,12 +17,12 @@ HOW TO USE THIS TEMPLATE
 
 | | |
 |---|---|
-| **Status** | In Review |
+| **Status** | Draft |
 | **Team / Author(s)** | Kevin Daniel Flórez Hernández, David Esteban Sainea Rubio, Joger Iván Muñoz Dueñas, Samuel Benítez Culma, Miguel Ángel Guativa Archila |
 | **Date** | 2026-10-10 |
-| **Linked User Story / AC** | US-02, AC-02.1, AC-02.2 |
+| **Linked User Story / AC** | US-02, AC-02.1, AC-02.2 | <!-- En relacion a las historias de usuario que estableceremos abajo -->
 
----
+--- 
 
 ## 1. Overview
 
@@ -39,7 +39,7 @@ HOW TO USE THIS TEMPLATE
 > Asociar cada salida diaria de dinero con sus atributos descriptivos clave (monto, fecha, fuente de pago, categoría y clasificación) para mantener la trazabilidad de los egresos.
 
 **Value / Rationale**
-> Permitir al usuario mantener un historial detallado y organizado de sus hábitos de consumo diarios, habilitando el control en tiempo real frente al presupuesto definido y la identificación de sobrecostos.
+> Permitir al usuario mantener un historial detallado y organizado de sus hábitos de consumo diarios, habilitando el control en tiempo real frente al presupuesto definido y la identificación de sobrecostos. <!-- Mismo SO THAT de la US -->
 ---
 
 ## 2. Context — A Requirement Rarely Stands Alone
