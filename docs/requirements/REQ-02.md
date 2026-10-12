@@ -13,34 +13,33 @@ HOW TO USE THIS TEMPLATE
    reference before you start.
 -->
 
-# [REQ-ID] — [Short Requirement Title]
+# REQ-02 — Registro de Gastos
 
 | | |
 |---|---|
-| **Status** | Draft / Validated / Open Question |
-| **Team / Author(s)** | |
-| **Date** | |
-| **Linked User Story / AC** | |
+| **Status** | In Review |
+| **Team / Author(s)** | Kevin Daniel Flórez Hernández, David Esteban Sainea Rubio, Joger Iván Muñoz Dueñas, Samuel Benítez Culma, Miguel Ángel Guativa Archila |
+| **Date** | 2026-10-10 |
+| **Linked User Story / AC** | US-02, AC-02.1, AC-02.2 |
 
 ---
 
 ## 1. Overview
 
 **Requirement Statement**
-> The system shall [capability/behavior] [under what condition, if applicable].
+> El sistema debe permitir registrar un gasto capturando obligatoriamente: Monto (en COP), Fecha, Medio de Pago/Cuenta, Categoría y Tipo de Gasto (Necesidad, Deseo o Ahorro/Inversión/Deuda).
 
-**Type:** Functional / Non-functional
-*(Classified using the Perfect Technology Filter from Class 8: imagine a perfect computer — infinite speed, unlimited memory, zero failures, zero cost. Would this requirement still matter? Yes → likely functional. The limitation disappears with perfect technology → likely non-functional.)*
+**Type:** Functional
+*(Perfect Technology Filter: incluso si la tecnología funcionara a velocidad infinita, con memoria ilimitada y costo cero, el usuario aún necesitaría ingresar la información de las transacciones que realiza en su vida cotidiana para llevar el control de su dinero. El comportamiento de negocio no desaparece, por lo tanto es Funcional.)*
 
 **Source / Evidence**
-> Where did this come from? (stakeholder, interview, workshop, existing system, regulation — reference your Class 8 Discovery Sheet entry if you have one)
+> Discovery Sheet, Necesidad Identificada Need-02: "El usuario necesita registrar un gasto hecho durante el día, siguiendo las recomendaciones de los expertos: que tenga tipo, categoría, monto, fecha y medio de pago."
 
 **Need**
-> What is the underlying need, stated as a goal — not a solution? (e.g. "know when my order will arrive," not "build a GPS map")
+> Asociar cada salida diaria de dinero con sus atributos descriptivos clave (monto, fecha, fuente de pago, categoría y clasificación) para mantener la trazabilidad de los egresos.
 
 **Value / Rationale**
-> Why does this requirement matter? What becomes better for the user/business if it's satisfied? *(This is usually the same as the "so that" of your User Story below — write it once and reuse it, don't rewrite it from scratch.)*
-
+> Permitir al usuario mantener un historial detallado y organizado de sus hábitos de consumo diarios, habilitando el control en tiempo real frente al presupuesto definido y la identificación de sobrecostos.
 ---
 
 ## 2. Context — A Requirement Rarely Stands Alone
