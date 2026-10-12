@@ -106,15 +106,11 @@ HOW TO USE THIS TEMPLATE
 comparison if you need to decide which.)*
 
 **Priority assigned:**
-> Because [the situation/signal from your project], we assigned [priority
-> value], accepting the trade-off of [what you're giving up by not prioritizing
-> it higher/lower]. We considered [alternative priority] and didn't use it
-> because [reason].
+> Because during this firts phase of the project our goal/objective was to build the basics logic for our aplication works, we assigned a priority of **[5.3]** using **RICE** and **[must have]** using **MoSCoW**, accepting the trade-off of not build more advance funtions. We considered the Registro de Ingresos and Gestión de Presupuesto Mensual requiremets next in line of priority which we didn't use.
+> because those others funtions need to be .
 
 **Estimate (confidence):** High / Medium / Low
-> How sure are we about the size and shape of this work? *(This is a
-> confidence tag, not a technique-based number — named estimation techniques
-> like story points are Ingeniería de Software II content, not this course.)*
+> How sure are we about the size and shape of this work? We selected a level of 80% [High] because it's a primary function that the system needed to perform well, but I don't have evidence that support my estimations.
 
 ---
 
