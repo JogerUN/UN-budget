@@ -1,4 +1,4 @@
-# REQ-01 — Gestión de Presupuesto Mensual
+# REQ-01 — Design of a personal monthly budget.
 
 | | |
 |---|---|
