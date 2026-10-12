@@ -1,4 +1,4 @@
-z# REQ-01 — Design of a personal monthly budget.
+# REQ-01 — Design of a personal monthly budget.
 
 | | |
 |---|---|
