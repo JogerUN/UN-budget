@@ -80,7 +80,18 @@ comparison if you need to decide which.)*
 >  We considered ***Personalización de Categorías de Gasto*** and ***Registro de Ingresos*** while we were comparing them. Even so, we decided to implement  ***Gestion de Presupuesto Mensual*** first as the others were less relevant for our objective, for these reason them are the next requirements in the priority order.
 
 **Estimate (confidence):** High / Medium / Low
-> We assigned an 80% confidence level because the requirement covers a core system function. However, since the estimate is not yet supported by sufficient evidence or validation, it should be treated as a provisional estimate rather than a confirmed result..
+> We assigned an 80% confidence level because the requirement covers a core system function. However, since the estimate is not yet supported by sufficient evidence or validation, it should be treated as a provisional estimate rather than a confirmed result.
+
+>| Name | Reach | Impact | Confidence (%) | Effort | MoSCoW | RICE Score |
+>|---|---:|---:|---:|---:|---|---:|
+>| Registro de gastos | 10 | 2 | 80 | 3 | Must | 5.33 |
+>| Registro de Ingresos | 10 | 2 | 80 | 3 | Must | 5.33 |
+>| Gestión de Presupuesto Mensual | 10 | 3 | 80 | 5 | Must | 4.80 |
+>| Personalización de Categorías de Gasto | 7 | 2 | 80 | 3 | Should | 3.73 |
+>| Análisis Comparativo y Visualización (Dashboard) | 10 | 2 | 80 | 6 | Should | 2.67 |
+>| Gestión de Cuentas y Medios de Pago | 8 | 2 | 80 | 5 | Should | 2.56 |
+>| Notificación / Alerta Visual de Sobrecosto | 7 | 1 | 70 | 3 | Should | 1.63 |
+
 
 >*notes:*
 > *1. The time frame allocated for each feature is one moth after the application is launched*
