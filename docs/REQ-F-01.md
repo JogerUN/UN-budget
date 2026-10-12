@@ -119,6 +119,11 @@ comparison if you need to decide which.)*
 > **Estimate (confidance): 80% (High)**
 > We assigned an 80% confidence level because the requirement convers a core system funtion. Howeverm since the estiamte is not yet supported by suffient evidence or validation.
 
+> *notes:*
+> *1. The time frame allocated for each feature is one moth after the application is launched*
+> *2. The selected requirementes were chosen as the foundations for the application's operation*
+> *3. The estimated effort was measured in person-days, based on the munber of working days in a month*
+> *4. The overall goal of this set of requirements is to ensure that the application's core funtionalities work correctly*
 ---
 
 ## 4. Representations — Requirement ≠ Representation
