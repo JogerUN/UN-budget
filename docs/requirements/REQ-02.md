@@ -45,29 +45,31 @@ HOW TO USE THIS TEMPLATE
 
 ## 2. Context — A Requirement Rarely Stands Alone
 
-*(Class 10. Fill honestly — "N/A — none identified" is a valid, expected answer for several of these.)*
-
 **Business Rule(s)**
-> What rule(s) exist in the business/domain, independent of software, that this requirement supports or enforces? Remember: Business Rule ≠ Software Requirement — not every rule needs one.
+> BR-02: Un gasto podrá registrarse exitosamente aun cuando supere el límite presupuestado para su categoría. En estos casos, el sistema no impedirá la transacción, sino que generará una alerta visual de sobrecosto para apoyar la toma de decisiones del usuario.
+
+> BR-04: El sistema proveerá una clasificación por defecto de categorías básicas de gasto (recomendada por expertos), pero otorgará la libertad al usuario de añadir nuevas categorías o eliminar existentes.
+
+> BR-05: Todos los gastos categorías presupuestadas deben pertenecer, obligatoriamente, a uno de los siguientes tres tipos: Necesidad; Deseo; Ahorro, Inversión y/o Deuda.
 
 **Constraint(s)**
-> What limits how this requirement can be solved (regulation, existing technology, contract, interoperability, organizational policy)? A constraint reduces the available design space — it doesn't describe what must be satisfied, it describes what limits the solution.
+> Todo ingreso de gasto nuevo deberá ser en Peso Colombiano (*BR-06*) 
 
 **Assumption(s)**
-> What are we currently treating as true, without full verification, to keep moving? (Assumption ≠ Fact.)
+> El usuario final hice un gasto real en peso colombiano que desea registrar, o en su defecto, hice la conversión del tipo de cambio antes del registro.
 
 **Dependenc(ies)**
-> What does this requirement rely on to be satisfied (another requirement, an external system/API, a data source, a third party, an organizational process)?
+> Es necesario un presupuesto previamente diseñado y el usuario final debe estar autenticado en su sesión de usuario.
 
 **Risk(s)**
-> What uncertain event or condition could negatively affect this requirement or its delivery? For each risk, note a rough Likelihood and Impact (High / Medium / Low) and, if you have one, a brief mitigation note.
 
 | Risk | Likelihood | Impact | Mitigation (optional) |
 |---|---|---|---|
-| | | | |
+| El usuario abandona el sistema porque registrar un gasto requiere de muchos pasos para hacerse | Medio-bajo | Alto | Diseñar el sistema de modo que el usuario registre un gasto con no más de tres clicks o toques de pantalla *(REQ-09)* |
+| El usuario ingresa un gasto que sobrepasa el presupuesto realizado para la categoría y/o el presupuesto general | Alto | Medio | Continuar con el registro del gasto alertando al usuario final de los sobrecostos sobre el presupuesto planeado que el gasto implica *(BR-02)* |
 
 **Open Questions**
-> Anything still unresolved — ambiguity, a question no stakeholder has answered yet, a missing piece of evidence. List it here instead of guessing.
+> Está pendiente la discusión con el equipo sobre cómo mostrar los sobrecostos o sobregastos del usuario comparados con el presupuesto planeado, si aplica.
 
 ---
 
