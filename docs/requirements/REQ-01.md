@@ -168,32 +168,61 @@ flowchart TD
 
 ---
 
-## 5. Traceability & Impact
+# 5. Traceability & Impact
 
-> *Class 10. Conceptual, not a formal matrix.*
+## Backward Traceability — ¿Por qué existe este requisito?
 
-**Backward — why does this requirement exist?**
-> Evidence → Need → Requirement. Point to the specific evidence/need entries
-> that justify this requirement (from your Discovery Sheet).
+**Evidencia:** [E-XX] — Evidencia del *Discovery Sheet* que demuestra la necesidad del usuario de planificar y controlar sus gastos mensuales.
 
-**Forward — what will this affect?**
-> Requirement → future Design → Implementation → Tests. *(It's fine if Design
-> hasn't happened yet — note what you expect this to touch once it does, and
-> update this section once Class 11 work begins.)*
+**Necesidad:** [N-01] — El usuario necesita comenzar a organizar mis finanzas personales, por ello deseo construir mi presupuesto de ingresos y gastos personal mensualmente.
 
-**Impact Analysis — if this requirement changes, what else might need to change?**
+**Requisito:** El sistema debe permitir a cada usuario crear, editar y consultar un único presupuesto mensual de gastos, expresado exclusivamente en pesos colombianos (COP), asignando montos de dinero a las categorías de gastos disponibles para dicho usuario.
 
-- [ ] Business Rules
-- [ ] Constraints
-- [ ] Dependencies
-- [ ] Risks
-- [ ] Acceptance Criteria
-- [ ] Estimate
-- [ ] Priority
-- [ ] Future Design
-- [ ] Future Tests
+Este requisito existe porque los usuarios necesitan organizar sus gastos mensuales, establecer límites de gasto para diferentes categorías y contar con una referencia para administrar su dinero.
 
-> Briefly note which of the above are actually likely to be affected, and why.
+## Forward Traceability — ¿Qué elementos se verán afectados?
+
+**Diseño futuro:**
+- Una interfaz para crear y editar el presupuesto mensual.
+- Un formulario para asignar montos de dinero a las categorías de gastos.
+- Una vista que muestre el presupuesto y los montos asignados a cada categoría.
+- Una opción de navegación para acceder al presupuesto mensual del usuario.
+
+**Implementación:**
+- Componentes y formularios del frontend para crear, editar y consultar presupuestos.
+- Operaciones del backend para guardar, actualizar y consultar la información de los presupuestos.
+- Estructuras en la base de datos para relacionar cada presupuesto con su usuario, mes y distribución por categorías.
+- Validaciones para garantizar que los montos se manejen exclusivamente en COP y que cada usuario tenga un solo presupuesto por mes.
+
+**Pruebas futuras:**
+- Verificar que un usuario pueda crear, editar y consultar un presupuesto mensual.
+- Verificar que el sistema no permita crear más de un presupuesto para el mismo mes por usuario.
+- Verificar que los montos se manejen exclusivamente en COP.
+- Verificar que se puedan asignar montos a las categorías de gastos disponibles.
+
+Estos elementos son previsiones iniciales y deberán actualizarse cuando comience el diseño detallado y la implementación.
+
+## Impact Analysis — ¿Qué más podría cambiar si este requisito se modifica?
+
+- **Reglas de negocio:** Si cambia la restricción de un presupuesto por mes, el periodo del presupuesto o las categorías disponibles para cada usuario, podrían modificarse las reglas para crear y editar presupuestos.
+
+- **Restricciones:** Si se cambia el requisito para permitir monedas distintas al COP o cambiar el periodo mensual se debe modificar el diseño e implementación del sistema para permitir más tipos de monedas o periodicidades.
+
+- **Dependencias:** El presupuesto depende de las categorías de gastos disponibles por lo que el requisito puede abarcar más o menos categorías a futuro.
+
+- **Riesgos:** Modificar la distribución de ingresos por categorías podría generar presupuestos duplicados, asignaciones inconsistentes o dificultades para comparar los gastos planeados con los gastos reales.
+
+- **Criterios de aceptación:** Los cambios en el periodo del presupuesto, la moneda o la asignación por categorías requerirían revisar las condiciones que determinan si el requisito se ha cumplido.
+
+- **Estimación:** Si cambia el requisito, en términos de trabajo adicional se puede requerir más tiempo de desarrollo si se amplía el requisito para permitir varios presupuestos por mes, múltiples monedas o reglas de distribución más complejas.
+
+- **Prioridad:** Si cambia el requisito, la prioridad del mismo no cambiaría radicalmente respecto a otros requisitos, puesto que el requisito sigue siendo esencial para el proyecto, sin embargo, La prioridad de las funcionalidades del sistema que se deben desarrollar a partir de este requisito podrían cambiar.
+
+- **Diseño futuro:** Los cambios podrían afectar los formularios del presupuesto, la interfaz de distribución por categorías, el resumen del presupuesto y la navegación, es decir, podría tener que modificarse el diseño de front y backend principalmente.
+
+- **Pruebas futuras:** Los casos de prueba tendrían que actualizarse para cubrir las nuevas reglas, validaciones o comportamientos introducidos por los cambios.
+
+Se considerará que lo que más probabilidades tiene de cambiar son las restricciones y las dependencias del requisito, y si eso cambia, se debería modificar los criterios de aceptación, la estimación del trabajo requerido, el diseño y las pruebas futuras.
 
 ---
 
