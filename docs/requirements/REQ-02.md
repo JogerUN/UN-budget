@@ -16,7 +16,7 @@ HOW TO USE THIS TEMPLATE
 # [REQ-ID] — [Short Requirement Title]
 
 | | |
-| --- | --- |
+|---|---|
 | **Status** | Draft / Validated / Open Question |
 | **Team / Author(s)** | |
 | **Date** | |
@@ -26,84 +26,54 @@ HOW TO USE THIS TEMPLATE
 
 ## 1. Overview
 
-### Requirement Statement
-
+**Requirement Statement**
 > The system shall [capability/behavior] [under what condition, if applicable].
 
 **Type:** Functional / Non-functional
-> *Classified using the Perfect Technology Filter from Class 8: imagine a
-> perfect computer — infinite speed, unlimited memory, zero failures, zero
-> cost. Would this requirement still matter? Yes → likely functional. The
-> limitation disappears with perfect technology → likely non-functional.*
+*(Classified using the Perfect Technology Filter from Class 8: imagine a perfect computer — infinite speed, unlimited memory, zero failures, zero cost. Would this requirement still matter? Yes → likely functional. The limitation disappears with perfect technology → likely non-functional.)*
 
-### Source / Evidence
+**Source / Evidence**
+> Where did this come from? (stakeholder, interview, workshop, existing system, regulation — reference your Class 8 Discovery Sheet entry if you have one)
 
-> Where did this come from? (stakeholder, interview, workshop, existing system,
-> regulation — reference your Class 8 Discovery Sheet entry if you have one)
+**Need**
+> What is the underlying need, stated as a goal — not a solution? (e.g. "know when my order will arrive," not "build a GPS map")
 
-### Need
-
-> What is the underlying need, stated as a goal — not a solution? (e.g. "know
-> when my order will arrive," not "build a GPS map")
-
-### Value / Rationale
-
-> Why does this requirement matter? What becomes better for the user/business if
-> it's satisfied? *(This is usually the same as the "so that" of your User
-> Story below — write it once and reuse it, don't rewrite it from scratch.)*
+**Value / Rationale**
+> Why does this requirement matter? What becomes better for the user/business if it's satisfied? *(This is usually the same as the "so that" of your User Story below — write it once and reuse it, don't rewrite it from scratch.)*
 
 ---
 
 ## 2. Context — A Requirement Rarely Stands Alone
 
-> *Class 10. Fill honestly — "N/A — none identified" is a valid, expected
-> answer for several of these.*
+*(Class 10. Fill honestly — "N/A — none identified" is a valid, expected answer for several of these.)*
 
-### Business Rule(s)
+**Business Rule(s)**
+> What rule(s) exist in the business/domain, independent of software, that this requirement supports or enforces? Remember: Business Rule ≠ Software Requirement — not every rule needs one.
 
-> What rule(s) exist in the business/domain, independent of software, that this
-> requirement supports or enforces? Remember: Business Rule ≠ Software
-> Requirement — not every rule needs one.
+**Constraint(s)**
+> What limits how this requirement can be solved (regulation, existing technology, contract, interoperability, organizational policy)? A constraint reduces the available design space — it doesn't describe what must be satisfied, it describes what limits the solution.
 
-### Constraint(s)
-
-> What limits how this requirement can be solved (regulation, existing
-> technology, contract, interoperability, organizational policy)? A constraint
-> reduces the available design space — it doesn't describe what must be
-> satisfied, it describes what limits the solution.
-
-### Assumption(s)
-
+**Assumption(s)**
 > What are we currently treating as true, without full verification, to keep moving? (Assumption ≠ Fact.)
 
-### Dependenc(ies)
+**Dependenc(ies)**
+> What does this requirement rely on to be satisfied (another requirement, an external system/API, a data source, a third party, an organizational process)?
 
-> What does this requirement rely on to be satisfied (another requirement, an
-> external system/API, a data source, a third party, an organizational
-> process)?
-
-### Risk(s)
-
-> What uncertain event or condition could negatively affect this requirement or
-> its delivery? For each risk, note a rough Likelihood and Impact (High /
-> Medium / Low) and, if you have one, a brief mitigation note.
+**Risk(s)**
+> What uncertain event or condition could negatively affect this requirement or its delivery? For each risk, note a rough Likelihood and Impact (High / Medium / Low) and, if you have one, a brief mitigation note.
 
 | Risk | Likelihood | Impact | Mitigation (optional) |
-| --- | --- | --- | --- |
+|---|---|---|---|
 | | | | |
 
-### Open Questions
-
-> Anything still unresolved — ambiguity, a question no stakeholder has answered
-> yet, a missing piece of evidence. List it here instead of guessing.
+**Open Questions**
+> Anything still unresolved — ambiguity, a question no stakeholder has answered yet, a missing piece of evidence. List it here instead of guessing.
 
 ---
 
 ## 3. Priority & Estimation
 
-**Priority model used:** MoSCoW / Kano / RICE / WSJF / Value-Effort
-*(Pick the one that fits the decision you're actually making — see Class 10's
-comparison if you need to decide which.)*
+**Priority model used:** MoSCoW / Kano / RICE / WSJF / Value-Effort *(pick the one that fits the decision you're actually making — see Class 10's comparison if you need to decide which)*
 
 **Priority assigned:**
 
@@ -111,13 +81,13 @@ comparison if you need to decide which.)*
 
 > **Priority assigned:** 5.3 (RICE) / Must-have (MoSCoW)  
 
-> Because the main objective of this firts phase was to establish the core logic required fro our application to function, we assigned the ***Registro de Gastos*** requirement a **RICE** score of **5.3** and classified it as a **Must-have** using **MoSCoW**. We accepted the trade-off of postponing more advanced features to focus on implementing the application's essential functionality first.
+> Because the main objective of this firts phase was to establish the core logic required for our application to function, we assigned the ***Registro de Gastos*** requirement a **RICE** score of **5.3** and classified it as a **Must-have** using **MoSCoW**. We accepted the trade-off of postponing more advanced features to focus on implementing the application's essential functionality first.
 > We considered ***Registro de Ingresos*** and ***Gestion de Presupuesto Mensual*** as the next requirementes in the priority order. However, we decided to implement ***Registro de Gastos*** first because it provides a foundation for other requirements.
 
 
 **Estimate (confidence):** High / Medium / Low
 > **Estimate (confidance): 80% (High)**
-> We assigned an 80% confidence level because the requirement convers a core system funtion. Howeverm since the estiamte is not yet supported by suffient evidence or validation.
+> We assigned an 80% confidence level because the requirement covers a core system function. However, since the estimate is not yet supported by sufficient evidence or validation, it should be treated as a provisional estimate rather than a confirmed result.
 
 > *notes:*
 > *1. The time frame allocated for each feature is one moth after the application is launched*
@@ -128,29 +98,26 @@ comparison if you need to decide which.)*
 
 ## 4. Representations — Requirement ≠ Representation
 
-> *Class 9. Each representation reveals different information. Fill in all
-> three below — for this capstone requirement, all three are required.*
+*(Class 9. Each representation reveals different information. Fill in all three below — for this capstone requirement, all three are required.)*
 
 ### 4.1 User Story
 
 > As a **[role]**,
 > I want **[capability]**,
 > so that **[value]**.
-> *Check yourself: is the "I want" describing the need, or already prescribing
-> a solution?*
+
+*Check yourself: is the "I want" describing the need, or already prescribing a solution?*
 
 ### 4.2 Acceptance Criteria
 
-> *At least two scenarios: one normal path, one alternative or exception.*
+*(At least two scenarios: one normal path, one alternative or exception.)*
 
-#### Scenario 1 — [short name]
-
+**Scenario 1 — [short name]**
 > **Given** [context]
 > **When** [event/stimulus]
 > **Then** [observable outcome]
 
-#### Scenario 2 — [short name, alternative or exception]
-
+**Scenario 2 — [short name, alternative or exception]**
 > **Given** [context]
 > **When** [event/stimulus]
 > **Then** [observable outcome]
@@ -158,36 +125,30 @@ comparison if you need to decide which.)*
 ### 4.3 Use Case
 
 | Field | |
-| --- | --- |
+|---|---|
 | **Use Case name** | |
 | **Actor** | |
 | **Goal** | |
 | **Trigger** | |
 | **Precondition** | |
 
-#### Main Flow
-
+**Main Flow**
 1.
 2.
 3.
 4.
 
-#### Alternative Flow
-
+**Alternative Flow**
 > [Condition] → [what happens instead]
 
-#### Exception
-
+**Exception**
 > [Condition] → [what happens instead]
 
-#### Postcondition
+**Postcondition**
 >
 
-#### Flow Diagram
-
-> *Replace the labels below with your own steps. Keep Main Flow, Alternative,
-> and Exception visually distinct — delete whichever branch doesn't apply to
-> your use case. This renders automatically on GitHub.*
+**Flow Diagram**
+*(Replace the labels below with your own steps. Keep Main Flow, Alternative, and Exception visually distinct — delete whichever branch doesn't apply to your use case. This renders automatically on GitHub.)*
 
 ```mermaid
 flowchart TD
@@ -213,19 +174,15 @@ flowchart TD
 
 ## 5. Traceability & Impact
 
-> *Class 10. Conceptual, not a formal matrix.*
+*(Class 10. Conceptual, not a formal matrix.)*
 
 **Backward — why does this requirement exist?**
-> Evidence → Need → Requirement. Point to the specific evidence/need entries
-> that justify this requirement (from your Discovery Sheet).
+> Evidence → Need → Requirement. Point to the specific evidence/need entries that justify this requirement (from your Discovery Sheet).
 
 **Forward — what will this affect?**
-> Requirement → future Design → Implementation → Tests. *(It's fine if Design
-> hasn't happened yet — note what you expect this to touch once it does, and
-> update this section once Class 11 work begins.)*
+> Requirement → future Design → Implementation → Tests. *(It's fine if Design hasn't happened yet — note what you expect this to touch once it does, and update this section once Class 11 work begins.)*
 
 **Impact Analysis — if this requirement changes, what else might need to change?**
-
 - [ ] Business Rules
 - [ ] Constraints
 - [ ] Dependencies
@@ -242,9 +199,7 @@ flowchart TD
 
 ## 6. Validation — Quality Gate
 
-> *Class 9 + Class 10. Self-audit before you commit this file. Check honestly —
-> a "no" here means the requirement isn't ready yet, not that you should force
-> a checkmark.*
+*(Class 9 + Class 10. Self-audit before you commit this file. Check honestly — a "no" here means the requirement isn't ready yet, not that you should force a checkmark.)*
 
 - [ ] **Valid?** Does it reflect a real, evidenced need — not an invented one?
 - [ ] **Clear / Unambiguous?** Is there only one reasonable interpretation?
@@ -256,5 +211,4 @@ flowchart TD
 - [ ] **Complete enough?** Are there important functions or constraints still missing?
 - [ ] **Traceable?** Can every part of this document be traced back to real evidence — not invented to fill a section?
 
-> If any box is unchecked, say what's missing and whether it becomes an Open
-> Question or sends you back to Class 8 (re-elicit) or Class 9 (re-specify).
+> If any box is unchecked, say what's missing and whether it becomes an Open Question or sends you back to Class 8 (re-elicit) or Class 9 (re-specify).
