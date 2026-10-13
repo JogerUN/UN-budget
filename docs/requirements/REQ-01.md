@@ -258,15 +258,17 @@ Se considerará que lo que más probabilidades tiene de cambiar son las restricc
 > a "no" here means the requirement isn't ready yet, not that you should force
 > a checkmark.*
 
-- [ ] **Valid?** Does it reflect a real, evidenced need — not an invented one?
-- [ ] **Clear / Unambiguous?** Is there only one reasonable interpretation?
-- [ ] **Atomic?** Is this one independently testable expectation, not several bundled together?
-- [ ] **Necessary?** Does removing it actually break something real?
-- [ ] **Feasible?** Can this realistically be built with what the team has?
-- [ ] **Verifiable?** Can you demonstrate, concretely, whether it's satisfied?
-- [ ] **Consistent?** Does it conflict with any other requirement in your set?
-- [ ] **Complete enough?** Are there important functions or constraints still missing?
-- [ ] **Traceable?** Can every part of this document be traced back to real evidence — not invented to fill a section?
+## 6. Validation — Quality Gate
+
+- [x] **Valid?** Sí — se relaciona directamente con la necesidad N-01, que identifica la necesidad del usuario de organizar sus finanzas personales mediante un presupuesto mensual de ingresos y gastos. La evidencia E-01 también describe las prácticas actuales de administración del dinero y las dificultades que pueden generar para una planificación financiera organizada.
+- [ ] **Clear / Unambiguous?** No completamente — la expectativa principal es comprensible, pero algunos detalles siguen abiertos a interpretación. Por ejemplo, no se definen por completo las reglas de validación de los montos.
+- [x] **Atomic?** Sí — el requerimiento se centra en una capacidad principal: gestionar un único presupuesto mensual de gastos en COP, incluyendo su creación, edición y consulta. Aunque comprende varias operaciones, todas pertenecen a la misma funcionalidad y pueden probarse como parte de ella; no se están agrupando requisitos ajenos entre sí.
+- [x] **Necessary?** Sí — eliminar este requerimiento suprimiría la funcionalidad principal que permite a los usuarios planificar sus gastos mensuales y establecer límites por categoría. Esto afectaría directamente la necesidad N-01 y el propósito central de la aplicación.
+- [x] **Feasible?** Sí — el requerimiento puede implementarse mediante formularios y vistas en el frontend, operaciones en el backend y estructuras en la base de datos para crear, actualizar y consultar presupuestos mensuales. Estos elementos ya están identificados en la sección de trazabilidad futura. Sin embargo, la factibilidad técnica detallada deberá confirmarse durante el diseño y la implementación.
+- [x] **Verifiable?** Sí — los criterios de aceptación AC-01.1 y AC-01.2 describen condiciones observables para guardar un presupuesto válido, gestionar datos inválidos y evitar presupuestos duplicados para un mismo mes. Las pruebas futuras de la sección 5 también indican cómo verificar la creación, edición y consulta del presupuesto, así como el uso de COP. Una vez definidas las reglas pendientes, podrían necesitarse pruebas adicionales.
+- [ ] **Consistent?** No completamente — no se ha identificado un conflicto directo con otro requerimiento, pero algunas afirmaciones necesitan aclaración. La regla de negocio BR-01 establece que es obligatorio contar con un presupuesto mensual activo, mientras que el requerimiento permite al usuario crear uno. 
+- [ ] **Complete enough?** No completamente — el requerimiento cubre las principales operaciones de gestión del presupuesto, pero la pregunta abierta de la sección 2 sigue sin resolverse: ¿qué debe ocurrir cuando los montos asignados a las categorías de gasto superan los ingresos mensuales estimados del usuario? 
+- [x] **Traceable?** Si — la funcionalidad principal está vinculada con la necesidad N-01 y la evidencia E-01, y se identifican sus impactos futuros en el diseño, la implementación y las pruebas. 
 
 > If any box is unchecked, say what's missing and whether it becomes an Open
 > Question or sends you back to Class 8 (re-elicit) or Class 9 (re-specify).
