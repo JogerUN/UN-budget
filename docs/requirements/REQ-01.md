@@ -72,16 +72,32 @@
 comparison if you need to decide which.)*
 
 **Priority assigned:**
-> Because [the situation/signal from your project], we assigned [priority
-> value], accepting the trade-off of [what you're giving up by not prioritizing
-> it higher/lower]. We considered [alternative priority] and didn't use it
-> because [reason].
+
+> **Priority model use:** RICE and MoSCoW
+> **Priority assigned:** 4.8 (RICE) / Must-have (MoSCoW)
+
+> Because the main objective of this firts phase was to establish the core logic required for our application to function, we assigned the ***Gestion de Presupuesto Mensual*** requirement a **RICE** score of **4.8** and classified it as a **Must-have** using **MoSCoW**. We accepted the trade-off of postponing more advanced features to focus on implementing the application's essential functionality first, as these core funtions provide the foundation for future enhancements.
+>  We considered ***Personalización de Categorías de Gasto*** and ***Registro de Ingresos*** while we were comparing them. Even so, we decided to implement  ***Gestion de Presupuesto Mensual*** first as the others were less relevant for our objective, for these reason them are the next requirements in the priority order.
 
 **Estimate (confidence):** High / Medium / Low
-> How sure are we about the size and shape of this work? *(This is a
-> confidence tag, not a technique-based number — named estimation techniques
-> like story points are Ingeniería de Software II content, not this course.)*
+> We assigned an 80% confidence level because the requirement covers a core system function. However, since the estimate is not yet supported by sufficient evidence or validation, it should be treated as a provisional estimate rather than a confirmed result.
 
+>| Name | Reach | Impact | Confidence (%) | Effort | MoSCoW | RICE Score |
+>|---|---:|---:|---:|---:|---|---:|
+>| Registro de gastos | 10 | 2 | 80 | 3 | Must | 5.33 |
+>| Registro de Ingresos | 10 | 2 | 80 | 3 | Must | 5.33 |
+>| Gestión de Presupuesto Mensual | 10 | 3 | 80 | 5 | Must | 4.80 |
+>| Personalización de Categorías de Gasto | 7 | 2 | 80 | 3 | Should | 3.73 |
+>| Análisis Comparativo y Visualización (Dashboard) | 10 | 2 | 80 | 6 | Should | 2.67 |
+>| Gestión de Cuentas y Medios de Pago | 8 | 2 | 80 | 5 | Should | 2.56 |
+>| Notificación / Alerta Visual de Sobrecosto | 7 | 1 | 70 | 3 | Should | 1.63 |
+
+
+>*notes:*
+> *1. The time frame allocated for each feature is one moth after the application is launched*
+> *2. The selected requirementes were chosen as the foundations for the application's operation*
+> *3. The estimated effort was measured in person-days, based on the munber of working days in a month*
+> *4. The overall goal of this set of requirements is to ensure that the application's core funtionalities work correctly*
 ---
 
 ## 4. Representations — Requirement ≠ Representation
