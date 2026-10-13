@@ -109,76 +109,127 @@ HOW TO USE THIS TEMPLATE
 
 ## 4. Representations — Requirement ≠ Representation
 
-*(Class 9. Each representation reveals different information. Fill in all three below — for this capstone requirement, all three are required.)*
-
 ### 4.1 User Story
 
-> As a **[role]**,
-> I want **[capability]**,
-> so that **[value]**.
+Historia de usuario 1 
 
-*Check yourself: is the "I want" describing the need, or already prescribing a solution?*
+> Como usuario de la aplicación, quiero registrar los gastos que realizo, para mantener un seguimiento actualizado de mi dinero.
+
+Historia de usuario 2
+
+> Como usuario de la aplicación, quiero recibir una alerta visual cuando mis gastos superen el presupuesto asignado a una categoría, para identificar los sobrecostos y tomar decisiones sobre mis finanzas.
+
+Historia de usuario 3 
+
+> Como usuario de la aplicación, quiero poder registrar un gasto aunque supere el presupuesto disponible de su categoría, para llevar un control real de mis gastos sin que la aplicación me impida registrar una transacción.
 
 ### 4.2 Acceptance Criteria
 
-*(At least two scenarios: one normal path, one alternative or exception.)*
+#### Historia de usuario 1 
 
-**Scenario 1 — [short name]**
-> **Given** [context]
-> **When** [event/stimulus]
-> **Then** [observable outcome]
+**Escenario 1: Registro de un gasto dentro del presupuesto**
 
-**Scenario 2 — [short name, alternative or exception]**
-> **Given** [context]
-> **When** [event/stimulus]
-> **Then** [observable outcome]
+> **Dado** que el usuario tiene un presupuesto mensual configurado y una categoría disponible.
+> **Cuando** registra un gasto válido cuyo monto acumulado no supera el límite de esa categoría.
+> **Entonces** el sistema guarda el gasto y actualiza el total acumulado de la categoría.
+
+**Escenario 2: Registro de un gasto que supera el presupuesto**
+
+> **Dado** que el usuario tiene un presupuesto mensual configurado y una categoría cuyo límite está establecido.
+> **Cuando** registra un gasto válido que hace que el total acumulado de esa categoría supere su límite.
+> **Entonces** el sistema guarda el gasto, actualiza el total acumulado y muestra una alerta visual de sobrecosto.
+
+#### Historia de usuario 2 
+
+**Escenario 1: Se genera una alerta**
+
+> **Dado** que una categoría tiene un límite presupuestado definido.
+> **Cuando** el registro de un gasto hace que el total acumulado supere ese límite.
+> **Entonces** el sistema muestra una alerta visual que informa que se ha excedido el presupuesto de la categoría.
+
+**Escenario 2: No se supera el límite**
+
+> **Dado** que una categoría tiene un límite presupuestado definido.
+> **Cuando** el usuario registra un gasto y el total acumulado permanece dentro del límite.
+> **Entonces** el sistema guarda el gasto sin mostrar una alerta de sobrecosto.
+
+#### Historia de usuario 3 
+
+**Escenario 1: El gasto supera el límite**
+
+> **Dado** que los datos del gasto cumplen con las validaciones del sistema, pero su registro supera el presupuesto de la categoría.
+> **Cuando** el usuario confirma la operación.
+> **Entonces** el sistema permite registrar el gasto y muestra la alerta correspondiente, sin bloquear la transacción por el exceso presupuestario.
+
+**Escenario 2: Los datos del gasto son inválidos**
+
+> **Dado** que el usuario intenta registrar un gasto.
+> **Cuando** los datos ingresados no cumplen con las reglas de validación del sistema.
+> **Entonces** el sistema informa el error y solicita corregir los datos antes de guardar el gasto.
 
 ### 4.3 Use Case
 
-| Field | |
+| Field |  |
 |---|---|
-| **Use Case name** | |
-| **Actor** | |
-| **Goal** | |
-| **Trigger** | |
-| **Precondition** | |
+| **Use Case name** | Registro de gastos y control de sobrecostos |
+| **Actor** | Usuario de la aplicación |
+| **Goal** | Registrar los gastos realizados y conocer si superan el límite de su categoría presupuestaria. |
+| **Trigger** | El usuario selecciona la opción para registrar un nuevo gasto. |
+| **Precondition** | El usuario ha accedido a la aplicación y dispone de una categoría a la cual asociar el gasto. Para generar una alerta de sobrecosto, la categoría debe tener un límite presupuestario definido. |
 
-**Main Flow**
-1.
-2.
-3.
-4.
+#### Main Flow
 
-**Alternative Flow**
-> [Condition] → [what happens instead]
+1. El usuario accede a la sección de registro de gastos.
+2. El sistema muestra el formulario para ingresar la información del gasto.
+3. El usuario ingresa el monto, selecciona la categoría y completa los demás datos requeridos.
+4. El usuario confirma el registro.
+5. El sistema valida los datos ingresados.
+6. Si los datos son válidos, el sistema registra el gasto.
+7. El sistema actualiza el total acumulado de la categoría correspondiente.
+8. El sistema compara el total acumulado con el límite presupuestado de la categoría.
+9. Si el límite ha sido superado, el sistema muestra una alerta visual de sobrecosto.
+10. El sistema confirma que el gasto fue registrado correctamente.
 
-**Exception**
-> [Condition] → [what happens instead]
+#### Alternative Flow
 
-**Postcondition**
+> El usuario registra un gasto válido, el sistema actualiza el total acumulado de la categoría, el sistema verifica que el total no supera el límite presupuestado, el sistema confirma el registro sin mostrar una alerta de sobrecosto.
+
+#### Exception
+
+> **Datos inválidos:** el sistema informa los errores y solicita corregirlos antes de guardar el gasto.
+> 
+> **Categoría sin límite presupuestario:** el sistema permite registrar el gasto, pero no puede determinar si existe un sobrecosto respecto a un límite que no está definido.
 >
+> **Error al guardar:** si ocurre un problema que impide guardar el gasto, el sistema informa que el registro no se completó y evita mostrarlo como una transacción registrada exitosamente.
 
-**Flow Diagram**
-*(Replace the labels below with your own steps. Keep Main Flow, Alternative, and Exception visually distinct — delete whichever branch doesn't apply to your use case. This renders automatically on GitHub.)*
+#### Postcondition
+
+El gasto queda registrado y el total acumulado de su categoría se actualiza. Si el total supera el límite presupuestado, el usuario recibe una alerta visual de sobrecosto. El exceso presupuestario no impide completar una transacción válida.
+
+#### Flow Diagram
 
 ```mermaid
 flowchart TD
-    A([Trigger: what starts this use case]) --> B["1. Main flow step"]
-    B --> C["2. Main flow step"]
-    C --> D{"Decision point, if any"}
-    D -- "Normal path" --> G["3. Main flow step"]
-    G --> H(["Postcondition / goal reached"])
-    D -- "Alternative condition" --> E["ALTERNATIVE: what happens instead"]
-    E --> H
-    D -- "Exception condition" --> F["EXCEPTION: what happens instead"]
-    F --> H
+    A([Inicio]) --> B[Acceder al registro de gastos]
+    B --> C[Ingresar monto, categoría y datos]
+    C --> D[Confirmar registro]
+    D --> E{¿Los datos son válidos?}
 
-    classDef mainflow fill:#1E2761,color:#ffffff,stroke:#1E2761;
-    classDef alt fill:#F2A541,color:#1E2761,stroke:#F2A541;
-    classDef exception fill:#B3261E,color:#ffffff,stroke:#B3261E;
-    class B,C,G mainflow;
-    class E alt;
-    class F exception;
+    E -- No --> F[Mostrar errores de validación]
+    F --> C
+
+    E -- Sí --> G[Registrar el gasto]
+    G --> H[Actualizar total de la categoría]
+    H --> I{¿La categoría tiene límite presupuestado?}
+
+    I -- No --> J[Confirmar registro]
+    I -- Sí --> K{¿El total supera el límite?}
+
+    K -- No --> J
+    K -- Sí --> L[Mostrar alerta visual de sobrecosto]
+    L --> J
+
+    J --> M([Fin])
 ```
 
 ---
