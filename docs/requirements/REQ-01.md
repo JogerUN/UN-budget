@@ -173,9 +173,11 @@ flowchart TD
 
 ## Backward Traceability — ¿Por qué existe este requisito?
 
-**Evidencia:** [E-XX] — Evidencia del *Discovery Sheet* que demuestra la necesidad del usuario de planificar y controlar sus gastos mensuales.
+**Evidencia:** [E-01] — Durante la exploración inicial de las prácticas de manejo de las finanzas personales entre familiares y miembros del equipo, se identificaron distintas formas de controlar el dinero: algunas personas no llevan un registro organizado, otras calculan mentalmente cuánto pueden gastar y otras utilizan hojas de cálculo. Estas alternativas pueden dificultar el seguimiento organizado de los gastos y la planificación del dinero disponible durante el mes.
 
-**Necesidad:** [N-01] — El usuario necesita comenzar a organizar mis finanzas personales, por ello deseo construir mi presupuesto de ingresos y gastos personal mensualmente.
+Además, la investigación documental sobre finanzas personales destaca el uso de presupuestos mensuales que distribuyen el dinero entre diferentes tipos y categorías de gastos, con el propósito de organizar los recursos disponibles y establecer límites de gasto.
+
+**Necesidad:** [N-01] — El usuario necesita comenzar a organizar sus finanzas personales, por ello desea construir su presupuesto de ingresos y gastos personales mensualmente.
 
 **Requisito:** El sistema debe permitir a cada usuario crear, editar y consultar un único presupuesto mensual de gastos, expresado exclusivamente en pesos colombianos (COP), asignando montos de dinero a las categorías de gastos disponibles para dicho usuario.
 
