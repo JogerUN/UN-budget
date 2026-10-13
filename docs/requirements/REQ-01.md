@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Status** | In Review |
-| **Team / Author(s)** | Kevin Daniel Flórez Hernández, David Esteban Sainea Rubio, Joger Iván Muñoz Dueñas, Samuel Benítez Culma, Miguel Ángel Guativa Archila |
+| **Team / Author(s)** | Kevin Daniel Flórez Hernández, David Esteban Sainea Rubio, Joger Ivan Muñoz Dueñas, Samuel Benítez Culma, Miguel Ángel Guativa Archila |
 | **Date** | 2026-10-10 |
 | **Linked User Story / AC** | US-01, AC-01.1, AC-01.2 | <!-- A definir con las posteriores secciones -->
 
@@ -72,16 +72,34 @@
 comparison if you need to decide which.)*
 
 **Priority assigned:**
-> Because [the situation/signal from your project], we assigned [priority
-> value], accepting the trade-off of [what you're giving up by not prioritizing
-> it higher/lower]. We considered [alternative priority] and didn't use it
-> because [reason].
+
+> **Priority model use:** RICE and MoSCoW
+> **Priority assigned:** 4.8 (RICE) / Must-have (MoSCoW)
+
+> Dado que el objetivo principal de esta primera fase era establecer la lógica central necesaria para que nuestra aplicación funcionara, asignamos al requisito ***Gestión de Presupuesto Mensual*** una puntuación **RICE de 4.8** y lo clasificamos como **Imprescindible (*Must-have*)** según el modelo **MoSCoW**. Aceptamos la contrapartida de posponer las funcionalidades más avanzadas para centrarnos primero en implementar las funcionalidades esenciales de la aplicación, ya que estas funciones centrales constituyen la base para futuras mejoras.
+
+> Consideramos los requisitos ***Personalización de Categorías de Gasto*** y ***Registro de Ingresos*** durante el proceso de comparación. Aun así, decidimos implementar primero ***Gestión de Presupuesto Mensual***, ya que los otros requisitos eran menos relevantes para nuestro objetivo. Por esta razón, ambos se ubican a continuación en el orden de prioridad.
 
 **Estimate (confidence):** High / Medium / Low
-> How sure are we about the size and shape of this work? *(This is a
-> confidence tag, not a technique-based number — named estimation techniques
-> like story points are Ingeniería de Software II content, not this course.)*
+> Asignamos un nivel de confianza del 80 % porque el requisito abarca una función central del sistema. Sin embargo, dado que la estimación aún no está respaldada por evidencia suficiente ni ha sido validada, debe considerarse una estimación provisional y no un resultado confirmado.
 
+>| Name | Reach | Impact | Confidence (%) | Effort | MoSCoW | RICE Score |
+>|---|---:|---:|---:|---:|---|---:|
+>| Registro de gastos | 10 | 2 | 80 | 3 | Must | 5.33 |
+>| Registro de Ingresos | 10 | 2 | 80 | 3 | Must | 5.33 |
+>| Gestión de Presupuesto Mensual | 10 | 3 | 80 | 5 | Must | 4.80 |
+>| Personalización de Categorías de Gasto | 7 | 2 | 80 | 3 | Should | 3.73 |
+>| Análisis Comparativo y Visualización (Dashboard) | 10 | 2 | 80 | 6 | Should | 2.67 |
+>| Gestión de Cuentas y Medios de Pago | 8 | 2 | 80 | 5 | Should | 2.56 |
+>| Notificación / Alerta Visual de Sobrecosto | 7 | 1 | 70 | 3 | Should | 1.63 |
+
+
+> *Notas:*
+>
+> *1. El plazo asignado para cada funcionalidad es de un mes después del lanzamiento de la aplicación.*
+> *2. Los requisitos seleccionados se eligieron como base para el funcionamiento de la aplicación.*
+> *3. El esfuerzo estimado se midió en días-persona, teniendo en cuenta el número de días laborables de un mes.*
+> *4. El objetivo general de este conjunto de requisitos es garantizar que las funcionalidades principales de la aplicación funcionen correctamente.*
 ---
 
 ## 4. Representations — Requirement ≠ Representation
@@ -178,9 +196,11 @@ flowchart TD
 
 ## Backward Traceability — ¿Por qué existe este requisito?
 
-**Evidencia:** [E-XX] — Evidencia del *Discovery Sheet* que demuestra la necesidad del usuario de planificar y controlar sus gastos mensuales.
+**Evidencia:** [E-01] — Durante la exploración inicial de las prácticas de manejo de las finanzas personales entre familiares y miembros del equipo, se identificaron distintas formas de controlar el dinero: algunas personas no llevan un registro organizado, otras calculan mentalmente cuánto pueden gastar y otras utilizan hojas de cálculo. Estas alternativas pueden dificultar el seguimiento organizado de los gastos y la planificación del dinero disponible durante el mes.
 
-**Necesidad:** [N-01] — El usuario necesita comenzar a organizar mis finanzas personales, por ello deseo construir mi presupuesto de ingresos y gastos personal mensualmente.
+Además, la investigación documental sobre finanzas personales destaca el uso de presupuestos mensuales que distribuyen el dinero entre diferentes tipos y categorías de gastos, con el propósito de organizar los recursos disponibles y establecer límites de gasto.
+
+**Necesidad:** [N-01] — El usuario necesita comenzar a organizar sus finanzas personales, por ello desea construir su presupuesto de ingresos y gastos personales mensualmente.
 
 **Requisito:** El sistema debe permitir a cada usuario crear, editar y consultar un único presupuesto mensual de gastos, expresado exclusivamente en pesos colombianos (COP), asignando montos de dinero a las categorías de gastos disponibles para dicho usuario.
 
@@ -248,7 +268,7 @@ Se considerará que lo que más probabilidades tiene de cambiar son las restricc
 - [x] **Verifiable?** Sí — los criterios de aceptación AC-01.1 y AC-01.2 describen condiciones observables para guardar un presupuesto válido, gestionar datos inválidos y evitar presupuestos duplicados para un mismo mes. Las pruebas futuras de la sección 5 también indican cómo verificar la creación, edición y consulta del presupuesto, así como el uso de COP. Una vez definidas las reglas pendientes, podrían necesitarse pruebas adicionales.
 - [ ] **Consistent?** No completamente — no se ha identificado un conflicto directo con otro requerimiento, pero algunas afirmaciones necesitan aclaración. La regla de negocio BR-01 establece que es obligatorio contar con un presupuesto mensual activo, mientras que el requerimiento permite al usuario crear uno. 
 - [ ] **Complete enough?** No completamente — el requerimiento cubre las principales operaciones de gestión del presupuesto, pero la pregunta abierta de la sección 2 sigue sin resolverse: ¿qué debe ocurrir cuando los montos asignados a las categorías de gasto superan los ingresos mensuales estimados del usuario? 
-- [ ] **Traceable?** Si — la funcionalidad principal está vinculada con la necesidad N-01 y la evidencia E-01, y se identifican sus impactos futuros en el diseño, la implementación y las pruebas. 
+- [x] **Traceable?** Si — la funcionalidad principal está vinculada con la necesidad N-01 y la evidencia E-01, y se identifican sus impactos futuros en el diseño, la implementación y las pruebas. 
 
 > If any box is unchecked, say what's missing and whether it becomes an Open
 > Question or sends you back to Class 8 (re-elicit) or Class 9 (re-specify).
