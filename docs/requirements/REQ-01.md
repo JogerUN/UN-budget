@@ -35,7 +35,7 @@
 
 ### Business Rule(s)
 
-> BR-01 — Para que un usuario pueda gestionar sus finanzas personales en el sistema, es obligatorio contar con un presupuesto mensual de ingresos y gastos activo.
+> BR-01 — Para que una persona pueda gestionar sus finanzas personales y tener seguimiento de sus gastos, es necesario idear y construir un presupuesto mensual de ingresos y gastos.
 
 > BR-05 — Todos los gastos categorías presupuestadas deben pertenecer, obligatoriamente, a uno de los siguientes tres tipos: Necesidad; Deseo; Ahorro, Inversión y/o Deuda.
 
@@ -266,7 +266,7 @@ Se considerará que lo que más probabilidades tiene de cambiar son las restricc
 - [x] **Necessary?** Sí — eliminar este requerimiento suprimiría la funcionalidad principal que permite a los usuarios planificar sus gastos mensuales y establecer límites por categoría. Esto afectaría directamente la necesidad N-01 y el propósito central de la aplicación.
 - [x] **Feasible?** Sí — el requerimiento puede implementarse mediante formularios y vistas en el frontend, operaciones en el backend y estructuras en la base de datos para crear, actualizar y consultar presupuestos mensuales. Estos elementos ya están identificados en la sección de trazabilidad futura. Sin embargo, la factibilidad técnica detallada deberá confirmarse durante el diseño y la implementación.
 - [x] **Verifiable?** Sí — los criterios de aceptación AC-01.1 y AC-01.2 describen condiciones observables para guardar un presupuesto válido, gestionar datos inválidos y evitar presupuestos duplicados para un mismo mes. Las pruebas futuras de la sección 5 también indican cómo verificar la creación, edición y consulta del presupuesto, así como el uso de COP. Una vez definidas las reglas pendientes, podrían necesitarse pruebas adicionales.
-- [ ] **Consistent?** No completamente — no se ha identificado un conflicto directo con otro requerimiento, pero algunas afirmaciones necesitan aclaración. La regla de negocio BR-01 establece que es obligatorio contar con un presupuesto mensual activo, mientras que el requerimiento permite al usuario crear uno. 
+- [x] **Consistent?** Sí, - Es consistente con la regla de negocio BR-01, que indica que una persona debe contar obligatoriamente con un presupuesto para poder tener finanzas personales. Este requisito sigue esa premisa. 
 - [ ] **Complete enough?** No completamente — el requerimiento cubre las principales operaciones de gestión del presupuesto, pero la pregunta abierta de la sección 2 sigue sin resolverse: ¿qué debe ocurrir cuando los montos asignados a las categorías de gasto superan los ingresos mensuales estimados del usuario? 
 - [x] **Traceable?** Si — la funcionalidad principal está vinculada con la necesidad N-01 y la evidencia E-01, y se identifican sus impactos futuros en el diseño, la implementación y las pruebas. 
 
