@@ -84,7 +84,7 @@ comparison if you need to decide which.)*
 
 ---
 
-## 4. Representaciones — Requisito ≠ Representación
+## 4. Representations — Requirement ≠ Representation
 
 ### 4.1 User Story
 
