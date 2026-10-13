@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Status** | In Review |
-| **Team / Author(s)** | Kevin Daniel Flórez Hernández, Samuel Benitez Culma |
+| **Team / Author(s)** | Kevin Daniel Flórez Hernández, David Esteban Sainea Rubio, Joger Ivan Muñoz Dueñas, Samuel Benítez Culma, Miguel Ángel Guativa Archila |
 | **Date** | 2026-10-10 |
 | **Linked User Story / AC** | US-01, AC-01.1, AC-01.2 | <!-- A definir con las posteriores secciones -->
 
