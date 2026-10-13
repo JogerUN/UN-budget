@@ -301,14 +301,16 @@ Se considerará que lo que más probabilidades tiene de cambiar son las restricc
 
 *(Class 9 + Class 10. Self-audit before you commit this file. Check honestly — a "no" here means the requirement isn't ready yet, not that you should force a checkmark.)*
 
-- [ ] **Valid?** Does it reflect a real, evidenced need — not an invented one?
-- [ ] **Clear / Unambiguous?** Is there only one reasonable interpretation?
-- [ ] **Atomic?** Is this one independently testable expectation, not several bundled together?
-- [ ] **Necessary?** Does removing it actually break something real?
-- [ ] **Feasible?** Can this realistically be built with what the team has?
-- [ ] **Verifiable?** Can you demonstrate, concretely, whether it's satisfied?
-- [ ] **Consistent?** Does it conflict with any other requirement in your set?
-- [ ] **Complete enough?** Are there important functions or constraints still missing?
-- [ ] **Traceable?** Can every part of this document be traced back to real evidence — not invented to fill a section?
+## 6. Validation — Quality Gate
+
+- [x] **Valid?** Sí — se relaciona directamente con la necesidad N-02, que establece que el usuario necesita registrar sus gastos incluyendo el tipo, la categoría, el monto, la fecha y el medio de pago. La evidencia E-02 también identifica dificultades en las prácticas actuales de registro y seguimiento de los gastos personales.
+- [ ] **Clear / Unambiguous?** No completamente — el requerimiento identifica los campos obligatorios para registrar un gasto, pero algunos aspectos necesitan mayor precisión. Por ejemplo, no se especifican los formatos y rangos válidos para los montos y las fechas, ni se define completamente cómo se relaciona el registro de gastos con el presupuesto mensual cuando este no existe o una categoría no tiene un límite asignado. 
+- [ ] **Atomic?** No completamente — el registro de gastos constituye una funcionalidad principal, pero el documento también incluye la actualización de los totales acumulados y la generación de alertas visuales cuando se supera el presupuesto. Aunque estas funcionalidades están relacionadas, la alerta de sobrecosto podría gestionarse como un requisito independiente, ya que también aparece como una funcionalidad específica en la tabla de priorización. Conviene delimitar el alcance del registro de gastos y establecer la relación con el requisito de alertas.
+- [x] **Necessary?** Sí — eliminar este requerimiento impediría que los usuarios registraran de forma organizada sus gastos diarios y dificultaría el seguimiento de sus movimientos de dinero. Esto afectaría directamente la necesidad N-02 y reduciría la utilidad del presupuesto mensual, porque no habría información registrada con la cual comparar los gastos reales frente a los planificados.
+- [x] **Feasible?** Sí — el requerimiento puede implementarse mediante un formulario en el frontend, operaciones en el backend para validar y guardar la información, y una base de datos que almacene los montos, las fechas y las relaciones con las cuentas, las categorías y los tipos de gasto. El documento identifica estos componentes en la sección de trazabilidad futura. Sin embargo, la factibilidad de las reglas detalladas de validación y del cálculo de sobrecostos deberá confirmarse durante el diseño y la implementación.
+- [x] **Verifiable?** Sí — los criterios de aceptación describen condiciones observables para registrar gastos dentro y fuera del presupuesto, mostrar alertas de sobrecosto y rechazar datos inválidos. 
+- [ ] **Consistent?** No completamente — existen aspectos que deben revisarse para mantener la coherencia entre las reglas de negocio, las dependencias y las funcionalidades relacionadas. La regla BR-04 permite añadir o eliminar categorías, pero la personalización de categorías aparece como un requisito independiente en la tabla de priorización. Además, el documento establece que se necesita un presupuesto previamente diseñado, mientras que el caso de uso solo exige disponer de una categoría para registrar un gasto. 
+- [ ] **Complete enough?** No completamente — el requerimiento contempla los campos obligatorios, la validación de datos y el tratamiento de los gastos que superan el presupuesto. Sin embargo, sigue pendiente definir cómo se mostrarán los sobrecostos, según la pregunta abierta de la sección 2. También conviene especificar qué ocurre cuando una categoría no tiene un límite presupuestario, cómo se validan los montos y las fechas, y qué comportamiento se espera cuando el usuario no dispone de una cuenta o categoría válida. Estas decisiones permitirán completar las reglas de negocio y los criterios de aceptación.
+- [ ] **Traceable?** Si — el registro de gastos está vinculado con la necesidad N-02 y la evidencia E-02, y el documento identifica sus implicaciones en el diseño, la implementación y las pruebas futuras. 
 
 > If any box is unchecked, say what's missing and whether it becomes an Open Question or sends you back to Class 8 (re-elicit) or Class 9 (re-specify).
