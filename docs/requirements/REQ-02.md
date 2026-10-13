@@ -78,17 +78,18 @@ HOW TO USE THIS TEMPLATE
 
 **Priority assigned:**
 
-> **Priority model used:** RICE and MoSCoW
+> **Priority model used:** RICE y MoSCoW
 
 > **Priority assigned:** 5.3 (RICE) / Must-have (MoSCoW)  
 
-> Because the main objective of this firts phase was to establish the core logic required for our application to function, we assigned the ***Registro de Gastos*** requirement a **RICE** score of **5.3** and classified it as a **Must-have** using **MoSCoW**. We accepted the trade-off of postponing more advanced features to focus on implementing the application's essential functionality first.
-> We considered ***Registro de Ingresos*** and ***Gestion de Presupuesto Mensual*** as the next requirementes in the priority order. However, we decided to implement ***Registro de Gastos*** first because it provides a foundation for other requirements.
+> Dado que el objetivo principal de esta primera fase era establecer la lógica central necesaria para que nuestra aplicación funcionara, asignamos al requisito ***Registro de Gastos*** una puntuación **RICE de 5.3** y lo clasificamos como **Imprescindible (*Must-have*)** según el modelo **MoSCoW**. Aceptamos la contrapartida de posponer las funcionalidades más avanzadas para centrarnos primero en implementar las funcionalidades esenciales de la aplicación.
+
+> Consideramos ***Registro de Ingresos*** y ***Gestión de Presupuesto Mensual*** como los siguientes requisitos en el orden de prioridad. Sin embargo, decidimos implementar ***Registro de Gastos*** primero, ya que proporciona una base para el desarrollo de los demás requisitos.
 
 
 **Estimate (confidence):** High / Medium / Low
 > **Estimate (confidance): 80% (High)**
-> We assigned an 80% confidence level because the requirement covers a core system function. However, since the estimate is not yet supported by sufficient evidence or validation, it should be treated as a provisional estimate rather than a confirmed result.
+> Asignamos un nivel de confianza del 80 % porque el requisito abarca una función central del sistema. Sin embargo, dado que la estimación aún no está respaldada por evidencia suficiente ni ha sido validada, debe considerarse una estimación provisional y no un resultado confirmado.
 
 >| Name | Reach | Impact | Confidence (%) | Effort | MoSCoW | RICE Score |
 >|---|---:|---:|---:|---:|---|---:|
@@ -100,11 +101,12 @@ HOW TO USE THIS TEMPLATE
 >| Gestión de Cuentas y Medios de Pago | 8 | 2 | 80 | 5 | Should | 2.56 |
 >| Notificación / Alerta Visual de Sobrecosto | 7 | 1 | 70 | 3 | Should | 1.63 |
 
-> *notes:*
-> *1. The time frame allocated for each feature is one moth after the application is launched*
-> *2. The selected requirementes were chosen as the foundations for the application's operation*
-> *3. The estimated effort was measured in person-days, based on the munber of working days in a month*
-> *4. The overall goal of this set of requirements is to ensure that the application's core funtionalities work correctly*
+> *Notas:*
+>
+> *1. El plazo asignado para cada funcionalidad es de un mes después del lanzamiento de la aplicación.*
+> *2. Los requisitos seleccionados se eligieron como base para el funcionamiento de la aplicación.*
+> *3. El esfuerzo estimado se midió en días-persona, teniendo en cuenta el número de días laborables de un mes.*
+> *4. El objetivo general de este conjunto de requisitos es garantizar que las funcionalidades principales de la aplicación funcionen correctamente.*
 ---
 
 ## 4. Representations — Requirement ≠ Representation
