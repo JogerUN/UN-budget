@@ -87,7 +87,7 @@ HOW TO USE THIS TEMPLATE
 
 ## 4. Representations — Requirement ≠ Representation
 
-### 4.1 Historias de usuario
+### 4.1 User Story
 
 Historia de usuario 1 
 
@@ -101,7 +101,7 @@ Historia de usuario 3
 
 > Como usuario de la aplicación, quiero poder registrar un gasto aunque supere el presupuesto disponible de su categoría, para llevar un control real de mis gastos sin que la aplicación me impida registrar una transacción.
 
-### 4.2 Criterios de aceptación
+### 4.2 Acceptance Criteria
 
 #### Historia de usuario 1 
 
@@ -145,7 +145,7 @@ Historia de usuario 3
 > **Cuando** los datos ingresados no cumplen con las reglas de validación del sistema.
 > **Entonces** el sistema informa el error y solicita corregir los datos antes de guardar el gasto.
 
-### 4.3 Caso de uso
+### 4.3 Use Case
 
 | Field |  |
 |---|---|
@@ -155,7 +155,7 @@ Historia de usuario 3
 | **Trigger** | El usuario selecciona la opción para registrar un nuevo gasto. |
 | **Precondition** | El usuario ha accedido a la aplicación y dispone de una categoría a la cual asociar el gasto. Para generar una alerta de sobrecosto, la categoría debe tener un límite presupuestario definido. |
 
-#### Flujo principal
+#### Main Flow
 
 1. El usuario accede a la sección de registro de gastos.
 2. El sistema muestra el formulario para ingresar la información del gasto.
@@ -168,11 +168,11 @@ Historia de usuario 3
 9. Si el límite ha sido superado, el sistema muestra una alerta visual de sobrecosto.
 10. El sistema confirma que el gasto fue registrado correctamente.
 
-#### Flujo alternativo
+#### Alternative Flow
 
 > El usuario registra un gasto válido, el sistema actualiza el total acumulado de la categoría, el sistema verifica que el total no supera el límite presupuestado, el sistema confirma el registro sin mostrar una alerta de sobrecosto.
 
-#### Excepciones
+#### Exception
 
 > **Datos inválidos:** el sistema informa los errores y solicita corregirlos antes de guardar el gasto.
 > 
