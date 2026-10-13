@@ -18,7 +18,7 @@ HOW TO USE THIS TEMPLATE
 | | |
 |---|---|
 | **Status** | Draft |
-| **Team / Author(s)** | Kevin Daniel Flórez Hernández, David Esteban Sainea Rubio, Joger Iván Muñoz Dueñas, Samuel Benítez Culma, Miguel Ángel Guativa Archila |
+| **Team / Author(s)** | Kevin Daniel Flórez Hernández, David Esteban Sainea Rubio, Joger Ivan Muñoz Dueñas, Samuel Benítez Culma, Miguel Ángel Guativa Archila |
 | **Date** | 2026-10-10 |
 | **Linked User Story / AC** | US-02, AC-02.1, AC-02.2 | <!-- En relacion a las historias de usuario que estableceremos abajo -->
 
