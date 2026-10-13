@@ -76,11 +76,12 @@ comparison if you need to decide which.)*
 > **Priority model use:** RICE and MoSCoW
 > **Priority assigned:** 4.8 (RICE) / Must-have (MoSCoW)
 
-> Because the main objective of this firts phase was to establish the core logic required for our application to function, we assigned the ***Gestion de Presupuesto Mensual*** requirement a **RICE** score of **4.8** and classified it as a **Must-have** using **MoSCoW**. We accepted the trade-off of postponing more advanced features to focus on implementing the application's essential functionality first, as these core funtions provide the foundation for future enhancements.
->  We considered ***Personalización de Categorías de Gasto*** and ***Registro de Ingresos*** while we were comparing them. Even so, we decided to implement  ***Gestion de Presupuesto Mensual*** first as the others were less relevant for our objective, for these reason them are the next requirements in the priority order.
+> Dado que el objetivo principal de esta primera fase era establecer la lógica central necesaria para que nuestra aplicación funcionara, asignamos al requisito ***Gestión de Presupuesto Mensual*** una puntuación **RICE de 4.8** y lo clasificamos como **Imprescindible (*Must-have*)** según el modelo **MoSCoW**. Aceptamos la contrapartida de posponer las funcionalidades más avanzadas para centrarnos primero en implementar las funcionalidades esenciales de la aplicación, ya que estas funciones centrales constituyen la base para futuras mejoras.
+
+> Consideramos los requisitos ***Personalización de Categorías de Gasto*** y ***Registro de Ingresos*** durante el proceso de comparación. Aun así, decidimos implementar primero ***Gestión de Presupuesto Mensual***, ya que los otros requisitos eran menos relevantes para nuestro objetivo. Por esta razón, ambos se ubican a continuación en el orden de prioridad.
 
 **Estimate (confidence):** High / Medium / Low
-> We assigned an 80% confidence level because the requirement covers a core system function. However, since the estimate is not yet supported by sufficient evidence or validation, it should be treated as a provisional estimate rather than a confirmed result.
+> Asignamos un nivel de confianza del 80 % porque el requisito abarca una función central del sistema. Sin embargo, dado que la estimación aún no está respaldada por evidencia suficiente ni ha sido validada, debe considerarse una estimación provisional y no un resultado confirmado.
 
 >| Name | Reach | Impact | Confidence (%) | Effort | MoSCoW | RICE Score |
 >|---|---:|---:|---:|---:|---|---:|
@@ -93,11 +94,12 @@ comparison if you need to decide which.)*
 >| Notificación / Alerta Visual de Sobrecosto | 7 | 1 | 70 | 3 | Should | 1.63 |
 
 
->*notes:*
-> *1. The time frame allocated for each feature is one moth after the application is launched*
-> *2. The selected requirementes were chosen as the foundations for the application's operation*
-> *3. The estimated effort was measured in person-days, based on the munber of working days in a month*
-> *4. The overall goal of this set of requirements is to ensure that the application's core funtionalities work correctly*
+> *Notas:*
+>
+> *1. El plazo asignado para cada funcionalidad es de un mes después del lanzamiento de la aplicación.*
+> *2. Los requisitos seleccionados se eligieron como base para el funcionamiento de la aplicación.*
+> *3. El esfuerzo estimado se midió en días-persona, teniendo en cuenta el número de días laborables de un mes.*
+> *4. El objetivo general de este conjunto de requisitos es garantizar que las funcionalidades principales de la aplicación funcionen correctamente.*
 ---
 
 ## 4. Representations — Requirement ≠ Representation
