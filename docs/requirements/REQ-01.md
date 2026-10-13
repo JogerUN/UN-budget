@@ -86,7 +86,7 @@ comparison if you need to decide which.)*
 
 ## 4. Representaciones — Requisito ≠ Representación
 
-### 4.1 Historia de usuario
+### 4.1 User Story
 
 > Como **usuario de la aplicación**,
 >
@@ -94,7 +94,7 @@ comparison if you need to decide which.)*
 >
 > para **organizar mis gastos de acuerdo con mis necesidades y prioridades, y mantener actualizada la distribución de mi presupuesto mensual**.
 
-### 4.2 Criterios de aceptación
+### 4.2 Acceptance Criteria
 
 #### Escenario 1 — Configuración exitosa del presupuesto
 
@@ -112,7 +112,7 @@ comparison if you need to decide which.)*
 >
 > **Entonces** el sistema identifica los valores que deben corregirse y no guarda los cambios afectados hasta que cumplan las reglas de validación. Si ya existe un presupuesto para el mes seleccionado, el sistema permite consultar o editar el presupuesto existente en lugar de crear uno duplicado.
 
-### 4.3 Caso de uso
+### 4.3 Use Case
 
 | Field |  |
 |---|---|
@@ -122,18 +122,18 @@ comparison if you need to decide which.)*
 | **Disparador** | El usuario accede a la sección de presupuesto mensual para crear, consultar o modificar un presupuesto. |
 | **Precondición** | El usuario debe haber ingresado a la aplicación. El sistema debe poder determinar si ya existe un presupuesto para el mes seleccionado. |
 
-#### Flujo principal
+#### Main Flow
 
 1. El usuario accede a la sección de presupuesto mensual y selecciona el mes que desea gestionar.
 2. El sistema verifica si existe un presupuesto para el mes seleccionado. Si existe, muestra su configuración actual; de lo contrario, permite iniciar su creación.
 3. El sistema presenta las categorías de gastos disponibles y los montos asignados, cuando corresponda. El usuario selecciona las categorías, crea categorías personalizadas si las necesita y asigna los montos deseados en COP.
 4. El usuario confirma los cambios. El sistema valida la información, guarda el nuevo presupuesto o actualiza el existente y muestra la configuración actualizada junto con un mensaje de confirmación.
 
-#### Flujo alternativo
+#### Alternative Flow
 
 > **Las categorías disponibles no cubren las necesidades del usuario:** el usuario selecciona la opción para crear una categoría personalizada, introduce su nombre y confirma la operación. El sistema valida la información, guarda la categoría y permite utilizarla en la configuración del presupuesto.
 
-#### Excepción
+#### Exception
 
 > **Datos inválidos:** el sistema identifica los valores que deben corregirse y no guarda los cambios afectados hasta que cumplan las reglas de validación.
 
@@ -141,7 +141,7 @@ comparison if you need to decide which.)*
 
 > **Presupuesto existente:** si ya existe un presupuesto para el mes seleccionado, el sistema permite consultar o editar el presupuesto existente en lugar de crear otro para el mismo mes.
 
-#### Postcondición
+#### Postcondition
 
 El presupuesto del mes seleccionado queda guardado o actualizado con las categorías y los montos validados en pesos colombianos (COP), y puede ser consultado posteriormente por el usuario. Si la operación se cancela antes de guardar, las modificaciones pendientes no se aplican.
 
