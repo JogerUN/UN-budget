@@ -161,28 +161,64 @@ flowchart TD
 
 ---
 
-## 5. Traceability & Impact
+# 5. Traceability & Impact
 
-*(Class 10. Conceptual, not a formal matrix.)*
+## Backward Traceability — ¿Por qué existe este requisito?
 
-**Backward — why does this requirement exist?**
-> Evidence → Need → Requirement. Point to the specific evidence/need entries that justify this requirement (from your Discovery Sheet).
+**Evidencia (E-02):** Durante la exploración inicial de las prácticas de manejo de las finanzas personales, se identificó que algunas personas no llevan un registro organizado de sus gastos, mientras que otras calculan mentalmente cuánto pueden gastar o utilizan hojas de cálculo de excel. Además, identificamos que estos métodos pueden dificultar el seguimiento de los gastos y la consulta de la información cuando se necesita conocer en qué se ha utilizado el dinero.
 
-**Forward — what will this affect?**
-> Requirement → future Design → Implementation → Tests. *(It's fine if Design hasn't happened yet — note what you expect this to touch once it does, and update this section once Class 11 work begins.)*
+Además, en la investigación documental se identificó la importancia de registrar los gastos indicando su monto, fecha, categoría y medio de pago o cuenta utilizada, para facilitar su organización y el seguimiento de los movimientos de dinero.
 
-**Impact Analysis — if this requirement changes, what else might need to change?**
-- [ ] Business Rules
-- [ ] Constraints
-- [ ] Dependencies
-- [ ] Risks
-- [ ] Acceptance Criteria
-- [ ] Estimate
-- [ ] Priority
-- [ ] Future Design
-- [ ] Future Tests
+**Necesidad (N-02):** El usuario necesita registrar un gasto hecho durante el día o mes, siguiendo las recomendaciones de los expertos: que tenga tipo, categoría, monto, fecha y medio de pago.
 
-> Briefly note which of the above are actually likely to be affected, and why.
+**Requisito:** El sistema debe permitir registrar un gasto capturando obligatoriamente: monto en COP, fecha, medio de pago o cuenta, categoría y tipo de gasto: Necesidad, Deseo o Ahorro/Inversión/Deuda.
+
+## Forward Traceability — ¿Qué elementos se verán afectados?
+
+**Diseño futuro:**
+- Un formulario para registrar gastos.
+- Un campo para introducir el monto del gasto en COP.
+- Un campo para la fecha.
+- Listas de selección para el medio de pago o cuenta, la categoría y el tipo de gasto.
+- Una vista para consultar los gastos registrados.
+
+**Implementación:**
+- Componentes del frontend para capturar y enviar la información del gasto.
+- Operaciones del backend para validar y guardar los gastos.
+- Estructuras en la base de datos para almacenar el monto, la fecha y las relaciones con la cuenta, la categoría y el tipo de gasto.
+- Validaciones para impedir el registro de gastos sin los campos obligatorios, con montos inválidos o con referencias a cuentas y categorías inexistentes.
+
+**Pruebas futuras:**
+- Verificar que se pueda registrar un gasto cuando todos los campos obligatorios son válidos.
+- Verificar que el sistema rechace el registro si falta alguno de los campos obligatorios.
+- Verificar que se pueda seleccionar una fecha, un medio de pago o cuenta, una categoría y un tipo de gasto.
+- Verificar que los datos guardados se conserven y se muestren correctamente al consultar el gasto.
+
+Estos elementos son previsiones iniciales y deberán actualizarse cuando comience el diseño detallado y la implementación.
+
+## Impact Analysis — ¿Qué más podría cambiar si este requisito se modifica?
+
+- **Reglas de negocio:** Si cambian los campos obligatorios o la clasificación de los tipos de gasto, será necesario modificar las reglas de registro y clasificación de los movimientos.
+
+- **Restricciones:** Cambiar la moneda permitida, la obligatoriedad de los campos o los formatos aceptados para el monto y la fecha afectaría las restricciones de validación para un gasto.
+
+- **Dependencias:** El registro depende de que existan cuentas o medios de pago, categorías y tipos de gasto válidos. También puede relacionarse con los presupuestos mensuales y los informes financieros que utilicen los gastos registrados.
+
+- **Riesgos:** Si se permiten registros incompletos o clasificaciones incorrectas, podrían generarse informes inexactos y dificultades para conocer en qué se gasta el dinero o desde qué cuenta se realizan los pagos.
+
+- **Criterios de aceptación:** Los cambios en los campos obligatorios, los tipos de gasto o las reglas de validación requerirían revisar las condiciones necesarias para aceptar un registro.
+
+- **Estimación:** Añadir campos, nuevas clasificaciones o validaciones más complejas podría aumentar el esfuerzo de desarrollo y pruebas, especialmente en términos de tiempo.
+
+- **Prioridad:** La prioridad podría cambiar si se agregan funcionalidades adicionales al registro básico de gastos, especialmente si no son indispensables para la primera versión del sistema.
+
+- **Diseño futuro:** Los cambios podrían afectar el formulario de registro, las listas de selección, la consulta de gastos y la adaptación de la interfaz a diferentes dispositivos.
+
+- **Pruebas futuras:** Sería necesario actualizar los casos de prueba para cubrir los nuevos campos, las validaciones y las reglas de clasificación.
+
+Se considerará que lo que más probabilidades tiene de cambiar son las restricciones, las reglas del negocio y las dependencias del requisito, y si eso cambia, se debería modificar los criterios de aceptación, la estimación del trabajo requerido, el diseño y las pruebas futuras.
+
+
 
 ---
 
