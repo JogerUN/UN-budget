@@ -100,8 +100,8 @@ flowchart TD
 
 | Component | Main responsibility | Requirements / use cases supported | Provided capabilities | Required capabilities | Main dependencies |
 |---|---|---|---|---|---|
-| App Web | Provee la interfaz adaptable para que el usuario ingrese sus datos financieros desde móvil o PC. | REQ-01, REQ-02, REQ-03, REQ-05, REQ-07, REQ-08 | Gestiona cuenta / transacciones | Autentica / gestiona perfil, registra movimientos, configura medios, modifica/gestiona el presupuesto | Gestión de Usuarios, Gestión de Transacciones, Gestor de Cuentas y Medios de Pago, Gestión de Presupuestos |
-| Dashboard UI | Presenta el panel visual interactivo y notifica visualmente los sobrecostos. | REQ-04, REQ-06 | Analiza métricas | Solicita resúmenes | Gestor de Balances |
+| App Web | Provee la interfaz adaptable para que el usuario ingrese sus datos financieros desde móvil o PC. | REQ-01, REQ-02, REQ-03, REQ-04, REQ-05, REQ-07, REQ-08 | Gestiona cuenta / transacciones | Autentica / gestiona perfil, registra movimientos, configura medios, modifica/gestiona el presupuesto | Gestión de Usuarios, Gestión de Transacciones, Gestor de Cuentas y Medios de Pago, Gestión de Presupuestos |
+| Dashboard UI | Presenta el panel visual interactivo y notifica visualmente los sobrecostos. |  REQ-06 | Analiza métricas | Solicita resúmenes | Gestor de Balances |
 | Gestión de Usuarios | Administra la identidad del usuario para asegurar que cada quien vea sus propias finanzas. | Need-01 | Autentica / gestiona perfil | CRUD usuario | Repositorio de Usuarios |
 | Gestión de Transacciones | Valida, clasifica (Necesidad/Deseo/Ahorro) y coordina el registro de ingresos y gastos. | REQ-02, REQ-03, REQ-04 | Registra movimientos | CRUD transacción | Repositorio de Finanzas |
 | Gestor de Cuentas y Medios de Pago | Administra la creación y modificación de las fuentes de dinero (bancos o efectivo). | REQ-05 | Configura medios | CRUD cuentas y medios | Repositorio de Finanzas |
