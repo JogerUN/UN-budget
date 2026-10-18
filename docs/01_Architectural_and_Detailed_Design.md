@@ -19,25 +19,28 @@ HOW TO USE THIS TEMPLATE
 # [Project Name] — Architectural & Detailed Design v1.0
 
 | | |
-|---|---|
+| --- | --- |
 | **Team** | |
 | **Members** | |
 | **Status** | Draft / Ready for review |
-| **Date** | |
+| **Date** | October 19th, 2026 |
 | **Inputs** | `docs/requirements/`, Architectural Hypothesis v0.1 (Class 11), Detailed Design v0.1 (Class 12) |
 
 ---
 
 ## 1. System Overview & Design Drivers
 
-**System purpose** (2–3 sentences, in terms of the need it satisfies)
->
+### System purpose
+
+> The system is intended to provide the end user with a digital platform where they will be able to manage their personal finances by tracking expenses against monthly personal budgets, which are divided into several categories. Moreover, the application will create reports for the user to visualize their financial health, so that they can make informed decisions based on their balance.
 
 **Requirements that shape the structure** *(the ones that most influence the design, not all of them)*
 
 | Requirement / Use Case ID | Why it shapes the structure | Quality attribute, constraint or business rule involved |
-|---|---|---|
-| | | |
+| --- | --- | --- |
+| REQ-01 | It provides the system with the necessary capabilitities for the user to design their budgets. | BR-01: "For an individual to manage their personal finances, it is necessary to design and create a monthly personal budget." |
+| REQ-02 | Tracking an expense is fundamental for the user to know their financial habits. | BR-05: "The user's expenses must be classified into one of three main types: needs, wants and savings (including debt payments or investments), regardless of the category each expense belongs to." |
+| REQ-03 | Similar to the REQ-02, but regarding to the user's incomes instead of the expenses. | BR-03: "An income transaction can be recorded regardless of whether or not the end user has already received it." |
 
 ---
 
@@ -134,7 +137,7 @@ classDiagram
 ## 4. Design Quality — Cohesion, Coupling, Information Hiding
 
 | Question | Your answer, with evidence from your design |
-|---|---|
+| --- | --- |
 | **Cohesion:** do the responsibilities inside each class or component belong together? | |
 | **Coupling:** how far does a change in one element spread? Where are the strongest dependencies? | |
 | **Information hiding:** what did you keep private or internal, and why? | |
@@ -151,7 +154,7 @@ Two decisions are required: one architectural (Class 11 level) and one detailed-
 ### Decision A — Architectural
 
 | | |
-|---|---|
+| --- | --- |
 | **Context** (requirement, constraint or problem that motivated it) | |
 | **Decision** | |
 | **Rationale** (why it is reasonable here) | |
@@ -160,7 +163,7 @@ Two decisions are required: one architectural (Class 11 level) and one detailed-
 ### Decision B — Detailed design
 
 | | |
-|---|---|
+| --- | --- |
 | **Context** | |
 | **Decision** | |
 | **Rationale** | |
