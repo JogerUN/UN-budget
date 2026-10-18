@@ -43,43 +43,72 @@ HOW TO USE THIS TEMPLATE
 
 ## 2. Architectural Design
 
-*(Outward-facing: what are the major parts, what is each responsible for, how do they interact?)*
-
 ### 2.1 System Context & Boundary
 
-| Outside the system | Type (actor / external system / hardware) | How the system interacts with it |
+| Outside the system | Type | How the system interacts with it |
 |---|---|---|
-| | | |
+| Usuario Final | Actor | Interactúa con la aplicación para crear su presupuesto mensual, registrar sus ingresos/gastos manuales, configurar sus medios de pago y analizar el dashboard comparativo. |
 
 ### 2.2 Components, Responsibilities & Capabilities
 
-Cover the principal functional scope of your whole system.
-
 ```mermaid
-flowchart LR
-    Actor([User or external actor])
-    subgraph SYS["System name"]
-        C1["Component 1"]
-        C2["Component 2"]
-        C3["Component 3"]
+flowchart TD
+    Usuario([Usuario Final])
+
+    subgraph SYS["Sistema de Gestión Financiera"]
+        
+        subgraph CapaPresentacion["Capa de Presentación"]
+            AppWeb["App Web"]
+            DashUI["Dashboard UI"]
+        end
+
+        subgraph CapaLogica["Capa de Lógica"]
+            GestUsuarios["Gestión de Usuarios"]
+            GestTransacc["Gestión de Transacciones"]
+            GestCuentas["Gestor de Cuentas y Medios de Pago"]
+            GestPresup["Gestión de Presupuestos"]
+            GestBalances["Gestor de Balances"]
+        end
+
+        subgraph CapaDatos["Capa de Datos"]
+            RepoUsuarios["Repositorio de Usuarios"]
+            RepoFinanzas["Repositorio de Finanzas"]
+            DB[("Almacenamiento de Datos")]
+        end
+        
     end
-    Ext[("External system")]
 
-    Actor --> C1
-    C1 -->|"capability requested"| C2
-    C2 -->|"capability requested"| C3
-    C3 -->|"capability requested"| Ext
+    Usuario -->|"gestiona cuenta / transacciones"| AppWeb
+    Usuario -->|"analiza métricas"| DashUI
+
+    AppWeb -->|"autentica / gestiona perfil"| GestUsuarios
+    AppWeb -->|"registra movimientos"| GestTransacc
+    AppWeb -->|"configura medios"| GestCuentas
+    AppWeb -->|"Modifica/Gestiona el presupuesto"| GestPresup
+    
+    DashUI -->|"solicita resúmenes"| GestBalances
+
+    GestUsuarios -->|"CRUD usuario"| RepoUsuarios
+    GestTransacc -->|"CRUD transacción"| RepoFinanzas
+    GestCuentas -->|"CRUD cuentas y medios"| RepoFinanzas
+    GestPresup -->|"CRUD preferencias de presupuestos"| RepoFinanzas
+    GestBalances -->|"Leer históricos"| RepoFinanzas
+
+    RepoUsuarios --> DB
+    RepoFinanzas --> DB
 ```
-
-*(Everything inside `SYS` is what you build and control. Everything outside is what you only interact with. Label each arrow with the capability being requested.)*
 
 | Component | Main responsibility | Requirements / use cases supported | Provided capabilities | Required capabilities | Main dependencies |
 |---|---|---|---|---|---|
-| | | | | | |
-
-*Checks: is every component named by responsibility, not technology ("the component that persists orders", not "the database")? Does any component exist only to make the diagram look more complex?*
-
----
+| App Web | Provee la interfaz adaptable para que el usuario ingrese sus datos financieros desde móvil o PC. | REQ-01, REQ-02, REQ-03, REQ-05, REQ-07, REQ-08 | Gestiona cuenta / transacciones | Autentica / gestiona perfil, registra movimientos, configura medios, modifica/gestiona el presupuesto | Gestión de Usuarios, Gestión de Transacciones, Gestor de Cuentas y Medios de Pago, Gestión de Presupuestos |
+| Dashboard UI | Presenta el panel visual interactivo y notifica visualmente los sobrecostos. | REQ-04, REQ-06 | Analiza métricas | Solicita resúmenes | Gestor de Balances |
+| Gestión de Usuarios | Administra la identidad del usuario para asegurar que cada quien vea sus propias finanzas. | Need-01 | Autentica / gestiona perfil | CRUD usuario | Repositorio de Usuarios |
+| Gestión de Transacciones | Valida, clasifica (Necesidad/Deseo/Ahorro) y coordina el registro de ingresos y gastos. | REQ-02, REQ-03, REQ-04 | Registra movimientos | CRUD transacción | Repositorio de Finanzas |
+| Gestor de Cuentas y Medios de Pago | Administra la creación y modificación de las fuentes de dinero (bancos o efectivo). | REQ-05 | Configura medios | CRUD cuentas y medios | Repositorio de Finanzas |
+| Gestión de Presupuestos | Aplica las reglas para crear, editar categorías y fijar límites monetarios. | REQ-01, REQ-07 | Modifica/gestiona el presupuesto | CRUD preferencias de presupuestos | Repositorio de Finanzas |
+| Gestor de Balances | Cruza la información real contra lo presupuestado para calcular desviaciones y alertas. | REQ-04, REQ-06 | Solicita resúmenes | Leer históricos | Repositorio de Finanzas |
+| Repositorio de Usuarios | Persiste y recupera credenciales y perfiles de usuario. | Need-01 | CRUD usuario | Interacción con almacenamiento de datos | Almacenamiento de Datos |
+| Repositorio de Finanzas | Persiste y recupera presupuestos, movimientos y cuentas garantizando su integridad. | REQ-11 | CRUD transacción, CRUD cuentas y medios, CRUD preferencias de presupuestos, Leer históricos | Interacción con almacenamiento de datos | Almacenamiento de Datos |
 
 ## 3. Detailed Design
 
