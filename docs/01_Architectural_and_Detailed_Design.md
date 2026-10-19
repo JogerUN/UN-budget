@@ -53,62 +53,62 @@ HOW TO USE THIS TEMPLATE
 
 ```mermaid
 flowchart TD
-    Usuario([Usuario Final])
+    User([End User])
 
-    subgraph SYS["Sistema de Gestión Financiera"]
+    subgraph SYS["Personal Finance Management System"]
         
-        subgraph CapaPresentacion["Capa de Presentación"]
-            AppWeb["App Web"]
+        subgraph PresentationLayer["Presentation Layer"]
+            WebApp["Web App"]
             DashUI["Dashboard UI"]
         end
 
-        subgraph CapaLogica["Capa de Lógica"]
-            GestUsuarios["Gestión de Usuarios"]
-            GestTransacc["Gestión de Transacciones"]
-            GestCuentas["Gestor de Cuentas y Medios de Pago"]
-            GestPresup["Gestión de Presupuestos"]
-            GestBalances["Gestor de Balances"]
+        subgraph LogicLayer["Logic Layer"]
+            UserMgmt["User Management"]
+            TransactMgmt["Transaction Management"]
+            AccountMgmt["Account & Payment Method Manager"]
+            BudgetMgmt["Budget Management"]
+            BalanceMgmt["Balance Manager"]
         end
 
-        subgraph CapaDatos["Capa de Datos"]
-            RepoUsuarios["Repositorio de Usuarios"]
-            RepoFinanzas["Repositorio de Finanzas"]
-            DB[("Almacenamiento de Datos")]
+        subgraph DataLayer["Data Layer"]
+            UserRepo["User Repository"]
+            FinanceRepo["Finance Repository"]
+            DB[("Data Storage")]
         end
         
     end
 
-    Usuario -->|"gestiona cuenta / transacciones"| AppWeb
-    Usuario -->|"analiza métricas"| DashUI
+    User -->|"manages account / transactions"| WebApp
+    User -->|"analyzes metrics"| DashUI
 
-    AppWeb -->|"autentica / gestiona perfil"| GestUsuarios
-    AppWeb -->|"registra movimientos"| GestTransacc
-    AppWeb -->|"configura medios"| GestCuentas
-    AppWeb -->|"Modifica/Gestiona el presupuesto"| GestPresup
+    WebApp -->|"authenticates / manages profile"| UserMgmt
+    WebApp -->|"logs transactions"| TransactMgmt
+    WebApp -->|"configures payment methods"| AccountMgmt
+    WebApp -->|"modifies/manages budget"| BudgetMgmt
     
-    DashUI -->|"solicita resúmenes"| GestBalances
+    DashUI -->|"requests summaries"| BalanceMgmt
 
-    GestUsuarios -->|"CRUD usuario"| RepoUsuarios
-    GestTransacc -->|"CRUD transacción"| RepoFinanzas
-    GestCuentas -->|"CRUD cuentas y medios"| RepoFinanzas
-    GestPresup -->|"CRUD preferencias de presupuestos"| RepoFinanzas
-    GestBalances -->|"Leer históricos"| RepoFinanzas
+    UserMgmt -->|"CRUD user"| UserRepo
+    TransactMgmt -->|"CRUD transaction"| FinanceRepo
+    AccountMgmt -->|"CRUD accounts and payment methods"| FinanceRepo
+    BudgetMgmt -->|"CRUD budget preferences"| FinanceRepo
+    BalanceMgmt -->|"read historical data"| FinanceRepo
 
-    RepoUsuarios --> DB
-    RepoFinanzas --> DB
+    UserRepo --> DB
+    FinanceRepo --> DB
 ```
 
 | Component | Main responsibility | Requirements / use cases supported | Provided capabilities | Required capabilities | Main dependencies |
 |---|---|---|---|---|---|
-| App Web | Provee la interfaz adaptable para que el usuario ingrese sus datos financieros desde móvil o PC. | REQ-01, REQ-02, REQ-03, REQ-04, REQ-05, REQ-07, REQ-08 | Gestiona cuenta / transacciones | Autentica / gestiona perfil, registra movimientos, configura medios, modifica/gestiona el presupuesto | Gestión de Usuarios, Gestión de Transacciones, Gestor de Cuentas y Medios de Pago, Gestión de Presupuestos |
-| Dashboard UI | Presenta el panel visual interactivo y notifica visualmente los sobrecostos. |  REQ-06 | Analiza métricas | Solicita resúmenes | Gestor de Balances |
-| Gestión de Usuarios | Administra la identidad del usuario para asegurar que cada quien vea sus propias finanzas. | Need-01 | Autentica / gestiona perfil | CRUD usuario | Repositorio de Usuarios |
-| Gestión de Transacciones | Valida, clasifica (Necesidad/Deseo/Ahorro) y coordina el registro de ingresos y gastos. | REQ-02, REQ-03, REQ-04 | Registra movimientos | CRUD transacción | Repositorio de Finanzas |
-| Gestor de Cuentas y Medios de Pago | Administra la creación y modificación de las fuentes de dinero (bancos o efectivo). | REQ-05 | Configura medios | CRUD cuentas y medios | Repositorio de Finanzas |
-| Gestión de Presupuestos | Aplica las reglas para crear, editar categorías y fijar límites monetarios. | REQ-01, REQ-07 | Modifica/gestiona el presupuesto | CRUD preferencias de presupuestos | Repositorio de Finanzas |
-| Gestor de Balances | Cruza la información real contra lo presupuestado para calcular desviaciones y alertas. | REQ-04, REQ-06 | Solicita resúmenes | Leer históricos | Repositorio de Finanzas |
-| Repositorio de Usuarios | Persiste y recupera credenciales y perfiles de usuario. | Need-01 | CRUD usuario | Interacción con almacenamiento de datos | Almacenamiento de Datos |
-| Repositorio de Finanzas | Persiste y recupera presupuestos, movimientos y cuentas garantizando su integridad. | REQ-11 | CRUD transacción, CRUD cuentas y medios, CRUD preferencias de presupuestos, Leer históricos | Interacción con almacenamiento de datos | Almacenamiento de Datos |
+| Web App | Provides the responsive interface for the user to input financial data from a mobile device or PC. | REQ-01, REQ-02, REQ-03, REQ-04, REQ-05, REQ-07, REQ-08 | Manages account / transactions | Authenticates / manages profile, logs transactions, configures payment methods, modifies/manages budget | User Management, Transaction Management, Account & Payment Method Manager, Budget Management |
+| Dashboard UI | Presents the interactive visual panel and visually notifies about cost overruns. | REQ-06 | Analyzes metrics | Requests summaries | Balance Manager |
+| User Management | Manages user identity to ensure everyone sees their own finances. | Need-01 | Authenticates / manages profile | CRUD user | User Repository |
+| Transaction Management | Validates, classifies (Need/Want/Savings), and coordinates the recording of incomes and expenses. | REQ-02, REQ-03, REQ-04 | Logs transactions | CRUD transaction | Finance Repository |
+| Account & Payment Method Manager | Administers the creation and modification of money sources (banks or cash). | REQ-05 | Configures payment methods | CRUD accounts and payment methods | Finance Repository |
+| Budget Management | Applies the rules to create, edit categories, and set monetary limits. | REQ-01, REQ-07 | Modifies/manages budget | CRUD budget preferences | Finance Repository |
+| Balance Manager | Cross-references actual data against the budget to calculate deviations and alerts. | REQ-04, REQ-06 | Requests summaries | Read historical data | Finance Repository |
+| User Repository | Persists and retrieves user credentials and profiles. | Need-01 | CRUD user | Interaction with data storage | Data Storage |
+| Finance Repository | Persists and retrieves budgets, transactions, and accounts, ensuring data integrity. | REQ-11 | CRUD transaction, CRUD accounts and payment methods, CRUD budget preferences, read historical data | Interaction with data storage | Data Storage |
 
 ## 3. Detailed Design
 
