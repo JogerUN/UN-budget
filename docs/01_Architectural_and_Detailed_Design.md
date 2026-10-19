@@ -138,8 +138,8 @@ classDiagram
 
 | Question | Your answer, with evidence from your design |
 | --- | --- |
-| **Cohesion:** do the responsibilities inside each class or component belong together? | |
-| **Coupling:** how far does a change in one element spread? Where are the strongest dependencies? | |
+| **Cohesion:** do the responsibilities inside each class or component belong together? | Every component is named according to its unique global responsability. Additionally, each class within each component responds to that responsability. |
+| **Coupling:** how far does a change in one element spread? Where are the strongest dependencies? | The architectural diagram shows few, if any, relationships between components within the same layer, but more relationships across layers, with communication that follows a logical flow and avoids tight coupling. |
 | **Information hiding:** what did you keep private or internal, and why? | |
 
 **At least one real finding** (a problem you found in your own design) **and what you changed or would change:**
