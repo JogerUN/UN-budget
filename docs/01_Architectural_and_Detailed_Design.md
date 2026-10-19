@@ -28,16 +28,19 @@ HOW TO USE THIS TEMPLATE
 
 ---
 
+
 ## 1. System Overview & Design Drivers
 
 **System purpose** (2–3 sentences, in terms of the need it satisfies)
->
+
+El sistema busca facilitar la organización y el control de las finanzas personales mediante el registro de gastos y la planificación de un presupuesto mensual. De esta manera, los usuarios pueden llevar un registro de sus gastos, clasificarlos y asignar montos a las categorías correspondientes para mejorar el seguimiento del uso de su dinero.
 
 **Requirements that shape the structure** *(the ones that most influence the design, not all of them)*
 
 | Requirement / Use Case ID | Why it shapes the structure | Quality attribute, constraint or business rule involved |
 |---|---|---|
-| | | |
+| Registro de gastos (ID pendiente) | Determina la información que debe capturarse en el formulario y cómo se organizan los datos de cada gasto para su almacenamiento y consulta. | Regla de negocio: cada gasto debe incluir monto en COP, fecha, medio de pago o cuenta, categoría y tipo de gasto. |
+| Gestión del presupuesto mensual (ID pendiente) | Determina cómo se organizan los presupuestos por mes y cómo se asignan montos a las categorías de gastos disponibles para cada usuario. | Regla de negocio y restricción: cada usuario puede crear, editar y consultar un presupuesto mensual, expresado exclusivamente en COP, asignando montos a las categorías disponibles. |
 
 ---
 
