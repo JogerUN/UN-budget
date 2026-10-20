@@ -20,29 +20,27 @@ HOW TO USE THIS TEMPLATE
 
 | | |
 | --- | --- |
-| **Team** | UN-budget | Grupo 5 -Ingesoft I |
+| **Team** | UN-budget | Grupo 5 - Ingesoft I |
 | **Members** | David Esteban Sainea Rubio, sabenitez, Kevin Florez, Miguel Angel Guativa Archila, Joger Ivan Munoz Duenas |
-| **Status** | Ready for review |
-| **Date** | 19/10/2026 |
+| **Status** | Approved |
+| **Date** | 19/10/2026 October 19th, 2026 |
 | **Inputs** | `docs/requirements/`, Architectural Hypothesis v0.1 (Class 11), Detailed Design v0.1 (Class 12) |
 
 ---
 
 ## 1. System Overview & Design Drivers
 
-**System purpose** (2–3 sentences, in terms of the need it satisfies)
+### System purpose
 
-The system aims to empower young Colombians to take control of their personal finances through monthly budget planning and daily transaction tracking. It satisfies the need to monitor budget execution against actual expenses in real time using an interactive graphical dashboard and visual overspending alerts. Additionally, it guarantees cloud availability and timely data synchronization across mobile devices and desktop computers, operating exclusively in Colombian Pesos (COP).
+> The system is intended to provide the end user with a digital platform where they will be able to manage their personal finances by tracking expenses against monthly personal budgets, which are divided into several categories. Moreover, the application will create reports for the user to visualize their financial health, so that they can make informed decisions based on their balance.
 
 **Requirements that shape the structure** *(the ones that most influence the design, not all of them)*
 
 | Requirement / Use Case ID | Why it shapes the structure | Quality attribute, constraint or business rule involved |
 | --- | --- | --- |
-| **REQ-08 & REQ-10**<br>*(Cross-platform & Synchronization)* | Defines a cloud-based client-server architecture with API services and a Responsive Web UI, ensuring timely data synchronization and availability when switching between mobile devices and computers. | **Quality attributes:** Availability, Usability (Responsive UI), Data Synchronization.<br>**Need:** Need-06. |
-| **REQ-06**<br>*(Comparative Analysis & Visualization - Dashboard)* | Requires a backend data processing and aggregation component optimized to calculate real-time differences between the planned budget and executed transactions, feeding the frontend graphical dashboard. | **Quality attributes:** Performance (Real-time responsiveness), Usability.<br>**Business Rule / Need:** RN-01, Need-05. |
-| **REQ-02 & REQ-04**<br>*(Expense Tracking & Visual Overspending Alert)* | Shapes the domain model to capture mandatory expense attributes and requires executing a non-blocking rules engine that generates visual alerts upon exceeding a category limit without blocking the transaction. | **Quality attributes:** Data Integrity, Modifiability.<br>**Business Rules:** RN-02 (non-blocking alert), RN-05 (expense types), RN-06 (COP exclusivity). |
-| **REQ-01**<br>*(Monthly Budget Management)* | Establishes the main entity of the data model to structure, edit, and query the user's monthly budget, serving as the foundation for money allocation and distribution. | **Constraint & Business Rule:** RN-01 (single monthly budget), RN-06 (COP exclusivity).<br>**Need:** Need-01. |
-| **REQ-05 & REQ-07**<br>*(Account Management & Custom Categories)* | Requires an extensible data model combining pre-loaded expert categorizations with user freedom to create or modify categories and payment methods (including bank accounts and cash). | **Quality attribute:** Modifiability / Extensibility.<br>**Business Rules / Needs:** RN-04, Need-02, Need-03. |
+| REQ-01 | It provides the system with the necessary capabilitities for the user to design their budgets. | BR-01: "For an individual to manage their personal finances, it is necessary to design and create a monthly personal budget." |
+| REQ-02 | Tracking an expense is fundamental for the user to know their financial habits. | BR-05: "The user's expenses must be classified into one of three main types: needs, wants and savings (including debt payments or investments), regardless of the category each expense belongs to." |
+| REQ-03 | Similar to the REQ-02, but regarding to the user's incomes instead of the expenses. | BR-03: "An income transaction can be recorded regardless of whether or not the end user has already received it." |
 
 ---
 
@@ -155,7 +153,7 @@ classDiagram
     EliminarIngreso --> Ingreso : elimina logicamente
 ```
 
-###
+### Budged Manager Class Diagram
 
 ```mermaid
 classDiagram
@@ -247,10 +245,10 @@ classDiagram
 | EliminarGastos | Transaction & Movement Management | Realizar la eliminación lógica de un gasto y conservar su historial. | Gasto |
 | Gasto | Transaction & Movement Management | Mantener la información del gasto, su estado y sus fechas de auditoría. | Categoria, clases de operaciones de gastos |
 | Categoria | Transaction & Movement Management | Representar la categoría utilizada para clasificar los gastos. | Gasto |
-| RegistrarIngreso | Transaction & Movement Management | Validar y coordinar el registro de un nuevo ingreso. | Ingreso | 
+| RegistrarIngreso | Transaction & Movement Management | Validar y coordinar el registro de un nuevo ingreso. | Ingreso |
 | ProgramarIngreso | Transaction & Movement Management | Establecer la fecha esperada de un ingreso sin confundirla con su fecha real. | Ingreso |
 | ModificarIngreso | Transaction & Movement Management | Coordinar la modificación de la información de un ingreso existente. | Ingreso |
-| EliminarIngreso  | Transaction & Movement Management | Realizar la eliminación lógica de un ingreso y conservar su historial. | Ingreso |
+| EliminarIngreso | Transaction & Movement Management | Realizar la eliminación lógica de un ingreso y conservar su historial. | Ingreso |
 | Ingreso | Transaction & Movement Management | Mantener los datos del ingreso, su fuente, las fechas esperada y real, su estado y las fechas de auditoría. | Clases de operaciones de ingresos |
 | `BudgetService` | Budget Manager | Entry point service that coordinates monthly budget creation, delegation of category validation, and retrieval of user budgets. | `BudgetRegister`, `Budget`, `FinancialRegistryRepository` |
 | `BudgetRegister` | Budget Manager | Handles category administration, including adding, removing, and retrieving expense categories. | `FinancialRegistryRepository`, `Categoria` |
@@ -318,19 +316,20 @@ exceso del presupuesto sin impedir la transacción.
 Non-happy-path: si el monto es inválido, la categoría no existe o el almacenamiento falla, el gasto no debe registrarse como una
 operación exitosa. El sistema debe informar el error y evitar que quede un movimiento duplicado o parcialmente registrado.
 **Operation:** `BudgetService.define_monthly_budget(user_id, month, year, allocations)`
+```
 
 ---
 
 ## 4. Design Quality — Cohesion, Coupling, Information Hiding
 
 | Question | Your answer, with evidence from your design |
-|---|---|
-| **Cohesion:** do the responsibilities inside each class or component belong together? | |
-| **Coupling:** how far does a change in one element spread? Where are the strongest dependencies? | |
-| **Information hiding:** what did you keep private or internal, and why? | |
+| --- | --- |
+| **Cohesion:** do the responsibilities inside each class or component belong together? | Every component is named according to its unique global responsability. Additionally, each class within each component responds to that responsability. |
+| **Coupling:** how far does a change in one element spread? Where are the strongest dependencies? | The architectural diagram shows few, if any, relationships between components within the same layer, but more relationships across layers, with communication that follows a logical flow and avoids tight coupling. |
+| **Information hiding:** | It is mandatory to hide from the end user the logical flow the system will follow in order to store and retrieve data within the database and its schemas. The operations of each class must also remain hidden. The end user does not need to know how the system executes these tasks and the application could be vulnerable if the end user can gain access to this information. |
 
-**At least one real finding** (a problem you found in your own design) **and what you changed or would change:**
->
+**At least one real finding and what you changed or would change:**
+> The first draft of the class diagram designed by the team did not satisfy the guidelines given by the professor, since it had low cohesion. For that reason, the team redesigned it to ensure that every class in each component of the system has a single responsibility. As a result, the final diagram shows a modular structure with a considerable number of small but well-defined classes.
 
 ---
 
@@ -341,7 +340,7 @@ Two decisions are required: one architectural (Class 11 level) and one detailed-
 ### Decision A — Architectural
 
 | **Section** | **Details** |
-|:---|:---|
+| --- | --- |
 | **Context** | Under the requirements established in **REQ-06** (*Comparative Analysis and Visualization - Dashboard*), the system must provide processed financial summaries to generate and render the various dashboard charts. This information originates from the finance repository; however, the presentation layer (UI) must not perform these aggregation and calculation operations. In addition, **REQ-04** and business rule **RN-02** require detecting and warning about budget overruns without blocking valid transaction. Finally, **REQ-11** demands accounting data integrity. |
 | **Decision** | We decided to create an isolated component **(Balance & Metrics Calculator)** responsible for retrieving raw persistent financial data from the repository, modeling it, and computing the financial metrics consumed by the dashboard. This prevents the UI from executing domain calculations and eliminates logic duplication and data inconsistencies. |
 | **Rationale** | **Consistency:** Centralizing metric calculations in a dedicated component relieves the UI of responsibilities outside its scope, establishing a single, purpose-built location to enforce calculation rules.<br><br>**Integrity and Performance:** Instead of transmitting hundreds of individual transactions to the browser, the system aggregates them on the server and returns only the consolidated values and structures needed by the charts.<br><br>**Persistence Isolation:** Schema changes or structural adjustments within the persistence engine (PostgreSQL) remain isolated in the repository and do not affect the dashboard interface. |
@@ -350,11 +349,11 @@ Two decisions are required: one architectural (Class 11 level) and one detailed-
 ### Decision B — Detailed design
 
 | | |
-|---|---|
-| **Context** |Within the `Transaction & Movement Manager` component, the system must support distinct operations for financial entries, including recording immediate expenses (**REQ-02**), logging actual incomes, and scheduling expected future incomes (**REQ-03**, **RN-03**). Each operation carries distinct validation rules, lifecycle conditions, and data integrity constraints (**REQ-11**). We needed to structure the internal classes of this component without bundling unrelated transactional behaviors into monolithic controllers|
-| **Decision** |We decompose the operation logic into granular, single-purpose action classes (`RegistroGastos`, `ModificacionGastos`, `EliminarGastos` for expenses; `RegistrarIngreso`, `ProgramarIngreso`, `ModificarIngreso`, `EliminarIngreso` for incomes), each exposing a dedicated execution method over the domain entities (`Gasto` and `Ingreso`).|
-| **Rationale** | **Cohesion & Single Responsibility:** Each class encapsulates the validation logic and business rules of exactly one operation. For example, `ProgramarIngreso` manages future dates and expected statuses independently from standard income logging, preventing regression bugs across unrelated flows.<br><br>**Fault & Change Isolation:** Modifying how expenses are updated or adding new pre-conditions to deletion does not touch or recompile the registration pipeline.<br><br>**Targeted Unit Testing:** Unit tests target individual operation classes in complete isolation with minimal fixture setup, directly verifying success/failure boolean results without initializing unneeded dependencies.|
-| **Trade-off accepted** | **Class Proliferation (Higher Artifact Count):** Splitting lifecycle operations generates seven specialized classes instead of two unified handlers, increasing boilerplate code, file count, and dependency injection wiring overhead in the application container. <br><br>**Rejected Alternative:** We rejected consolidating all expense and income methods into centralized `GestionGastos` and `GestionIngreso` classes. While grouping them into two classes required fewer files, it produced low cohesion by accumulating multiple diverging reasons to change within a single class, violating information hiding and increasing the risk that a modification to modification or deletion logic could inadvertently break the core registration flow.|
+| --- | --- |
+| **Context** | Within the `Transaction & Movement Manager` component, the system must support distinct operations for financial entries, including recording immediate expenses (**REQ-02**), logging actual incomes, and scheduling expected future incomes (**REQ-03**, **RN-03**). Each operation carries distinct validation rules, lifecycle conditions, and data integrity constraints (**REQ-11**). We needed to structure the internal classes of this component without bundling unrelated transactional behaviors into monolithic controllers |
+| **Decision** | We decompose the operation logic into granular, single-purpose action classes (`RegistroGastos`, `ModificacionGastos`, `EliminarGastos` for expenses; `RegistrarIngreso`, `ProgramarIngreso`, `ModificarIngreso`, `EliminarIngreso` for incomes), each exposing a dedicated execution method over the domain entities (`Gasto` and `Ingreso`). |
+| **Rationale** | **Cohesion & Single Responsibility:** Each class encapsulates the validation logic and business rules of exactly one operation. For example, `ProgramarIngreso` manages future dates and expected statuses independently from standard income logging, preventing regression bugs across unrelated flows.<br><br>**Fault & Change Isolation:** Modifying how expenses are updated or adding new pre-conditions to deletion does not touch or recompile the registration pipeline.<br><br>**Targeted Unit Testing:** Unit tests target individual operation classes in complete isolation with minimal fixture setup, directly verifying success/failure boolean results without initializing unneeded dependencies. |
+| **Trade-off accepted** | **Class Proliferation (Higher Artifact Count):** Splitting lifecycle operations generates seven specialized classes instead of two unified handlers, increasing boilerplate code, file count, and dependency injection wiring overhead in the application container. <br><br>**Rejected Alternative:** We rejected consolidating all expense and income methods into centralized `GestionGastos` and `GestionIngreso` classes. While grouping them into two classes required fewer files, it produced low cohesion by accumulating multiple diverging reasons to change within a single class, violating information hiding and increasing the risk that a modification to modification or deletion logic could inadvertently break the core registration flow. |
 
 ### ADR
 
@@ -368,8 +367,10 @@ The **Decision A — Architectural** has been recorded as an ADR named *(ADR-000
 ## 6. Traceability
 
 | Requirement ID | Use Case | Component(s) | Class(es) |
-|---|---|---|---|
-| | | | |
+| --- | --- | --- | --- |
+| REQ-01 | *Attached to the REQ-01 document in requirements folder, at the 4.3 section* | Budget Manager | |
+| REQ-02 | *Attached to the REQ-02 document in requirements folder, at the 4.3 section* | Transaction & Movement Manager | RegistroGasto, ModificarGasto, EliminarGasto, Gasto, Categoria |
+| REQ-03 | *Its Use Case has not been defined yet* | Transaction & Movement Manager | RegistrarIngreso, ProgramarIngreso, ModificarIngreso, EliminarIngreso, Ingreso |
 
 *(Every requirement in Section 1 must appear. Every component and class should appear at least once. If an element traces to nothing, ask why it exists.)*
 
@@ -377,17 +378,18 @@ The **Decision A — Architectural** has been recorded as an ADR named *(ADR-000
 
 ## 7. Optional — AI-Assisted Design Reflection
 
-> One design recommendation generated by AI that the team accepted, modified or rejected, and why.
+> After a review, Gemini AI recommended that we add labels to the arrows indicating the logical flow between components that were specified within the architectural diagram. Additionally, it suggested an architectural diagram template, which, according to the professor, was excellent. However, the professor considered it better to design a diagram that is easier for the team to understand and explain. Consequently, the team decided to keep the diagram suggested by the AI, although it will not be submitted as part of the assignment.
 
 ---
 
 ## 8. Consistency Checklist
 
-- [ ] Every component in the diagram appears in the responsibilities table, and the other way around.
-- [ ] Every class belongs to an identifiable component.
-- [ ] Components are named by responsibility, not technology.
-- [ ] Nothing inside the system boundary is something you do not control.
-- [ ] Provided and required capabilities match across components (what one requires, another provides).
-- [ ] Both decisions name a real cost or limitation, and at least one has an ADR.
-- [ ] The traceability table has no empty rows and no orphan components or classes.
-- [ ] Diagrams render correctly on GitHub (or the exported images are embedded).
+- [x] Every component in the diagram appears in the responsibilities table, and the other way around.
+- [x] Every class belongs to an identifiable component.
+- [x] Components are named by responsibility, not technology.
+- [x] Nothing inside the system boundary is something you do not control.
+- [x] Provided and required capabilities match across components (what one requires, another provides).
+- [x] Both decisions name a real cost or limitation, and at least one has an ADR.
+- [ ] The traceability table has no empty rows and no orphan components or classes:
+    > The row for REQ-03 does not have a use case because this requirement was not covered in previous assignments.
+- [x] Diagrams render correctly on GitHub (or the exported images are embedded).
