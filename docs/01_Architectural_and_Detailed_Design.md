@@ -153,7 +153,7 @@ classDiagram
     EliminarIngreso --> Ingreso : elimina logicamente
 ```
 
-###
+### Budged Manager Class Diagram
 
 ```mermaid
 classDiagram
