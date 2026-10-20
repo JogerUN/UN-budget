@@ -183,7 +183,7 @@ At least one of the two decisions above must also be recorded as an ADR (use `Pl
 | --- | --- | --- | --- |
 | REQ-01 | *Attached to the REQ-01 document in requirements folder, at the 4.3 section* | Budget Manager | |
 | REQ-02 | *Attached to the REQ-02 document in requirements folder, at the 4.3 section* | Transaction & Movement Manager | RegistroGasto, ModificarGasto, EliminarGasto, Gasto, Categoria |
-| REQ-03 | *Its User Case has not been defined yet* | Transaction & Movement Manager | RegistrarIngreso, ProgramarIngreso, ModificarIngreso, EliminarIngreso, Ingreso |
+| REQ-03 | *Its Use Case has not been defined yet* | Transaction & Movement Manager | RegistrarIngreso, ProgramarIngreso, ModificarIngreso, EliminarIngreso, Ingreso |
 
 *(Every requirement in Section 1 must appear. Every component and class should appear at least once. If an element traces to nothing, ask why it exists.)*
 
@@ -197,11 +197,12 @@ At least one of the two decisions above must also be recorded as an ADR (use `Pl
 
 ## 8. Consistency Checklist
 
-- [ ] Every component in the diagram appears in the responsibilities table, and the other way around.
-- [ ] Every class belongs to an identifiable component.
-- [ ] Components are named by responsibility, not technology.
-- [ ] Nothing inside the system boundary is something you do not control.
-- [ ] Provided and required capabilities match across components (what one requires, another provides).
-- [ ] Both decisions name a real cost or limitation, and at least one has an ADR.
-- [ ] The traceability table has no empty rows and no orphan components or classes.
-- [ ] Diagrams render correctly on GitHub (or the exported images are embedded).
+- [x] Every component in the diagram appears in the responsibilities table, and the other way around.
+- [x] Every class belongs to an identifiable component.
+- [x] Components are named by responsibility, not technology.
+- [x] Nothing inside the system boundary is something you do not control.
+- [x] Provided and required capabilities match across components (what one requires, another provides).
+- [x] Both decisions name a real cost or limitation, and at least one has an ADR.
+- [ ] The traceability table has no empty rows and no orphan components or classes:
+    > The row for REQ-03 does not have a use case because this requirement was not covered in previous assignments.
+- [x] Diagrams render correctly on GitHub (or the exported images are embedded).
