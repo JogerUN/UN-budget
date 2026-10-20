@@ -20,10 +20,10 @@ HOW TO USE THIS TEMPLATE
 
 | | |
 | --- | --- |
-| **Team** | |
-| **Members** | |
-| **Status** | Draft / Ready for review |
-| **Date** | |
+| **Team** | UN-budget | Grupo 5 -Ingesoft I |
+| **Members** | David Esteban Sainea Rubio, sabenitez, Kevin Florez, Miguel Angel Guativa Archila, Joger Ivan Munoz Duenas |
+| **Status** | Ready for review |
+| **Date** | 19/10/2026 |
 | **Inputs** | `docs/requirements/`, Architectural Hypothesis v0.1 (Class 11), Detailed Design v0.1 (Class 12) |
 
 ---
