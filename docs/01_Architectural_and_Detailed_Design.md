@@ -19,7 +19,7 @@ HOW TO USE THIS TEMPLATE
 # [Project Name] — Architectural & Detailed Design v1.0
 
 | | |
-|---|---|
+| --- | --- |
 | **Team** | |
 | **Members** | |
 | **Status** | Draft / Ready for review |
@@ -31,13 +31,18 @@ HOW TO USE THIS TEMPLATE
 ## 1. System Overview & Design Drivers
 
 **System purpose** (2–3 sentences, in terms of the need it satisfies)
->
+
+The system aims to empower young Colombians to take control of their personal finances through monthly budget planning and daily transaction tracking. It satisfies the need to monitor budget execution against actual expenses in real time using an interactive graphical dashboard and visual overspending alerts. Additionally, it guarantees cloud availability and timely data synchronization across mobile devices and desktop computers, operating exclusively in Colombian Pesos (COP).
 
 **Requirements that shape the structure** *(the ones that most influence the design, not all of them)*
 
 | Requirement / Use Case ID | Why it shapes the structure | Quality attribute, constraint or business rule involved |
-|---|---|---|
-| | | |
+| --- | --- | --- |
+| **REQ-08 & REQ-10**<br>*(Cross-platform & Synchronization)* | Defines a cloud-based client-server architecture with API services and a Responsive Web UI, ensuring timely data synchronization and availability when switching between mobile devices and computers. | **Quality attributes:** Availability, Usability (Responsive UI), Data Synchronization.<br>**Need:** Need-06. |
+| **REQ-06**<br>*(Comparative Analysis & Visualization - Dashboard)* | Requires a backend data processing and aggregation component optimized to calculate real-time differences between the planned budget and executed transactions, feeding the frontend graphical dashboard. | **Quality attributes:** Performance (Real-time responsiveness), Usability.<br>**Business Rule / Need:** RN-01, Need-05. |
+| **REQ-02 & REQ-04**<br>*(Expense Tracking & Visual Overspending Alert)* | Shapes the domain model to capture mandatory expense attributes and requires executing a non-blocking rules engine that generates visual alerts upon exceeding a category limit without blocking the transaction. | **Quality attributes:** Data Integrity, Modifiability.<br>**Business Rules:** RN-02 (non-blocking alert), RN-05 (expense types), RN-06 (COP exclusivity). |
+| **REQ-01**<br>*(Monthly Budget Management)* | Establishes the main entity of the data model to structure, edit, and query the user's monthly budget, serving as the foundation for money allocation and distribution. | **Constraint & Business Rule:** RN-01 (single monthly budget), RN-06 (COP exclusivity).<br>**Need:** Need-01. |
+| **REQ-05 & REQ-07**<br>*(Account Management & Custom Categories)* | Requires an extensible data model combining pre-loaded expert categorizations with user freedom to create or modify categories and payment methods (including bank accounts and cash). | **Quality attribute:** Modifiability / Extensibility.<br>**Business Rules / Needs:** RN-04, Need-02, Need-03. |
 
 ---
 
@@ -54,7 +59,7 @@ HOW TO USE THIS TEMPLATE
 ![Component Diagram](./Component_Diagram.jpg)
 
 | Component | Main Responsibility | Requirements / Use Cases Supported | Provided Capabilities | Required Capabilities | Main Dependencies |
-|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- |
 | Web App | Provides the responsive interface for the user to input financial data from a mobile device or PC. | REQ-01, REQ-02, REQ-03, REQ-04, REQ-05, REQ-07, REQ-08 | User management, transaction registration, and budget configuration interface | UI-to-Logic integration services | Logic Layer |
 | Dashboard UI | Presents the interactive visual panel and visually notifies about cost overruns. | REQ, 04 REQ-06 | Comparative budget, balances, and trend visualization interface | Metrics & historical data analysis services | Logic Layer |
 | Balance Manager | Cross-references actual data against the budget to calculate deviations and alerts. | REQ-04, REQ-06 | Budget execution calculation and alerts on overruns | Logic-to-Data integration services | Data Layer |
@@ -72,10 +77,13 @@ Cada componente se diseña con el propósito de cumplir los requerimientos estab
 ### 3.1 Components selected (at least two)
 
 | Component | Why it was selected (risk, complexity, centrality to the drivers) |
-|---|---|
+| --- | --- |
 | **Transaction & Movement Management** | Es un componente central para la integridad financiera del sistema, ya que administra el registro, la modificación y la eliminación lógica de los gastos e ingresos. Debe garantizar la consistencia de los movimientos, conservar el historial de los cambios y evitar la pérdida de información financiera. Además, debe gestionar la clasificación de los gastos por categoría, facilitar el control del presupuesto, debe diferenciar entre la fecha esperada y la fecha real, permitiendo programar y actualizar los movimientos sin alterar la confiabilidad de la información financiera del usuario. |
+| **Budget Manager** | Core domain logic component responsible for coordinating monthly budget planning, applying budget allocation rules in COP, and enforcing custom/preset category operations (RN-01, RN-04, RN-06). Selected due to its central role in processing domain rules and managing budget life cycles |
 
-### 3.2 Class Diagram(s)
+## 3.2 Class Diagram(s)
+
+### Transaction & Movement Manager Class Diagram
 
 ```mermaid
 classDiagram
@@ -147,24 +155,118 @@ classDiagram
     EliminarIngreso --> Ingreso : elimina logicamente
 ```
 
-### 3.3 Class Responsibilities 
+###
+
+```mermaid
+classDiagram
+    direction TB
+
+    class BudgetService {
+        -budgetRepository: FinancialRegistryRepository
+        -categoryManager: CategoryManager
+        +defineMonthlyBudget(userId: String, month: Int, year: Int, allocations: Map): Budget
+        +getBudget(userId: String, month: Int, year: Int): Budget
+    }
+
+    class Budget {
+        -budgetId: String
+        -userId: String
+        -month: Int
+        -year: Int
+        -currency: String
+        +addOrUpdateCategoryLimit(category: ExpenseCategory, amount: Double): Void
+        +getTotalBudgeted(): Double
+    }
+
+    class BudgetRegister {
+        -categoryRepository: FinancialRegistryRepository
+        +addExpenseCategory(userId: String, name: String, type: CategoryType): ExpenseCategory
+        +removeExpenseCategory(userId: String, categoryId: String): Boolean
+        +getCategories(userId: String): List~ExpenseCategory~
+    }
+
+    class CategoryBudget {
+        -allocatedAmount: Double
+        +getAllocatedAmount(): Double
+        +setAllocatedAmount(amount: Double): Void
+    }
+
+    class Categoria {
+        -categoryId: String
+        -name: String
+        -type: CategoryType
+        -isCustom: Boolean
+        +getCategoryId(): String
+        +getName(): String
+    }
+
+    class ModifyBudget {
+        +modifyBudget(budget: Budget): Boolean
+    }
+
+    class RemoveBudget {
+        +removeBudget(budgetId: String): Boolean
+    }
+
+    class DefineBudget {
+        +defineBudget(budget: Budget): Boolean
+    }
+
+    class AddCategory {
+        +addCategory(category: Category): Boolean
+    }
+
+    class ModifyCategory {
+        +modifyCategory(category: Category): Boolean
+    }
+
+    class RemoveCategory {
+        +removeCategory(categoryId: String): Boolean
+    }
+
+    BudgetService --> "0..*" Budget : manages
+    BudgetService --> "1" BudgetRegister : validates categories
+    Budget "1" *-- "1..*" CategoryBudget : contains
+
+    CategoryBudget --> ModifyBudget
+    CategoryBudget --> RemoveBudget
+    CategoryBudget --> DefineBudget
+    CategoryBudget --> "1" Categoria : references
+
+    Categoria --> AddCategory
+    Categoria --> ModifyCategory
+    Categoria --> RemoveCategory
+```
+
+## 3.3 Class Responsibilities
 
 | Class | Component it belongs to | Responsibility | Key collaborators |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | RegistroGastos | Transaction & Movement Management | Validar y coordinar el registro de un nuevo gasto. | Gasto, Categoria |
 | ModificacionGastos | Transaction & Movement Management | Coordinar la modificación de los datos de un gasto existente. | Gasto, Categoria |
 | EliminarGastos | Transaction & Movement Management | Realizar la eliminación lógica de un gasto y conservar su historial. | Gasto |
 | Gasto | Transaction & Movement Management | Mantener la información del gasto, su estado y sus fechas de auditoría. | Categoria, clases de operaciones de gastos |
 | Categoria | Transaction & Movement Management | Representar la categoría utilizada para clasificar los gastos. | Gasto |
-| RegistrarIngreso | Transaction & Movement Management | Validar y coordinar el registro de un nuevo ingreso. | Ingreso |	
-| ProgramarIngreso |	Transaction & Movement Management | Establecer la fecha esperada de un ingreso sin confundirla con su fecha real. | Ingreso |
-| ModificarIngreso |	Transaction & Movement Management | Coordinar la modificación de la información de un ingreso existente. | Ingreso |
-| EliminarIngreso	 | Transaction & Movement Management	| Realizar la eliminación lógica de un ingreso y conservar su historial. | Ingreso |
+| RegistrarIngreso | Transaction & Movement Management | Validar y coordinar el registro de un nuevo ingreso. | Ingreso | 
+| ProgramarIngreso | Transaction & Movement Management | Establecer la fecha esperada de un ingreso sin confundirla con su fecha real. | Ingreso |
+| ModificarIngreso | Transaction & Movement Management | Coordinar la modificación de la información de un ingreso existente. | Ingreso |
+| EliminarIngreso  | Transaction & Movement Management | Realizar la eliminación lógica de un ingreso y conservar su historial. | Ingreso |
 | Ingreso | Transaction & Movement Management | Mantener los datos del ingreso, su fuente, las fechas esperada y real, su estado y las fechas de auditoría. | Clases de operaciones de ingresos |
+| `BudgetService` | Budget Manager | Entry point service that coordinates monthly budget creation, delegation of category validation, and retrieval of user budgets. | `BudgetRegister`, `Budget`, `FinancialRegistryRepository` |
+| `BudgetRegister` | Budget Manager | Handles category administration, including adding, removing, and retrieving expense categories. | `FinancialRegistryRepository`, `Categoria` |
+| `Budget` | Budget Manager | Root domain entity representing a user's monthly budget in COP. | `CategoryBudget` |
+| `CategoryBudget` | Budget Manager | Domain entity encapsulating the monetary limit allocated to a specific category within a budget. | `Budget`, `Categoria`, `DefineBudget`, `ModifyBudget`, `RemoveBudget` |
+| `Categoria` | Budget Manager | Domain entity representing an expense category with name, type, and custom status. | `CategoryBudget`, `AddCategory`, `ModifyCategory`, `RemoveCategory` |
+| `DefineBudget` | Budget Manager | Action class executing the creation logic for defining a new budget allocation. | `CategoryBudget`, `Budget` |
+| `ModifyBudget` | Budget Manager | Action class executing modifications on existing budget category allocations. | `CategoryBudget`, `Budget` |
+| `RemoveBudget` | Budget Manager | Action class executing the deletion or inactivation of a budget record. | `CategoryBudget`, `Budget` |
+| `AddCategory` | Budget Manager | Action class executing the registration of a new expense category. | `Categoria` |
+| `ModifyCategory` | Budget Manager | Action class executing modifications to an existing expense category. | `Categoria` |
+| `RemoveCategory` | Budget Manager | Action class executing the removal of a custom category. | `Categoria` |
 
-### 3.4 Behavior of one key operation
+---
 
-
+## 3.4 Behavior of one key operation
 
 ```text
 Operation: RegistrarGasto(gasto:Gasto): Boolean -> Esta operación es importante porque el registro correcto de los gastos contribuye
@@ -215,7 +317,7 @@ exceso del presupuesto sin impedir la transacción.
 
 Non-happy-path: si el monto es inválido, la categoría no existe o el almacenamiento falla, el gasto no debe registrarse como una
 operación exitosa. El sistema debe informar el error y evitar que quede un movimiento duplicado o parcialmente registrado.
-```
+**Operation:** `BudgetService.define_monthly_budget(user_id, month, year, allocations)`
 
 ---
 
