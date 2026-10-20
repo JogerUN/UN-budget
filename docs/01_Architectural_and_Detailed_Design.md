@@ -98,15 +98,15 @@ classDiagram
     direction TB
 
     class RegistroGastos {
-        + RegistrarGasto(gasto: Gasto): estado:Boolean
+        + RegistrarGasto(gasto: Gasto) estado:Boolean
     }
 
     class ModificacionGastos {
-        + modificarGasto(gasto_nuevo:Gasto): estado:Boolean
+        + modificarGasto(gasto_nuevo:Gasto) estado:Boolean
     }
 
     class EliminarGastos {
-        + eliminarGasto(gasto:Gasto): estado:Boolean
+        + eliminarGasto(gasto:Gasto) estado:Boolean
     }
 
     class Gasto {
@@ -121,7 +121,7 @@ classDiagram
     }
 
     class Categoria {
-        -tipo: Type
+        - categoria: Categoria
     }
 
     class RegistrarIngreso {
