@@ -47,65 +47,23 @@ HOW TO USE THIS TEMPLATE
 
 | Outside the system | Type | How the system interacts with it |
 |---|---|---|
-| Usuario Final | Actor | Interactúa con la aplicación para crear su presupuesto mensual, registrar sus ingresos/gastos manuales, configurar sus medios de pago y analizar el dashboard comparativo. |
+| End User | Actor | Interacts with the application to create their monthly budget, log manual incomes and expenses, configure payment methods, and analyze the comparative dashboard. |
 
 ### 2.2 Components, Responsibilities & Capabilities
 
-```mermaid
-flowchart LR
-    User([End User])
+![Component Diagram](./Component_Diagram.jpg)
 
-    subgraph SYS["Personal Finance Management System"]
-        
-        subgraph PresentationLayer["Presentation Layer"]
-            MetricsViewer["Metrics & Dashboard Viewer"]
-            FinInterface["Financial Management Interface"]
-        end
-
-        subgraph LogicLayer["Domain Logic Layer"]
-            BalanceCalc["Balance & Metrics Calculator"]
-            AccountAdmin["Account & Payment Method Administrator"]
-            BudgetMgr["Budget Manager"]
-            AccessControl["Access & Profile Control"]
-            TransactionMgr["Transaction & Movement Manager"]
-        end
-
-        subgraph PersistenceLayer["Persistence Layer"]
-            FinRegistry["Financial & Transactional Registry"]
-            UserRegistry["User Registry"]
-        end
-        
-    end
-
-    User -->|"requests financial visualization"| MetricsViewer
-    User -->|"manages profile and movements"| FinInterface
-
-    MetricsViewer -->|"request summary and trends"| BalanceCalc
-    
-    FinInterface -->|"log / categorize movement"| TransactionMgr
-    FinInterface -->|"configure account or method"| AccountAdmin
-    FinInterface -->|"define budget"| BudgetMgr
-    FinInterface -->|"authenticate / update profile"| AccessControl
-
-    BalanceCalc -->|"get historical data for calculation"| FinRegistry
-
-    TransactionMgr -->|"save / retrieve movements"| FinRegistry
-    AccountAdmin -->|"save / retrieve accounts"| FinRegistry
-    BudgetMgr -->|"save / retrieve budgets"| FinRegistry
-    AccessControl -->|"persist / query credentials"| UserRegistry
-```
-
-| Component | Main responsibility | Requirements / use cases supported | Provided capabilities | Required capabilities | Main dependencies |
+| Component | Main Responsibility | Requirements / Use Cases Supported | Provided Capabilities | Required Capabilities | Main Dependencies |
 |---|---|---|---|---|---|
-| Metrics & Dashboard Viewer | Presents the interactive visual panel and visually notifies about cost overruns. | REQ-06 | Requests financial visualization | Request summary and trends | Balance & Metrics Calculator |
-| Financial Management Interface | Provides the responsive interface for the user to input financial data from a mobile device or PC. | REQ-01, REQ-02, REQ-03, REQ-04, REQ-05, REQ-07, REQ-08 | Manages profile and movements | Log / categorize movement, configure account or method, define budget, authenticate / update profile | Transaction & Movement Manager, Account & Payment Method Administrator, Budget Manager, Access & Profile Control |
-| Balance & Metrics Calculator | Cross-references actual data against the budget to calculate deviations and alerts. | REQ-04, REQ-06 | Request summary and trends | Get historical data for calculation | Financial & Transactional Registry |
-| Transaction & Movement Manager | Validates, classifies, and coordinates the recording of incomes and expenses. | REQ-02, REQ-03, REQ-04 | Log / categorize movement | Save / retrieve movements | Financial & Transactional Registry |
-| Account & Payment Method Administrator | Administers the creation and modification of money sources (banks or cash). | REQ-05 | Configure account or method | Save / retrieve accounts | Financial & Transactional Registry |
-| Budget Manager | Applies the rules to create, edit categories, and set monetary limits. | REQ-01, REQ-07 | Define budget | Save / retrieve budgets | Financial & Transactional Registry |
-| Access & Profile Control | Manages user identity to ensure everyone sees their own finances. | Need-01 | Authenticate / update profile | Persist / query credentials | User Registry |
-| Financial & Transactional Registry | Persists and retrieves budgets, transactions, and accounts, ensuring data integrity. | REQ-11 | Save / retrieve movements, save / retrieve accounts, save / retrieve budgets, get historical data for calculation | none | none |
-| User Registry | Persists and retrieves user credentials and profiles. | Need-01 | Persist / query credentials | none | none |
+| Web App | Provides the responsive interface for the user to input financial data from a mobile device or PC. | REQ-01, REQ-02, REQ-03, REQ-04, REQ-05, REQ-07, REQ-08 | User management, transaction registration, and budget configuration interface | UI-to-Logic integration services | Logic Layer |
+| Dashboard UI | Presents the interactive visual panel and visually notifies about cost overruns. | REQ-06 | Comparative budget, balances, and trend visualization interface | Metrics & historical data analysis services | Logic Layer |
+| Balance Manager | Cross-references actual data against the budget to calculate deviations and alerts. | REQ-04, REQ-06 | Budget execution calculation and alerts on overruns | Logic-to-Data integration services | Data Layer |
+| User Management | Manages user identity to ensure everyone sees only their own finances. | Need-01 | User registration, authentication, and profile updates | Logic-to-Data integration services | Data Layer |
+| Budget Management | Applies the rules to create, edit categories, and set monetary limits. | REQ-01, REQ-07 | Creation, categorization, and modification of monthly budgets | Logic-to-Data integration services | Data Layer |
+| Account & Payment Method Manager | Administers the creation and modification of money sources (banks or cash). | REQ-05 | Configuration and validation of diverse payment methods and bank accounts | Logic-to-Data integration services | Data Layer |
+| Transaction Management | Validates, classifies (Need/Want/Savings), and coordinates the recording of incomes and expenses. | REQ-02, REQ-03, REQ-04 | Logging, classification, and validation of manual and bank transactions | Logic-to-Data integration services | Data Layer |
+| Finance Repository | Persists and retrieves budgets, transactions, and accounts, ensuring data integrity. | REQ-11 | Storage, querying, and updating of transactional, account, and budget data | none | none |
+| User Repository | Persists and retrieves user credentials and profiles. | Need-01 | Authentication data persistence, user profiles, and session data | none | none |
 
 ## 3. Detailed Design
 
