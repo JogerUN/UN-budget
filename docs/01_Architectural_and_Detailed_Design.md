@@ -98,7 +98,7 @@ classDiagram
     direction TB
 
     class RegistroGastos {
-        + RegistrarGasto(gasto: Gasto) estado:Boolean
+        + RegistrarGasto(gasto:Gasto) estado:Boolean
     }
 
     class ModificacionGastos {
@@ -125,19 +125,19 @@ classDiagram
     }
 
     class RegistrarIngreso {
-        +registrarIngreso(ingreso) Boolean
+        +registrarIngreso(ingreso:Ingreso) estado:Boolean
     }
 
     class ProgramarIngreso {
-        +programarIngreso(fechaNueva) Boolean
+        +programarIngreso(fechaNueva:Date) estado:Boolean
     }
 
     class ModificarIngreso {
-        +modificarIngreso(ingresoModificado) Boolean
+        +modificarIngreso(ingresoModificado:Ingreso) estado:Boolean
     }
 
     class EliminarIngreso {
-        +eliminarIngreso(ingreso) Boolean
+        +eliminarIngreso(ingreso:Ingreso) estado:Boolean
     }
 
     class Ingreso {
