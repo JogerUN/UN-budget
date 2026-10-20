@@ -89,7 +89,7 @@ Cada componente se diseña con el propósito de cumplir los requerimientos estab
 
 | Component | Why it was selected (risk, complexity, centrality to the drivers) |
 |---|---|
-| **Gestor de Transacciones** | Es un componente central para la integridad financiera del sistema, ya que administra el registro, la modificación y la eliminación lógica de los gastos e ingresos. Debe garantizar la consistencia de los movimientos, conservar el historial de los cambios y evitar la pérdida de información financiera. Además, debe gestionar la clasificación de los gastos por categoría, facilitar el control del presupuesto, debe diferenciar entre la fecha esperada y la fecha real, permitiendo programar y actualizar los movimientos sin alterar la confiabilidad de la información financiera del usuario. |
+| **Transaction & Movement Management** | Es un componente central para la integridad financiera del sistema, ya que administra el registro, la modificación y la eliminación lógica de los gastos e ingresos. Debe garantizar la consistencia de los movimientos, conservar el historial de los cambios y evitar la pérdida de información financiera. Además, debe gestionar la clasificación de los gastos por categoría, facilitar el control del presupuesto, debe diferenciar entre la fecha esperada y la fecha real, permitiendo programar y actualizar los movimientos sin alterar la confiabilidad de la información financiera del usuario. |
 
 ### 3.2 Class Diagram(s)
 
@@ -161,23 +161,22 @@ classDiagram
     ProgramarIngreso --> Ingreso : programa
     ModificarIngreso --> Ingreso : modifica
     EliminarIngreso --> Ingreso : elimina logicamente
-
 ```
 
-### 3.3 Class Responsibilities
+### 3.3 Class Responsibilities 
 
 | Class | Component it belongs to | Responsibility | Key collaborators |
 |---|---|---|---|
-| RegistroGastos | Gestión de gastos | Validar y coordinar el registro de un nuevo gasto. | Gasto, Categoria |
-| ModificacionGastos | Gestión de gastos | Coordinar la modificación de los datos de un gasto existente. | Gasto, Categoria |
-| EliminarGastos | Gestión de gastos | Realizar la eliminación lógica de un gasto y conservar su historial. | Gasto |
-| Gasto | Gestión de gastos | Mantener la información del gasto, su estado y sus fechas de auditoría. | Categoria, clases de operaciones de gastos |
-| Categoria | Gestión de gastos | Representar la categoría utilizada para clasificar los gastos. | Gasto |
-| RegistrarIngreso | Gestión de ingresos | Validar y coordinar el registro de un nuevo ingreso. | Ingreso |	
-| ProgramarIngreso |	Gestión de ingresos | Establecer la fecha esperada de un ingreso sin confundirla con su fecha real. | Ingreso |
-| ModificarIngreso |	Gestión de ingresos | Coordinar la modificación de la información de un ingreso existente. | Ingreso |
-| EliminarIngreso	 | Gestión de ingresos	| Realizar la eliminación lógica de un ingreso y conservar su historial. | Ingreso |
-| Ingreso | Gestión de ingresos | Mantener los datos del ingreso, su fuente, las fechas esperada y real, su estado y las fechas de auditoría. | Clases de operaciones de ingresos |
+| RegistroGastos | Transaction & Movement Management | Validar y coordinar el registro de un nuevo gasto. | Gasto, Categoria |
+| ModificacionGastos | Transaction & Movement Management | Coordinar la modificación de los datos de un gasto existente. | Gasto, Categoria |
+| EliminarGastos | Transaction & Movement Management | Realizar la eliminación lógica de un gasto y conservar su historial. | Gasto |
+| Gasto | Transaction & Movement Management | Mantener la información del gasto, su estado y sus fechas de auditoría. | Categoria, clases de operaciones de gastos |
+| Categoria | Transaction & Movement Management | Representar la categoría utilizada para clasificar los gastos. | Gasto |
+| RegistrarIngreso | Transaction & Movement Management | Validar y coordinar el registro de un nuevo ingreso. | Ingreso |	
+| ProgramarIngreso |	Transaction & Movement Management | Establecer la fecha esperada de un ingreso sin confundirla con su fecha real. | Ingreso |
+| ModificarIngreso |	Transaction & Movement Management | Coordinar la modificación de la información de un ingreso existente. | Ingreso |
+| EliminarIngreso	 | Transaction & Movement Management	| Realizar la eliminación lógica de un ingreso y conservar su historial. | Ingreso |
+| Ingreso | Transaction & Movement Management | Mantener los datos del ingreso, su fuente, las fechas esperada y real, su estado y las fechas de auditoría. | Clases de operaciones de ingresos |
 
 ### 3.4 Behavior of one key operation
 
@@ -188,16 +187,44 @@ Operation: RegistrarGasto(gasto:Gasto): Boolean -> Esta operación es importante
 directamente a la integridad financiera del sistema.
 
 Flujo de comportamiento:
-1. Recibir el objeto Gasto con la información proporcionada por el usuario.
-2. Verificar que los datos obligatorios estén presentes y que el monto sea válido.
-3. Comprobar que la categoría asociada exista y sea válida.
-4. Si la información no cumple las validaciones, rechazar el registro y devolver false.
-5. Asignar el estado inicial correspondiente al gasto.
-6. Establecer la fecha de creación y la fecha de última modificación.
-7. Guardar el gasto mediante el mecanismo de persistencia del sistema.
-8. Si el guardado falla, informar que la operación no se completó y devolver false.
-9. Si el gasto supera el presupuesto de su categoría, generar una alerta visual sin bloquear el registro.
-10. Si el registro se completa correctamente, devolver true.
+
+        // 1. Recibir la información del gasto
+        Recibir gasto
+
+        // 2. Validar los datos obligatorios y el monto
+        Si los datos obligatorios están incompletos
+           O el monto no es válido Entonces
+            Devolver false
+        FinSi
+
+        // 3. Validar la categoría asociada
+        Si la categoría no existe
+           O no es válida Entonces
+            Devolver false
+        FinSi
+
+        // 4. Asignar el estado inicial
+        gasto.estado <- "Activo"
+
+        // 5. Establecer las fechas de control
+        gasto.fechaCreacion <- FechaActual()
+        gasto.fechaUltimaModificacion <- FechaActual()
+
+        // 6. Guardar el gasto en el sistema
+        Si Guardar(gasto) = false Entonces
+            Informar("No se pudo completar el registro")
+            Devolver false
+        FinSi
+
+        // 7. Verificar si se supera el presupuesto
+        Si gasto.monto > presupuestoDisponible(gasto.categoria) Entonces
+            GenerarAlertaVisual(
+                "El gasto supera el presupuesto de su categoría"
+            )
+        FinSi
+
+        // 8. Confirmar el registro exitoso
+        Devolver true
 
 Happy-path: el sistema registra el gasto cuando los datos son válidos, conserva su información y permite alertar sobre un posible
 exceso del presupuesto sin impedir la transacción.
