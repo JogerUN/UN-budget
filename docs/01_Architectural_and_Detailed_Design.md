@@ -67,50 +67,154 @@ HOW TO USE THIS TEMPLATE
 
 ## 3. Detailed Design
 
-*(Inward-facing: how is each selected component designed internally?)*
+Cada componente se diseña con el propósito de cumplir los requerimientos establecidos, definiendo claramente la responsabilidad de cada clase, el proceso que ejecuta y el objetivo que persigue. Se busca mantener una alta cohesión dentro del módulo, de manera que sus clases trabajen de forma coordinada y estén relacionadas con una misma finalidad. Asimismo, la separación de responsabilidades permite mantener un código organizado, modular y fácil de comprender, modificar y escalar, facilitando la incorporación de nuevas funcionalidades sin afectar significativamente el funcionamiento de los componentes existentes.
 
 ### 3.1 Components selected (at least two)
 
 | Component | Why it was selected (risk, complexity, centrality to the drivers) |
 |---|---|
-| | |
+| **Transaction & Movement Management** | Es un componente central para la integridad financiera del sistema, ya que administra el registro, la modificación y la eliminación lógica de los gastos e ingresos. Debe garantizar la consistencia de los movimientos, conservar el historial de los cambios y evitar la pérdida de información financiera. Además, debe gestionar la clasificación de los gastos por categoría, facilitar el control del presupuesto, debe diferenciar entre la fecha esperada y la fecha real, permitiendo programar y actualizar los movimientos sin alterar la confiabilidad de la información financiera del usuario. |
 
 ### 3.2 Class Diagram(s)
 
 ```mermaid
 classDiagram
-    class ClassA {
-        -attribute : Type
-        +operation(param : Type) ReturnType
-    }
-    class ClassB {
-        -attribute : Type
-        +operation() ReturnType
-    }
-    class ClassC {
-        +operation() ReturnType
+    direction TB
+
+    class RegistroGastos {
+        + RegistrarGasto(gasto:Gasto) estado:Boolean
     }
 
-    ClassA "1" *-- "0..*" ClassB : contains
-    ClassA "1" --> "1" ClassC : uses
+    class ModificacionGastos {
+        + modificarGasto(gasto_nuevo:Gasto) estado:Boolean
+    }
+
+    class EliminarGastos {
+        + eliminarGasto(gasto:Gasto) estado:Boolean
+    }
+
+    class Gasto {
+        +ID: Identificador_DB
+        -montoCOP: Integer
+        -fecha: Date
+        -medioPago: Paymethod
+        -categoria: Categoria
+        -estadoRegistro: STATE
+        -fechaCreacion: Date
+        -fechaUltimaModificacion: Date
+    }
+
+    class Categoria {
+        - categoria: Categoria
+    }
+
+    class RegistrarIngreso {
+        +registrarIngreso(ingreso:Ingreso) estado:Boolean
+    }
+
+    class ProgramarIngreso {
+        +programarIngreso(fechaNueva:Date) estado:Boolean
+    }
+
+    class ModificarIngreso {
+        +modificarIngreso(ingresoModificado:Ingreso) estado:Boolean
+    }
+
+    class EliminarIngreso {
+        +eliminarIngreso(ingreso:Ingreso) estado:Boolean
+    }
+
+    class Ingreso {
+        +ID: Identificador_DB
+        -montoCOP: Integer
+        -fuenteIngreso: String
+        -fechaEsperada: Date
+        -fechaReal: Date
+        -estadoRegistro: STATE
+        -fechaCreacion: Date
+        -fechaUltimaModificacion: Date
+    }
+
+    RegistroGastos --> Gasto : registra
+    ModificacionGastos --> Gasto : modifica
+    EliminarGastos --> Gasto : elimina logicamente
+
+    Gasto "*" --> "1" Categoria : pertenece a
+
+    RegistrarIngreso --> Ingreso : registra
+    ProgramarIngreso --> Ingreso : programa
+    ModificarIngreso --> Ingreso : modifica
+    EliminarIngreso --> Ingreso : elimina logicamente
 ```
 
-*(Visibility: `-` private, `+` public. Relationships: `-->` association, `*--` composition (the part cannot exist without the whole), `<|--` generalization (a specialized type of). Add multiplicity in quotes. Use composition or generalization only when their meaning is justified. Do not force them.)*
-
-### 3.3 Class Responsibilities
+### 3.3 Class Responsibilities 
 
 | Class | Component it belongs to | Responsibility | Key collaborators |
 |---|---|---|---|
-| | | | |
-
-*(Every class must belong to an identifiable component. Do not replace the component diagram with one large class diagram.)*
+| RegistroGastos | Transaction & Movement Management | Validar y coordinar el registro de un nuevo gasto. | Gasto, Categoria |
+| ModificacionGastos | Transaction & Movement Management | Coordinar la modificación de los datos de un gasto existente. | Gasto, Categoria |
+| EliminarGastos | Transaction & Movement Management | Realizar la eliminación lógica de un gasto y conservar su historial. | Gasto |
+| Gasto | Transaction & Movement Management | Mantener la información del gasto, su estado y sus fechas de auditoría. | Categoria, clases de operaciones de gastos |
+| Categoria | Transaction & Movement Management | Representar la categoría utilizada para clasificar los gastos. | Gasto |
+| RegistrarIngreso | Transaction & Movement Management | Validar y coordinar el registro de un nuevo ingreso. | Ingreso |	
+| ProgramarIngreso |	Transaction & Movement Management | Establecer la fecha esperada de un ingreso sin confundirla con su fecha real. | Ingreso |
+| ModificarIngreso |	Transaction & Movement Management | Coordinar la modificación de la información de un ingreso existente. | Ingreso |
+| EliminarIngreso	 | Transaction & Movement Management	| Realizar la eliminación lógica de un ingreso y conservar su historial. | Ingreso |
+| Ingreso | Transaction & Movement Management | Mantener los datos del ingreso, su fuente, las fechas esperada y real, su estado y las fechas de auditoría. | Clases de operaciones de ingresos |
 
 ### 3.4 Behavior of one key operation
 
-*(The operation you designed in Class 12, or a more important one. At most about 15 lines. Include at least one non-happy path.)*
+
 
 ```text
+Operation: RegistrarGasto(gasto:Gasto): Boolean -> Esta operación es importante porque el registro correcto de los gastos contribuye
+directamente a la integridad financiera del sistema.
 
+Flujo de comportamiento:
+
+        // 1. Recibir la información del gasto
+        Recibir gasto
+
+        // 2. Validar los datos obligatorios y el monto
+        Si los datos obligatorios están incompletos
+           O el monto no es válido Entonces
+            Devolver false
+        FinSi
+
+        // 3. Validar la categoría asociada
+        Si la categoría no existe
+           O no es válida Entonces
+            Devolver false
+        FinSi
+
+        // 4. Asignar el estado inicial
+        gasto.estado <- "Activo"
+
+        // 5. Establecer las fechas de control
+        gasto.fechaCreacion <- FechaActual()
+        gasto.fechaUltimaModificacion <- FechaActual()
+
+        // 6. Guardar el gasto en el sistema
+        Si Guardar(gasto) = false Entonces
+            Informar("No se pudo completar el registro")
+            Devolver false
+        FinSi
+
+        // 7. Verificar si se supera el presupuesto
+        Si gasto.monto > presupuestoDisponible(gasto.categoria) Entonces
+            GenerarAlertaVisual(
+                "El gasto supera el presupuesto de su categoría"
+            )
+        FinSi
+
+        // 8. Confirmar el registro exitoso
+        Devolver true
+
+Happy-path: el sistema registra el gasto cuando los datos son válidos, conserva su información y permite alertar sobre un posible
+exceso del presupuesto sin impedir la transacción.
+
+Non-happy-path: si el monto es inválido, la categoría no existe o el almacenamiento falla, el gasto no debe registrarse como una
+operación exitosa. El sistema debe informar el error y evitar que quede un movimiento duplicado o parcialmente registrado.
 ```
 
 ---
