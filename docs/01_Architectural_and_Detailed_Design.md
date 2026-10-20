@@ -33,17 +33,17 @@ HOW TO USE THIS TEMPLATE
 
 **System purpose** (2–3 sentences, in terms of the need it satisfies)
 
-El sistema busca permitir a los jóvenes colombianos tomar el control de sus finanzas personales mediante la planificación mensual de presupuestos y el registro diario de sus transacciones. Satisface la necesidad de monitorear en tiempo real la ejecución del presupuesto frente a los gastos reales mediante un panel gráfico interactivo y alertas visuales de sobrecosto. Asimismo, garantiza la disponibilidad y sincronización oportuna de los datos en la nube entre dispositivos móviles y computadores, operando exclusivamente en Pesos Colombianos (COP).
+The system aims to empower young Colombians to take control of their personal finances through monthly budget planning and daily transaction tracking. It satisfies the need to monitor budget execution against actual expenses in real time using an interactive graphical dashboard and visual overspending alerts. Additionally, it guarantees cloud availability and timely data synchronization across mobile devices and desktop computers, operating exclusively in Colombian Pesos (COP).
 
 **Requirements that shape the structure** *(the ones that most influence the design, not all of them)*
 
 | Requirement / Use Case ID | Why it shapes the structure | Quality attribute, constraint or business rule involved |
 |---|---|---|
-| **REQ-08 & REQ-10**<br>*(Multiplataforma y Sincronización)* | Define una arquitectura cliente-servidor basada en la nube con servicios API e interfaz Web Responsive, asegurando la sincronización oportuna y la disponibilidad de datos al cambiar entre dispositivos móviles y computadores. | **Atributos de calidad:** Availability, Usability (Responsive UI), Data Synchronization.<br>**Necesidad:** Need-06. |
-| **REQ-06**<br>*(Análisis Comparativo y Visualización - Dashboard)* | Exige un componente de procesamiento y agregación de datos en el backend optimizado para calcular en tiempo real las diferencias entre el presupuesto planificado y las transacciones ejecutadas, alimentando el panel gráfico del frontend. | **Atributos de calidad:** Performance (Real-time responsiveness), Usability.<br>**Regla de negocio / Necesidad:** RN-01, Need-05. |
-| **REQ-02 & REQ-04**<br>*(Registro de Gastos y Alerta Visual de Sobrecosto)* | Condiciona el modelo de dominio para capturar los atributos obligatorios del gasto y requiere la ejecución de un motor de reglas no bloqueante que genere alertas visuales al superar el límite de una categoría sin impedir la transacción. | **Atributos de calidad:** Data Integrity, Modifiability.<br>**Reglas de negocio:** RN-02 (alerta no bloqueante), RN-05 (tipos de gasto), RN-06 (moneda exclusiva en COP). |
-| **REQ-01**<br>*(Gestión de Presupuesto Mensual)* | Establece la entidad principal del modelo de datos para estructurar, editar y consultar el presupuesto mensual del usuario, sirviendo de base para la asignación y distribución del dinero. | **Restricción y Regla de negocio:** RN-01 (único presupuesto mensual), RN-06 (exclusividad en COP).<br>**Necesidad:** Need-01. |
-| **REQ-05 & REQ-07**<br>*(Gestión de Cuentas y Categorías Personalizadas)* | Requiere un modelo de datos extensible que combine categorizaciones precargadas por expertos con la libertad del usuario para crear o modificar categorías y medios de pago (incluyendo cuentas bancarias y efectivo). | **Atributo de calidad:** Modifiability / Extensibility.<br>**Reglas de negocio / Necesidades:** RN-04, Need-02, Need-03. |
+| **REQ-08 & REQ-10**<br>*(Cross-platform & Synchronization)* | Defines a cloud-based client-server architecture with API services and a Responsive Web UI, ensuring timely data synchronization and availability when switching between mobile devices and computers. | **Quality attributes:** Availability, Usability (Responsive UI), Data Synchronization.<br>**Need:** Need-06. |
+| **REQ-06**<br>*(Comparative Analysis & Visualization - Dashboard)* | Requires a backend data processing and aggregation component optimized to calculate real-time differences between the planned budget and executed transactions, feeding the frontend graphical dashboard. | **Quality attributes:** Performance (Real-time responsiveness), Usability.<br>**Business Rule / Need:** RN-01, Need-05. |
+| **REQ-02 & REQ-04**<br>*(Expense Tracking & Visual Overspending Alert)* | Shapes the domain model to capture mandatory expense attributes and requires executing a non-blocking rules engine that generates visual alerts upon exceeding a category limit without blocking the transaction. | **Quality attributes:** Data Integrity, Modifiability.<br>**Business Rules:** RN-02 (non-blocking alert), RN-05 (expense types), RN-06 (COP exclusivity). |
+| **REQ-01**<br>*(Monthly Budget Management)* | Establishes the main entity of the data model to structure, edit, and query the user's monthly budget, serving as the foundation for money allocation and distribution. | **Constraint & Business Rule:** RN-01 (single monthly budget), RN-06 (COP exclusivity).<br>**Need:** Need-01. |
+| **REQ-05 & REQ-07**<br>*(Account Management & Custom Categories)* | Requires an extensible data model combining pre-loaded expert categorizations with user freedom to create or modify categories and payment methods (including bank accounts and cash). | **Quality attribute:** Modifiability / Extensibility.<br>**Business Rules / Needs:** RN-04, Need-02, Need-03. |
 
 ---
 
@@ -86,10 +86,6 @@ flowchart LR
 *Checks: is every component named by responsibility, not technology ("the component that persists orders", not "the database")? Does any component exist only to make the diagram look more complex?*
 
 ---
-
-## 3. Detailed Design
-
-*(Inward-facing: how is each selected component designed internally?)*
 
 ## 3. Detailed Design
 
@@ -187,23 +183,23 @@ classDiagram
 
 | Class | Component it belongs to | Responsibility | Key collaborators |
 |---|---|---|---|
-| `BudgetService` | Budget Manager[cite: 5] | Entry point service that coordinates monthly budget creation, delegation of category validation, and retrieval of user budgets[cite: 7]. | `BudgetRegister`, `Budget`, `FinancialRegistryRepository`[cite: 7] |
-| `BudgetRegister` | Budget Manager[cite: 5] | Handles category administration, including adding, removing, and retrieving expense categories[cite: 7]. | `FinancialRegistryRepository`, `Categoria`[cite: 7] |
-| `Budget` | Budget Manager[cite: 5] | Root domain entity representing a user's monthly budget in COP[cite: 1, 3, 7]. | `CategoryBudget`[cite: 7] |
-| `CategoryBudget` | Budget Manager[cite: 5] | Domain entity encapsulating the monetary limit allocated to a specific category within a budget[cite: 1, 7]. | `Budget`, `Categoria`, `DefineBudget`, `ModifyBudget`, `RemoveBudget`[cite: 7] |
-| `Categoria` | Budget Manager[cite: 5] | Domain entity representing an expense category with name, type, and custom status (RN-04, RN-05)[cite: 1, 3, 7]. | `CategoryBudget`, `AddCategory`, `ModifyCategory`, `RemoveCategory`[cite: 7] |
-| `DefineBudget` | Budget Manager[cite: 5] | Action class executing the creation logic for defining a new budget allocation[cite: 7]. | `CategoryBudget`, `Budget`[cite: 7] |
-| `ModifyBudget` | Budget Manager[cite: 5] | Action class executing modifications on existing budget category allocations[cite: 7]. | `CategoryBudget`, `Budget`[cite: 7] |
-| `RemoveBudget` | Budget Manager[cite: 5] | Action class executing the deletion or inactivation of a budget record[cite: 7]. | `CategoryBudget`, `Budget`[cite: 7] |
-| `AddCategory` | Budget Manager[cite: 5] | Action class executing the registration of a new expense category[cite: 7]. | `Categoria`[cite: 7] |
-| `ModifyCategory` | Budget Manager[cite: 5] | Action class executing modifications to an existing expense category[cite: 7]. | `Categoria`[cite: 7] |
-| `RemoveCategory` | Budget Manager[cite: 5] | Action class executing the removal of a custom category[cite: 7]. | `Categoria`[cite: 7] |
+| `BudgetService` | Budget Manager | Entry point service that coordinates monthly budget creation, delegation of category validation, and retrieval of user budgets. | `BudgetRegister`, `Budget`, `FinancialRegistryRepository` |
+| `BudgetRegister` | Budget Manager | Handles category administration, including adding, removing, and retrieving expense categories. | `FinancialRegistryRepository`, `Categoria` |
+| `Budget` | Budget Manager | Root domain entity representing a user's monthly budget in COP. | `CategoryBudget` |
+| `CategoryBudget` | Budget Manager | Domain entity encapsulating the monetary limit allocated to a specific category within a budget. | `Budget`, `Categoria`, `DefineBudget`, `ModifyBudget`, `RemoveBudget` |
+| `Categoria` | Budget Manager | Domain entity representing an expense category with name, type, and custom status. | `CategoryBudget`, `AddCategory`, `ModifyCategory`, `RemoveCategory` |
+| `DefineBudget` | Budget Manager | Action class executing the creation logic for defining a new budget allocation. | `CategoryBudget`, `Budget` |
+| `ModifyBudget` | Budget Manager | Action class executing modifications on existing budget category allocations. | `CategoryBudget`, `Budget` |
+| `RemoveBudget` | Budget Manager | Action class executing the deletion or inactivation of a budget record. | `CategoryBudget`, `Budget` |
+| `AddCategory` | Budget Manager | Action class executing the registration of a new expense category. | `Categoria` |
+| `ModifyCategory` | Budget Manager | Action class executing modifications to an existing expense category. | `Categoria` |
+| `RemoveCategory` | Budget Manager | Action class executing the removal of a custom category. | `Categoria` |
 
 ---
 
 ## 3.4 Behavior of one key operation
 
-**Operation:** `BudgetService.define_monthly_budget(user_id, month, year, allocations)`[cite: 7]
+**Operation:** `BudgetService.define_monthly_budget(user_id, month, year, allocations)`
 
 ```python
 def define_monthly_budget(self, user_id: str, month: int, year: int, allocations: dict) -> Budget:
@@ -224,6 +220,8 @@ def define_monthly_budget(self, user_id: str, month: int, year: int, allocations
         raise RuntimeError("Falló la ejecución de la acción al definir el presupuesto.")
     
     return self.budget_repository.save(budget)
+```
+```
 
 ---
 
