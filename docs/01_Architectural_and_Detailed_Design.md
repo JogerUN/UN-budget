@@ -97,92 +97,93 @@ flowchart LR
 
 | Component | Why it was selected (risk, complexity, centrality to the drivers) |
 |---|---|
-| **Budget Manager** | Core domain logic component responsible for coordinating monthly budget planning, applying budget allocation rules in COP, and enforcing custom/preset category operations (RN-01, RN-04, RN-06)[cite: 1, 3, 5]. Selected due to its central role in processing domain rules and managing budget life cycles
+| **Budget Manager** | Core domain logic component responsible for coordinating monthly budget planning, applying budget allocation rules in COP, and enforcing custom/preset category operations (RN-01, RN-04, RN-06). Selected due to its central role in processing domain rules and managing budget life cycles
 
-### 3.2 Class Diagram(s)
-```plantuml
-@startuml
-skinparam classAttributeIconSize 0
+## 3.2 Class Diagram(s)
+```mermaid
+classDiagram
+    direction TB
 
-class BudgetService {
-  - budgetRepository: FinancialRegistryRepository
-  - categoryManager: CategoryManager
-  + defineMonthlyBudget(userId: String, month: Int, year: Int, allocations: Map): Budget
-  + getBudget(userId: String, month: Int, year: Int): Budget
-}
+    class BudgetService {
+        -budgetRepository: FinancialRegistryRepository
+        -categoryManager: CategoryManager
+        +defineMonthlyBudget(userId: String, month: Int, year: Int, allocations: Map): Budget
+        +getBudget(userId: String, month: Int, year: Int): Budget
+    }
 
-class Budget {
-  - budgetId: String
-  - userId: String
-  - month: Int
-  - year: Int
-  - currency: String
-  + addOrUpdateCategoryLimit(category: ExpenseCategory, amount: Double): Void
-  + getTotalBudgeted(): Double
-}
+    class Budget {
+        -budgetId: String
+        -userId: String
+        -month: Int
+        -year: Int
+        -currency: String
+        +addOrUpdateCategoryLimit(category: ExpenseCategory, amount: Double): Void
+        +getTotalBudgeted(): Double
+    }
 
-class BudgetRegister {
-  - categoryRepository: FinancialRegistryRepository
-  + addExpenseCategory(userId: String, name: String, type: CategoryType): ExpenseCategory
-  + removeExpenseCategory(userId: String, categoryId: String): Boolean
-  + getCategories(userId: String): List<ExpenseCategory>
-}
+    class BudgetRegister {
+        -categoryRepository: FinancialRegistryRepository
+        +addExpenseCategory(userId: String, name: String, type: CategoryType): ExpenseCategory
+        +removeExpenseCategory(userId: String, categoryId: String): Boolean
+        +getCategories(userId: String): List~ExpenseCategory~
+    }
 
-class CategoryBudget {
-  - allocatedAmount: Double
-  + getAllocatedAmount(): Double
-  + setAllocatedAmount(amount: Double): Void
-}
+    class CategoryBudget {
+        -allocatedAmount: Double
+        +getAllocatedAmount(): Double
+        +setAllocatedAmount(amount: Double): Void
+    }
 
-class Categoria {
-  - categoryId: String
-  - name: String
-  - type: CategoryType
-  - isCustom: Boolean
-  + getCategoryId(): String
-  + getName(): String
-}
+    class Categoria {
+        -categoryId: String
+        -name: String
+        -type: CategoryType
+        -isCustom: Boolean
+        +getCategoryId(): String
+        +getName(): String
+    }
 
-class ModifyBudget {
-  + modifyBudget(budget: Budget): Boolean
-}
+    class ModifyBudget {
+        +modifyBudget(budget: Budget): Boolean
+    }
 
-class RemoveBudget {
-  + removeBudget(budgetId: String): Boolean
-}
+    class RemoveBudget {
+        +removeBudget(budgetId: String): Boolean
+    }
 
-class DefineBudget {
-  + defineBudget(budget: Budget): Boolean
-}
+    class DefineBudget {
+        +defineBudget(budget: Budget): Boolean
+    }
 
-class AddCategory {
-  + addCategory(category: Category): Boolean
-}
+    class AddCategory {
+        +addCategory(category: Category): Boolean
+    }
 
-class ModifyCategory {
-  + modifyCategory(category: Category): Boolean
-}
+    class ModifyCategory {
+        +modifyCategory(category: Category): Boolean
+    }
 
-class RemoveCategory {
-  + removeCategory(categoryId: String): Boolean
-}
+    class RemoveCategory {
+        +removeCategory(categoryId: String): Boolean
+    }
 
-' Relaciones entre componentes
-BudgetService --> "0..*" Budget : manages
-BudgetService --> "1" BudgetRegister : validates categories
-Budget "1" *-- "1..*" CategoryBudget : contains
+    BudgetService --> "0..*" Budget : manages
+    BudgetService --> "1" BudgetRegister : validates categories
+    Budget "1" *-- "1..*" CategoryBudget : contains
 
-CategoryBudget --> ModifyBudget
-CategoryBudget --> RemoveBudget
-CategoryBudget --> DefineBudget
-CategoryBudget --> "1" Categoria : references
+    CategoryBudget --> ModifyBudget
+    CategoryBudget --> RemoveBudget
+    CategoryBudget --> DefineBudget
+    CategoryBudget --> "1" Categoria : references
 
-Categoria --> AddCategory
-Categoria --> ModifyCategory
-Categoria --> RemoveCategory
-@enduml
+    Categoria --> AddCategory
+    Categoria --> ModifyCategory
+    Categoria --> RemoveCategory
+```
 
-### 3.3 Class Responsibilities
+--- 
+
+## 3.3 Class Responsibilities
 
 | Class | Component it belongs to | Responsibility | Key collaborators |
 |---|---|---|---|
@@ -200,9 +201,7 @@ Categoria --> RemoveCategory
 
 ---
 
-### 3.4 Behavior of one key operation
-
-### 3.4 Behavior of one key operation
+## 3.4 Behavior of one key operation
 
 **Operation:** `BudgetService.define_monthly_budget(user_id, month, year, allocations)`[cite: 7]
 
