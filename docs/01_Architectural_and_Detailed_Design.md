@@ -91,49 +91,140 @@ flowchart LR
 
 *(Inward-facing: how is each selected component designed internally?)*
 
-### 3.1 Components selected (at least two)
+## 3. Detailed Design
+
+### 3.1 Components selected
 
 | Component | Why it was selected (risk, complexity, centrality to the drivers) |
 |---|---|
-| | |
+| **Budget Manager** | Core domain logic component responsible for coordinating monthly budget planning, applying budget allocation rules in COP, and enforcing custom/preset category operations (RN-01, RN-04, RN-06)[cite: 1, 3, 5]. Selected due to its central role in processing domain rules and managing budget life cycles
 
 ### 3.2 Class Diagram(s)
+```plantuml
+@startuml
+skinparam classAttributeIconSize 0
 
-```mermaid
-classDiagram
-    class ClassA {
-        -attribute : Type
-        +operation(param : Type) ReturnType
-    }
-    class ClassB {
-        -attribute : Type
-        +operation() ReturnType
-    }
-    class ClassC {
-        +operation() ReturnType
-    }
+class BudgetService {
+  - budgetRepository: FinancialRegistryRepository
+  - categoryManager: CategoryManager
+  + defineMonthlyBudget(userId: String, month: Int, year: Int, allocations: Map): Budget
+  + getBudget(userId: String, month: Int, year: Int): Budget
+}
 
-    ClassA "1" *-- "0..*" ClassB : contains
-    ClassA "1" --> "1" ClassC : uses
-```
+class Budget {
+  - budgetId: String
+  - userId: String
+  - month: Int
+  - year: Int
+  - currency: String
+  + addOrUpdateCategoryLimit(category: ExpenseCategory, amount: Double): Void
+  + getTotalBudgeted(): Double
+}
 
-*(Visibility: `-` private, `+` public. Relationships: `-->` association, `*--` composition (the part cannot exist without the whole), `<|--` generalization (a specialized type of). Add multiplicity in quotes. Use composition or generalization only when their meaning is justified. Do not force them.)*
+class BudgetRegister {
+  - categoryRepository: FinancialRegistryRepository
+  + addExpenseCategory(userId: String, name: String, type: CategoryType): ExpenseCategory
+  + removeExpenseCategory(userId: String, categoryId: String): Boolean
+  + getCategories(userId: String): List<ExpenseCategory>
+}
+
+class CategoryBudget {
+  - allocatedAmount: Double
+  + getAllocatedAmount(): Double
+  + setAllocatedAmount(amount: Double): Void
+}
+
+class Categoria {
+  - categoryId: String
+  - name: String
+  - type: CategoryType
+  - isCustom: Boolean
+  + getCategoryId(): String
+  + getName(): String
+}
+
+class ModifyBudget {
+  + modifyBudget(budget: Budget): Boolean
+}
+
+class RemoveBudget {
+  + removeBudget(budgetId: String): Boolean
+}
+
+class DefineBudget {
+  + defineBudget(budget: Budget): Boolean
+}
+
+class AddCategory {
+  + addCategory(category: Category): Boolean
+}
+
+class ModifyCategory {
+  + modifyCategory(category: Category): Boolean
+}
+
+class RemoveCategory {
+  + removeCategory(categoryId: String): Boolean
+}
+
+' Relaciones entre componentes
+BudgetService --> "0..*" Budget : manages
+BudgetService --> "1" BudgetRegister : validates categories
+Budget "1" *-- "1..*" CategoryBudget : contains
+
+CategoryBudget --> ModifyBudget
+CategoryBudget --> RemoveBudget
+CategoryBudget --> DefineBudget
+CategoryBudget --> "1" Categoria : references
+
+Categoria --> AddCategory
+Categoria --> ModifyCategory
+Categoria --> RemoveCategory
+@enduml
 
 ### 3.3 Class Responsibilities
 
 | Class | Component it belongs to | Responsibility | Key collaborators |
 |---|---|---|---|
-| | | | |
+| `BudgetService` | Budget Manager[cite: 5] | Entry point service that coordinates monthly budget creation, delegation of category validation, and retrieval of user budgets[cite: 7]. | `BudgetRegister`, `Budget`, `FinancialRegistryRepository`[cite: 7] |
+| `BudgetRegister` | Budget Manager[cite: 5] | Handles category administration, including adding, removing, and retrieving expense categories[cite: 7]. | `FinancialRegistryRepository`, `Categoria`[cite: 7] |
+| `Budget` | Budget Manager[cite: 5] | Root domain entity representing a user's monthly budget in COP[cite: 1, 3, 7]. | `CategoryBudget`[cite: 7] |
+| `CategoryBudget` | Budget Manager[cite: 5] | Domain entity encapsulating the monetary limit allocated to a specific category within a budget[cite: 1, 7]. | `Budget`, `Categoria`, `DefineBudget`, `ModifyBudget`, `RemoveBudget`[cite: 7] |
+| `Categoria` | Budget Manager[cite: 5] | Domain entity representing an expense category with name, type, and custom status (RN-04, RN-05)[cite: 1, 3, 7]. | `CategoryBudget`, `AddCategory`, `ModifyCategory`, `RemoveCategory`[cite: 7] |
+| `DefineBudget` | Budget Manager[cite: 5] | Action class executing the creation logic for defining a new budget allocation[cite: 7]. | `CategoryBudget`, `Budget`[cite: 7] |
+| `ModifyBudget` | Budget Manager[cite: 5] | Action class executing modifications on existing budget category allocations[cite: 7]. | `CategoryBudget`, `Budget`[cite: 7] |
+| `RemoveBudget` | Budget Manager[cite: 5] | Action class executing the deletion or inactivation of a budget record[cite: 7]. | `CategoryBudget`, `Budget`[cite: 7] |
+| `AddCategory` | Budget Manager[cite: 5] | Action class executing the registration of a new expense category[cite: 7]. | `Categoria`[cite: 7] |
+| `ModifyCategory` | Budget Manager[cite: 5] | Action class executing modifications to an existing expense category[cite: 7]. | `Categoria`[cite: 7] |
+| `RemoveCategory` | Budget Manager[cite: 5] | Action class executing the removal of a custom category[cite: 7]. | `Categoria`[cite: 7] |
 
-*(Every class must belong to an identifiable component. Do not replace the component diagram with one large class diagram.)*
+---
 
 ### 3.4 Behavior of one key operation
 
-*(The operation you designed in Class 12, or a more important one. At most about 15 lines. Include at least one non-happy path.)*
+### 3.4 Behavior of one key operation
 
-```text
+**Operation:** `BudgetService.define_monthly_budget(user_id, month, year, allocations)`[cite: 7]
 
-```
+```python
+def define_monthly_budget(self, user_id: str, month: int, year: int, allocations: dict) -> Budget:
+    if not allocations:
+        raise ValueError("El presupuesto debe contener al menos una categoría asignada.")
+    if not (1 <= month <= 12):
+        raise ValueError("El mes especificado debe estar entre 1 y 12.")
+    
+    budget = Budget(user_id=user_id, month=month, year=year, currency="COP")
+    
+    for category, amount in allocations.items():
+        if amount < 0:
+            raise ValueError(f"El monto para la categoría {category.name} no puede ser negativo.")
+        budget.add_or_update_category_limit(category, amount)
+    
+    action = DefineBudget()
+    if not action.define_budget(budget):
+        raise RuntimeError("Falló la ejecución de la acción al definir el presupuesto.")
+    
+    return self.budget_repository.save(budget)
 
 ---
 
