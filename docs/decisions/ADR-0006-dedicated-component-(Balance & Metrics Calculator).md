@@ -24,9 +24,6 @@ Un ADR "Propuesto" está en discusión. Una vez el equipo decide, pasa a
 modifica su contenido de fondo.
 -->
  
-Propuesto
-
- 
 ## Contexto
  
 <!--
