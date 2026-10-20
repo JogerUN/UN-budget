@@ -221,7 +221,6 @@ def define_monthly_budget(self, user_id: str, month: int, year: int, allocations
     
     return self.budget_repository.save(budget)
 ```
-```
 
 ---
 
