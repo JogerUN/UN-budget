@@ -43,43 +43,27 @@ HOW TO USE THIS TEMPLATE
 
 ## 2. Architectural Design
 
-*(Outward-facing: what are the major parts, what is each responsible for, how do they interact?)*
-
 ### 2.1 System Context & Boundary
 
-| Outside the system | Type (actor / external system / hardware) | How the system interacts with it |
+| Outside the system | Type | How the system interacts with it |
 |---|---|---|
-| | | |
+| End User | Actor | Interacts with the application to create their monthly budget, log manual incomes and expenses, configure payment methods, and analyze the comparative dashboard. |
 
 ### 2.2 Components, Responsibilities & Capabilities
 
-Cover the principal functional scope of your whole system.
+![Component Diagram](./Component_Diagram.jpg)
 
-```mermaid
-flowchart LR
-    Actor([User or external actor])
-    subgraph SYS["System name"]
-        C1["Component 1"]
-        C2["Component 2"]
-        C3["Component 3"]
-    end
-    Ext[("External system")]
-
-    Actor --> C1
-    C1 -->|"capability requested"| C2
-    C2 -->|"capability requested"| C3
-    C3 -->|"capability requested"| Ext
-```
-
-*(Everything inside `SYS` is what you build and control. Everything outside is what you only interact with. Label each arrow with the capability being requested.)*
-
-| Component | Main responsibility | Requirements / use cases supported | Provided capabilities | Required capabilities | Main dependencies |
+| Component | Main Responsibility | Requirements / Use Cases Supported | Provided Capabilities | Required Capabilities | Main Dependencies |
 |---|---|---|---|---|---|
-| | | | | | |
-
-*Checks: is every component named by responsibility, not technology ("the component that persists orders", not "the database")? Does any component exist only to make the diagram look more complex?*
-
----
+| Web App | Provides the responsive interface for the user to input financial data from a mobile device or PC. | REQ-01, REQ-02, REQ-03, REQ-04, REQ-05, REQ-07, REQ-08 | User management, transaction registration, and budget configuration interface | UI-to-Logic integration services | Logic Layer |
+| Dashboard UI | Presents the interactive visual panel and visually notifies about cost overruns. | REQ, 04 REQ-06 | Comparative budget, balances, and trend visualization interface | Metrics & historical data analysis services | Logic Layer |
+| Balance Manager | Cross-references actual data against the budget to calculate deviations and alerts. | REQ-04, REQ-06 | Budget execution calculation and alerts on overruns | Logic-to-Data integration services | Data Layer |
+| User Management | Manages user identity to ensure everyone sees only their own finances. | Need-01 | User registration, authentication, and profile updates | Logic-to-Data integration services | Data Layer |
+| Budget Management | Applies the rules to create, edit categories, and set monetary limits. | REQ-01, REQ-07 | Creation, categorization, and modification of monthly budgets | Logic-to-Data integration services | Data Layer |
+| Account & Payment Method Manager | Administers the creation and modification of money sources (banks or cash). | REQ-05 | Configuration and validation of diverse payment methods and bank accounts | Logic-to-Data integration services | Data Layer |
+| Transaction Management | Validates, classifies (Need/Want/Savings), and coordinates the recording of incomes and expenses. | REQ-02, REQ-03, REQ-04 | Logging, classification, and validation of manual and bank transactions | Logic-to-Data integration services | Data Layer |
+| Finance Repository | Persists and retrieves budgets, transactions, and accounts, ensuring data integrity. | REQ-11 | Storage, querying, and updating of transactional, account, and budget data | none | none |
+| User Repository | Persists and retrieves user credentials and profiles. | Need-01 | Authentication data persistence, user profiles, and session data | none | none |
 
 ## 3. Detailed Design
 
