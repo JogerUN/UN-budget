@@ -33,14 +33,17 @@ HOW TO USE THIS TEMPLATE
 
 **System purpose** (2–3 sentences, in terms of the need it satisfies)
 
-El sistema busca facilitar la organización y el control de las finanzas personales mediante el registro de gastos y la planificación de un presupuesto mensual. De esta manera, los usuarios pueden llevar un registro de sus gastos, clasificarlos y asignar montos a las categorías correspondientes para mejorar el seguimiento del uso de su dinero.
+El sistema busca permitir a los jóvenes colombianos tomar el control de sus finanzas personales mediante la planificación mensual de presupuestos y el registro diario de sus transacciones. Satisface la necesidad de monitorear en tiempo real la ejecución del presupuesto frente a los gastos reales mediante un panel gráfico interactivo y alertas visuales de sobrecosto. Asimismo, garantiza la disponibilidad y sincronización oportuna de los datos en la nube entre dispositivos móviles y computadores, operando exclusivamente en Pesos Colombianos (COP).
 
 **Requirements that shape the structure** *(the ones that most influence the design, not all of them)*
 
 | Requirement / Use Case ID | Why it shapes the structure | Quality attribute, constraint or business rule involved |
 |---|---|---|
-| Registro de gastos (ID pendiente) | Determina la información que debe capturarse en el formulario y cómo se organizan los datos de cada gasto para su almacenamiento y consulta. | Regla de negocio: cada gasto debe incluir monto en COP, fecha, medio de pago o cuenta, categoría y tipo de gasto. |
-| Gestión del presupuesto mensual (ID pendiente) | Determina cómo se organizan los presupuestos por mes y cómo se asignan montos a las categorías de gastos disponibles para cada usuario. | Regla de negocio y restricción: cada usuario puede crear, editar y consultar un presupuesto mensual, expresado exclusivamente en COP, asignando montos a las categorías disponibles. |
+| **REQ-08 & REQ-10**<br>*(Multiplataforma y Sincronización)* | Define una arquitectura cliente-servidor basada en la nube con servicios API e interfaz Web Responsive, asegurando la sincronización oportuna y la disponibilidad de datos al cambiar entre dispositivos móviles y computadores. | **Atributos de calidad:** Availability, Usability (Responsive UI), Data Synchronization.<br>**Necesidad:** Need-06. |
+| **REQ-06**<br>*(Análisis Comparativo y Visualización - Dashboard)* | Exige un componente de procesamiento y agregación de datos en el backend optimizado para calcular en tiempo real las diferencias entre el presupuesto planificado y las transacciones ejecutadas, alimentando el panel gráfico del frontend. | **Atributos de calidad:** Performance (Real-time responsiveness), Usability.<br>**Regla de negocio / Necesidad:** RN-01, Need-05. |
+| **REQ-02 & REQ-04**<br>*(Registro de Gastos y Alerta Visual de Sobrecosto)* | Condiciona el modelo de dominio para capturar los atributos obligatorios del gasto y requiere la ejecución de un motor de reglas no bloqueante que genere alertas visuales al superar el límite de una categoría sin impedir la transacción. | **Atributos de calidad:** Data Integrity, Modifiability.<br>**Reglas de negocio:** RN-02 (alerta no bloqueante), RN-05 (tipos de gasto), RN-06 (moneda exclusiva en COP). |
+| **REQ-01**<br>*(Gestión de Presupuesto Mensual)* | Establece la entidad principal del modelo de datos para estructurar, editar y consultar el presupuesto mensual del usuario, sirviendo de base para la asignación y distribución del dinero. | **Restricción y Regla de negocio:** RN-01 (único presupuesto mensual), RN-06 (exclusividad en COP).<br>**Necesidad:** Need-01. |
+| **REQ-05 & REQ-07**<br>*(Gestión de Cuentas y Categorías Personalizadas)* | Requiere un modelo de datos extensible que combine categorizaciones precargadas por expertos con la libertad del usuario para crear o modificar categorías y medios de pago (incluyendo cuentas bancarias y efectivo). | **Atributo de calidad:** Modifiability / Extensibility.<br>**Reglas de negocio / Necesidades:** RN-04, Need-02, Need-03. |
 
 ---
 
