@@ -180,8 +180,10 @@ At least one of the two decisions above must also be recorded as an ADR (use `Pl
 ## 6. Traceability
 
 | Requirement ID | Use Case | Component(s) | Class(es) |
-|---|---|---|---|
-| | | | |
+| --- | --- | --- | --- |
+| REQ-01 | *Attached to the REQ-01 document in requirements folder, at the 4.3 section* | Budget Manager | |
+| REQ-02 | *Attached to the REQ-02 document in requirements folder, at the 4.3 section* | Transaction & Movement Manager | RegistroGasto, ModificarGasto, EliminarGasto, Gasto, Categoria |
+| REQ-03 | *Its User Case has not been defined yet* | Transaction & Movement Manager | RegistrarIngreso, ProgramarIngreso, ModificarIngreso, EliminarIngreso, Ingreso |
 
 *(Every requirement in Section 1 must appear. Every component and class should appear at least once. If an element traces to nothing, ask why it exists.)*
 
