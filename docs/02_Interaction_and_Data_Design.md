@@ -169,7 +169,7 @@ Select **one** important interaction from your sequence diagrams and specify the
 | Every participant in a sequence diagram is an actor, a component, a class or an external system from Deliverable 1 | |
 | Every message corresponds to a capability, operation or contract | |
 | Every entity or document type is reflected in the class diagrams, or the reason it is not is stated | |
-| Every persisted information element has exactly one authoritative owner | |
+| Every persisted information element has exactly one authoritative owner | Not yet. It is recommended to modify the Transaction Manager's class diagram by removing the "Category" class. This would clarify that this class belongs exclusively to the Budget Manager. |
 | The contract agrees with the sequence diagram and with the data model (same behavior in all three views) | |
 
 **Changes made to Deliverable 1 because of this deliverable** *(real designs change when behavior and data become concrete. List what you updated, or write "None" and why.)*
