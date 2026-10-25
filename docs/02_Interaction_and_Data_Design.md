@@ -19,7 +19,7 @@ HOW TO USE THIS TEMPLATE
 # [Project Name] — Interaction & Data Design v1.0
 
 | | |
-|---|---|
+| --- | --- |
 | **Team** | |
 | **Members** | |
 | **Status** | Draft / Ready for review |
@@ -54,7 +54,7 @@ sequenceDiagram
 *(Participants are actors, components or external systems from Deliverable 1. Show the main successful flow and at least one alternative or exception flow with `alt` / `else` or `opt`. Avoid semicolons inside message text. Activation bars (`activate` / `deactivate`) are optional: use them only if you keep them balanced.)*
 
 | Use Case step or flow | Message(s) in the diagram | Information exchanged | Operation defined in (Deliverable 1) |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Main flow, step 1 | | | |
 | Alternative flow | | | |
 | Exception | | | |
@@ -72,7 +72,7 @@ sequenceDiagram
 ### 2.1 Principal information the system needs
 
 | Information | Needed by (use cases) | Persisted? | Why (or why not) |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | | | Yes / No | |
 
 *(Data owned by an external system, or recomputable on demand, is often better not persisted. If that is your decision, say so.)*
@@ -115,21 +115,24 @@ erDiagram
 **Other representation:** allowed if you justify why it suits your project. The goal is not to force a relational or document database. The goal is to design the information the software needs.
 
 | Entity / document type | Meaning in the system | Identifier | Constraints (required, unique, allowed values) |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | | | | |
 
 ### 2.3 Data Ownership
 
 | Information | Authoritative owner (component responsible for maintaining it) | Consumed by (uses it without owning it) | Access through |
-|---|---|---|---|
-| | | | |
-
-*(Do not assume every component needs its own database. Sharing information does not mean sharing ownership. No component reads or writes another component's data directly.)*
+| --- | --- | --- | --- |
+| User account (credentials, profile, session) | User Management (persisted in User Repository) | Budget Management, Account & Payment Method Manager, Transaction Management, Balance Manager | User Management's authentication and profile capability |
+| Monthly budget and category limits | Budget Management (persisted in Finance Repository) | Balance Manager, Transaction Management | `getBudget(userId, month, year)` |
+| Expense categories and their type | Budget Management (persisted in Finance Repository) | Transaction Management | `getCategories(userId)`. Transactions only reference `categoryId` |
+| Payment methods and bank accounts | Account & Payment Method Manager (persisted in Finance Repository) | Transaction Management | Account & Payment Method Manager's payment method validation capability |
+| Expenses and incomes | Transaction Management (persisted in Finance Repository) | Balance Manager | Transaction Management's transaction query capability |
+| Balances | Balance Manager (not persisted, recomputed on demand per ADR-0006) | Dashboard UI | Balance Manager's metrics capability |
 
 ### 2.4 Business rules and invariants enforced in data
 
 | Business rule or invariant | Where it is enforced (component logic / data constraint / both) | How |
-|---|---|---|
+| --- | --- | --- |
 | | | |
 
 ---
@@ -142,7 +145,7 @@ Select **one** important interaction from your sequence diagrams and specify the
 >
 
 | Element | Specification |
-|---|---|
+| --- | --- |
 | **Operation and purpose** | |
 | **Input** (parameters and types) | |
 | **Output** (successful result and data structure) | |
@@ -154,7 +157,7 @@ Select **one** important interaction from your sequence diagrams and specify the
 **Testable examples** *(optional but recommended: concrete values make guarantees checkable)*
 
 | Case | Before | Request | Expected |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | | | | |
 
 ---
@@ -162,7 +165,7 @@ Select **one** important interaction from your sequence diagrams and specify the
 ## 4. Cross-Consistency & Changes to Deliverable 1
 
 | Check | Result |
-|---|---|
+| --- | --- |
 | Every participant in a sequence diagram is an actor, a component, a class or an external system from Deliverable 1 | |
 | Every message corresponds to a capability, operation or contract | |
 | Every entity or document type is reflected in the class diagrams, or the reason it is not is stated | |
