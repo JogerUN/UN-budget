@@ -66,8 +66,8 @@ sequenceDiagram
 *(Same structure as 1.1.)*
 
 ---
-
 ## 2. Data Design
+
 ### 2.1 Principal information the system needs
 
 | Information | Needed by (use cases) | Persisted? | Why (or why not) |
@@ -87,7 +87,7 @@ Choose the representation that fits your persistence approach and **justify it i
 
 | Entity / document type | Meaning in the system | Identifier | Constraints (required, unique, allowed values) |
 |---|---|---|---|
-| **USER** | End user profile and authentication data. | `id` (UUID) | `email` (Required, Unique), `password_hash` (Required). |
+| **USER** | End user profile and authentication data. | `id` (UUID) | `email` (Required, Unique), `password_hash` (Required), `first_name` (Required), `last_name` (Required). |
 | **BUDGET** | A user's financial plan for a specific month or year. | `id` (UUID) | `user_id` (FK, Required), `currency` (Required, always 'COP'). |
 | **CATEGORY** | Classification for expenses (default or custom). | `id` (UUID) | `name` (Unique Key per user), `type` (Enum: Need, Want, Saving/Debt). |
 | **CATEGORY_BUDGET** | The specific monetary limit assigned to a category in a budget. | `id` (UUID) | `budget_id` (FK), `category_id` (FK), `allocated_amount` (Required, >= 0). |
