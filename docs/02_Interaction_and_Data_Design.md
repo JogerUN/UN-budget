@@ -66,58 +66,34 @@ sequenceDiagram
 *(Same structure as 1.1.)*
 
 ---
-
 ## 2. Data Design
 
 ### 2.1 Principal information the system needs
 
 | Information | Needed by (use cases) | Persisted? | Why (or why not) |
 |---|---|---|---|
-| | | Yes / No | |
-
-*(Data owned by an external system, or recomputable on demand, is often better not persisted. If that is your decision, say so.)*
+| **User Profile & Credentials** (`USER`) | Need-01, REQ-01 | Yes | To authenticate users and guarantee that each person only accesses their own financial data. |
+| **Budgets & Limits** (`BUDGET`, `CATEGORY_BUDGET`) | REQ-01, REQ-06 | Yes | Required to maintain the monthly planning and compare limits against actual spending over time. |
+| **Categories** (`CATEGORY`) | REQ-01, REQ-02, REQ-07 | Yes | Needed to classify transactions (RN-05) and persist custom categories created by the user (RN-04). |
+| **Payment Methods** (`PAYMETHOD`) | REQ-02, REQ-05 | Yes | Essential to track the source of funds (e.g., Cash, Bank Accounts) when recording a transaction. |
+| **Financial Transactions** (`EXPENSE`, `INCOME`) | REQ-02, REQ-03, REQ-04, REQ-06 | Yes | Core accounting data (REQ-11). They use soft deletion (`record_state`) instead of hard deletion to preserve historical data for the Balance Manager. |
 
 ### 2.2 Data model
 
 Choose the representation that fits your persistence approach and **justify it in one or two sentences**:
->
+> **Option A — Relational:** We chose a Relational representation (Entity-Relationship) to strictly enforce data integrity (REQ-11). By linking expenses, incomes, and budgets directly to a `USER`, `CATEGORY`, and `PAYMETHOD` through Foreign Keys (FK), we prevent orphaned financial records and ensure consistent metric calculations. Furthermore, a many-to-many intermediate table (`CATEGORY_BUDGET`) allows a single budget to hold multiple limits and categories to evolve independently across months.
 
-**Option A — Relational:** an Entity-Relationship diagram with entities, relevant attributes, primary identifiers, relationships, cardinalities and constraints.
-
-```mermaid
-erDiagram
-    ENTITY_A ||--o{ ENTITY_B : "relationship"
-    ENTITY_A {
-        int entity_a_id PK
-        string attribute
-    }
-    ENTITY_B {
-        int entity_b_id PK
-        int entity_a_id FK
-        string attribute
-    }
-```
-
-*(Cardinality: `||` exactly one, `o|` zero or one, `}o` zero or many, `}|` one or many.)*
-
-**Option B — Document-oriented:** collections or document types, structure, identifiers, embedded structures, references and constraints.
-
-```json
-{
-  "collection_name": {
-    "id": "identifier",
-    "embedded_structure": [ { "field": "value" } ],
-    "reference_to_other_collection": "identifier"
-  }
-}
-```
-
-**Other representation:** allowed if you justify why it suits your project. The goal is not to force a relational or document database. The goal is to design the information the software needs.
+![Entity-Relationship Data Model](./02_data_model.jpg)
 
 | Entity / document type | Meaning in the system | Identifier | Constraints (required, unique, allowed values) |
 |---|---|---|---|
-| | | | |
-
+| **USER** | End user profile and authentication data. | `id` (UUID) | `email` (Required, Unique), `password_hash` (Required), `first_name` (Required), `last_name` (Required). |
+| **BUDGET** | A user's financial plan for a specific month or year. | `id` (UUID) | `user_id` (FK, Required), `currency` (Required, always 'COP'). |
+| **CATEGORY** | Classification for expenses (default or custom). | `id` (UUID) | `name` (Unique Key per user), `type` (Enum: Need, Want, Saving/Debt). |
+| **CATEGORY_BUDGET** | The specific monetary limit assigned to a category in a budget. | `id` (UUID) | `budget_id` (FK), `category_id` (FK), `allocated_amount` (Required, >= 0). |
+| **PAYMETHOD** | Source of money (Bank account, Cash, etc.). | `id` (UUID) | `name` (Unique Key per user), `type` (Enum: Bank, Cash), `is_active` (Boolean). |
+| **EXPENSE** | A record of money spent by the user. | `id` (UUID) | `amount_cop` (Required), `record_state` (Enum: Active, Deleted). |
+| **INCOME** | A record of money received or expected to be received. | `id` (UUID) | `amount_cop` (Required), `record_state` (Enum: Scheduled, Received, Deleted). |
 ### 2.3 Data Ownership
 
 | Information | Authoritative owner (component responsible for maintaining it) | Consumed by (uses it without owning it) | Access through |
