@@ -107,8 +107,9 @@ sequenceDiagram
 | **Main Flow - Step 3** | `Budget(user_id, month, year, currency="COP")` | Budget entity initialization parameters | `Budget.__init__` |
 | **Main Flow - Step 4** | `define_budget(budget_instance)` | Configured Budget domain object | `DefineBudget.define_budget` |
 | **Main Flow - Step 5** | `save(budget_instance)` | Validated Budget domain entity | `FinancialRegistryRepository.save` |
-| **Alternative Flow** | `ValueError: Invalid budget parameters` | Exception message for negative allocation or invalid month | Validation block in `define_monthly_budget` |
-| **Exception Path** | `RuntimeError: Action execution failed` | Error message when database or action fails | Action check in `define_monthly_budget` |
+| **Alternative Flow 1** | `ValueError: Empty allocations` | Exception message when allocation dictionary is empty | Validation block in `define_monthly_budget` |
+| **Alternative Flow 2** | `ValueError: Invalid month or negative amount` | Exception message when month is not 1-12 or category amount < 0 | Validation block in `define_monthly_budget` |
+| **Exception Path** | `RuntimeError: Action execution failed` | Error message when `DefineBudget.define_budget` fails | Action result check in `define_monthly_budget` |
 
 ---
 
