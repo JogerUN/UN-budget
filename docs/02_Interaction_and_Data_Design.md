@@ -112,27 +112,28 @@ Choose the representation that fits your persistence approach and **justify it i
 
 ## 3. Interface Contract
 
-Select **one** important interaction from your sequence diagrams and specify the agreement between the two components. Technology (REST, JSON, OpenAPI) is not required.
-
-**Interaction chosen** (from diagram 1.X, message `...`):
+**EecordExpense** (from diagram 1.1, message `recordExpense(expense)`):
 >
 
 | Element | Specification |
 |---|---|
-| **Operation and purpose** | |
-| **Input** (parameters and types) | |
-| **Output** (successful result and data structure) | |
-| **Preconditions** (what the caller must satisfy before invoking) | |
-| **Postconditions** (what is guaranteed on successful completion) | |
-| **Failure outcomes** (each failure, and what state is left after it) | |
-| **Invariants and side effects** (what must stay true, what may change) | |
+| **Operation and purpose** | recordExpense(expense): Permite registrar un nuevo gasto mediante la validación de sus datos, su almacenamiento en el registro financiero y la comprobación de si supera el límite presupuestario de su categoría |
+| **Input** (parameters and types) | expense: Expense, un objeto que contiene los siguientes atributos: amountCOP: Decimal (monto en pesos colombianos), date: Date (fecha del gasto), paymentMethod: PaymentMethod (medio de pago), categoryId: ID (identificador de la categoría) y expenseType: ExpenseType (tipo de gasto: necesidad, deseo o ahorro/inversión/deuda) |
+| **Output** (successful result and data structure) | Devuelve un objeto RegistrationResult con los campos status: Success, error: None y alert. El campo alert tendrá el valor Overrun si el gasto supera el límite presupuestario, o None si permanece dentro del límite |
+| **Preconditions** (what the caller must satisfy before invoking) | La interfaz debe proporcionar un objeto Expense con todos los campos obligatorios. El monto debe ser mayor que cero, la fecha debe ser válida y deben especificarse el medio de pago, la categoría y el tipo de gasto. Además, la categoría debe existir y ser válida dentro del sistema |
+| **Postconditions** (what is guaranteed on successful completion) | Si la operación finaliza exitosamente, el gasto queda almacenado en el registro financiero con su información correspondiente. El sistema comprueba el gasto frente al presupuesto aplicable y devuelve la alerta correspondiente. Si el gasto supera el límite, igualmente se registra y se informa al usuario sin bloquear la transacción |
+| **Failure outcomes** (each failure, and what state is left after it) | Datos inválidos: devuelve status: Rejected y error: InvalidData. El gasto no se almacena. Fallo de persistencia: devuelve status: Failed y error: StorageError. El gasto no debe quedar almacenado parcialmente ni generar inconsistencias. En ambos casos, la interfaz informa del error y los registros financieros existentes permanecen sin cambios |
+| **Invariants and side effects** (what must stay true, what may change) | Los registros financieros deben permanecer consistentes. Un gasto no debe duplicarse ni quedar guardado parcialmente. Un registro exitoso crea un nuevo gasto y puede generar una alerta de exceso presupuestario. Superar el presupuesto no invalida el gasto ni impide su registro |
 
 **Testable examples** *(optional but recommended: concrete values make guarantees checkable)*
 
 | Case | Before | Request | Expected |
 |---|---|---|---|
-| | | | |
-
+| Gasto dentro del presupuesto | Presupuesto de la categoría: $500.000 COP | Registrar un gasto de $100.000 COP |	status: Success, alert: None, El gasto queda registrado | 
+| Gasto que supera el presupuesto | Presupuesto: $500.000 COP. Gastos acumulados: $450.000 COP | Registrar un gasto de $100.000 COP | status: Success, alert: Overrun, El gasto queda registrado y se muestra una alerta |
+| Monto inválido | No existe un nuevo gasto registrado |	Registrar un gasto de $0 COP | status: Rejected, error: InvalidData, El gasto no se registra |
+| Información obligatoria faltante | No existe un nuevo gasto registrado |	Registrar un gasto sin especificar el medio de pago |	status: Rejected, error: InvalidData, La interfaz muestra un error de validación |
+| Fallo de almacenamiento | El registro financiero no está disponible o falla la operación de guardado |	Enviar una solicitud con datos válidos |	status: Failed, error: StorageError, No queda ningún registro parcial del gasto |
 ---
 
 ## 4. Cross-Consistency & Changes to Deliverable 1
