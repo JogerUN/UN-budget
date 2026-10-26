@@ -32,12 +32,7 @@ HOW TO USE THIS TEMPLATE
 
 <!-- Select **two** important use cases from your own project that involve meaningful interaction between components. One of them should be the use case of your capstone requirement.-->
 
-### 1.1
-
----
-
-
-### 1.2 Define Monthly Budget — from requirement [REQ-01]
+### 1.1 Define Monthly Budget — from requirement [REQ-01]
 ---
 
 ```mermaid
@@ -103,7 +98,7 @@ sequenceDiagram
 | **Exception Path (Execution Error)** | `RuntimeError: Action execution failed` | Exception message raised when `DefineBudget.define_budget` returns false | Execution check block in `define_monthly_budget` |
 
 
-### 1.1 Expenses Regiter — from requirement [REQ-02]
+### 1.2 Expenses Regiter — from requirement [REQ-02]
 
 ![Sequence diagram](images/sequence_diagram_expenses.png)
 
