@@ -161,8 +161,6 @@ Choose the representation that fits your persistence approach and **justify it i
 
 ### 2.4 Business rules and invariants enforced in data
 
-### 2.4 Business rules and invariants enforced in data
-
 Each rule is enforced in the component that owns the data (Section 2.3). When the rule can be written as a database constraint, the Finance or User Repository (PostgreSQL, ADR-0001) enforces it as well, as a second line of defense. Rules that depend on calculations or on how the system should behave stay in component logic only, on purpose.
 
 | Business rule or invariant | Where it is enforced (component logic / data constraint / both) | How |
