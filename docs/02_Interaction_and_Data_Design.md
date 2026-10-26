@@ -32,34 +32,84 @@ HOW TO USE THIS TEMPLATE
 
 Select **two** important use cases from your own project that involve meaningful interaction between components. One of them should be the use case of your capstone requirement.
 
-### 1.1 [Use Case name] — from requirement [REQ-XX]
+### 1.1 Define Monthly Budget — from requirement [REQ-01]
+
+**Participants:**
+* **User (Actor):** user configuring monthly finance plans.
+* **Frontend UI (Component):** Web/Mobile interface capturing COP budget allocations.
+* **BudgetService (Backend Component):** Orchestrates monthly budget validation and workflow execution.
+* **BudgetRegister (Backend Component):** Validates referenced expense categories prior to budget assignment.
+* **DefineBudget (Action Class):** Executes the specific business logic for creating budget allocations.
+* **Budget (Domain Entity):** Holds total COP amount, month, year, and category allocation state.
+* **FinancialRegistryRepository (Persistence Component):** Persists budget data to the database.
+
+---
 
 ```mermaid
 sequenceDiagram
+    autonumber
     actor User
-    participant A as Component A
-    participant B as Component B
+    participant UI as Frontend UI
+    participant BS as BudgetService
+    participant BR as BudgetRegister
+    participant DB as DefineBudget
+    participant B as Budget
+    participant Repo as FinancialRegistryRepository
 
-    User->>A: operation(param)
-    A->>B: operation(param)
-    alt normal condition
-        B-->>A: result
-        A-->>User: outcome
-    else alternative or failure condition
-        B-->>A: failure outcome
-        A-->>User: outcome
+    User->>UI: Submit monthly budget allocations (COP)
+    activate UI
+    UI->>BS: define_monthly_budget(user_id, month, year, allocations)
+    activate BS
+
+    BS->>BR: get_categories(user_id)
+    activate BR
+    BR-->>BS: categories_list
+    deactivate BR
+
+    alt Invalid month (<1 or >12) or negative allocation amount
+        BS-->>UI: ValueError: Invalid budget parameters
+        UI-->>User: Display validation error message
+    else Valid parameters
+        BS->>B: create(user_id, month, year, currency="COP")
+        activate B
+        B-->>BS: budget_instance
+        deactivate B
+
+        BS->>DB: define_budget(budget_instance)
+        activate DB
+        DB-->>BS: success
+        deactivate DB
+
+        alt Action execution failed
+            BS-->>UI: RuntimeError: Action failed
+            UI-->>User: Display execution error
+        else Action executed successfully
+            BS->>Repo: save(budget_instance)
+            activate Repo
+            Repo-->>BS: saved_budget
+            deactivate Repo
+
+            BS-->>UI: Budget created successfully
+            UI-->>User: Display monthly budget overview in COP
+        end
     end
+
+    deactivate BS
+    deactivate UI
 ```
 
-*(Participants are actors, components or external systems from Deliverable 1. Show the main successful flow and at least one alternative or exception flow with `alt` / `else` or `opt`. Avoid semicolons inside message text. Activation bars (`activate` / `deactivate`) are optional: use them only if you keep them balanced.)*
+---
 
-| Use Case step or flow | Message(s) in the diagram | Information exchanged | Operation defined in (Deliverable 1) |
+| Use Case Step / Flow | Message(s) in the Diagram | Information Exchanged | Operation Defined in Backend |
 |---|---|---|---|
-| Main flow, step 1 | | | |
-| Alternative flow | | | |
-| Exception | | | |
-
-*Check each message: does it have a purpose? Is the order correct? Is every important response shown? Are the relevant failure paths covered? Does the interaction satisfy the use case?*
+| **Main Flow - Step 1** | `define_monthly_budget(user_id, month, year, allocations)` | User ID, month, year, category allocation map in COP | `BudgetService.define_monthly_budget` |
+| **Main Flow - Step 2** | `get_categories(user_id)` | Category validation request | `BudgetRegister.get_categories` |
+| **Main Flow - Step 3** | `Budget(user_id, month, year, currency="COP")` | Budget entity initialization parameters | `Budget.__init__` |
+| **Main Flow - Step 4** | `define_budget(budget_instance)` | Configured Budget domain object | `DefineBudget.define_budget` |
+| **Main Flow - Step 5** | `save(budget_instance)` | Validated Budget domain entity | `FinancialRegistryRepository.save` |
+| **Alternative Flow** | `ValueError: Invalid budget parameters` | Exception message for negative allocation or invalid month | Validation block in `define_monthly_budget` |
+| **Exception Path** | `RuntimeError: Action execution failed` | Error message when database or action fails | Action check in `define_monthly_budget` |
+```
 
 ### 1.2 [Second Use Case name] — from requirement [REQ-YY]
 
