@@ -161,15 +161,32 @@ Choose the representation that fits your persistence approach and **justify it i
 
 ### 2.4 Business rules and invariants enforced in data
 
+### 2.4 Business rules and invariants enforced in data
+
+Each rule is enforced in the component that owns the data (Section 2.3). When the rule can be written as a database constraint, the Finance or User Repository (PostgreSQL, ADR-0001) enforces it as well, as a second line of defense. Rules that depend on calculations or on how the system should behave stay in component logic only, on purpose.
+
 | Business rule or invariant | Where it is enforced (component logic / data constraint / both) | How |
 | --- | --- | --- |
-| | | |
+| **BR-06** — All monetary amounts are in Colombian Pesos (COP). | Both | `BudgetService` always creates a `Budget` with `currency="COP"` (diagram 1.1, step 3). `BUDGET.currency` is `NOT NULL` with `CHECK (currency = 'COP')`. `EXPENSE` and `INCOME` have no currency column: the amount is stored only as `amount_cop`, so a transaction cannot be stored in another currency. |
+| **BR-05** — Every category, and therefore every expense, belongs to exactly one of three types: Need, Want, Saving/Investment/Debt. | Both | `AddCategory` and `ModifyCategory` (Budget Management) reject any other type. `CATEGORY.type` is a `NOT NULL` enum (`Need`, `Want`, `Saving/Debt`). An expense gets its type through `EXPENSE.category_id` (FK, `NOT NULL`), so an expense without a type cannot exist. |
+| **REQ-01 (AC-01.2)** — A user has only one budget per month. | Both | `BudgetService` first calls `getBudget(userId, month, year)`. If a budget already exists, it offers to edit it instead of creating a new one. In the database: `UNIQUE (user_id, month, year)` on `BUDGET` *(proposed: this constraint is not yet in the ER diagram)*. |
+| **BR-01** — A budget must have at least one category with an allocated amount. | Component logic | `define_monthly_budget` rejects an empty `allocations` map. The class diagram models `Budget "1" *-- "1..*" CategoryBudget`. A row constraint cannot express a minimum number of child rows, so this rule cannot be a database constraint. |
+| **BR-04** — The system provides default categories, and the user can add and remove their own; names do not repeat for the same user. | Both | `BudgetRegister` checks the name before `addExpenseCategory`. The UK on `CATEGORY.name` should be the composite `UNIQUE (user_id, name)`, so that two users can each have a category called "Food". |
+| **REQ-02** — An expense must have amount, date, payment method, category and type. | Both | `RegistroGastos` returns `status: Rejected, error: InvalidData` when a field is missing (Contract §3). In the database: `NOT NULL` on `user_id`, `category_id`, `paymethod_id`, `amount_cop` and `date`, plus FKs to existing records. |
+| The amount of an expense is greater than zero. | Both | Precondition of `recordExpense`: an amount of COP 0 is rejected (testable example in §3). In the database: `CHECK (amount_cop > 0)` on `EXPENSE`. |
+| **BR-02** — An expense that exceeds its category's limit is still recorded; the system only alerts the user. | Component logic (on purpose, no data constraint) | The Balance Manager runs `verifyCategoryLimit` **after** `save` and returns `alert=Overrun` without rolling back. There is deliberately **no** constraint comparing the sum of expenses with `allocated_amount`, because such a constraint would block valid transactions. |
+| A category without a budget limit does not generate an alert. | Component logic | When there is no `CATEGORY_BUDGET` row for the category in that month, the Balance Manager returns `isOverrun=False, alert=None` (REQ-02, exception flow). |
+| **Need-01** — Each user only sees and changes their own financial data. | Both | `BUDGET`, `CATEGORY`, `PAYMETHOD`, `EXPENSE` and `INCOME` have `user_id` as an FK, `NOT NULL`. Every component filters by the authenticated `userId` it receives from User Management. Transaction Management checks that the referenced `categoryId` and `paymethodId` belong to the same user, using `getCategories(userId)` and the payment-method validation capability. A simple FK cannot guarantee this. |
+| **REQ-11** — Financial records are never physically deleted (history is preserved). | Both | `EliminarGastos` and `EliminarIngreso` only change `record_state` to `Deleted` and never issue `DELETE`. In the database: `record_state` is a `NOT NULL` enum (`Active`/`Deleted` for `EXPENSE`; `Scheduled`/`Received`/`Deleted` for `INCOME`). The Balance Manager only counts `Active` expenses and `Received` incomes. |
+| **BR-03** — An income can be recorded whether or not it has been received. | Both | `ProgramarIngreso` stores it as `Scheduled` with `expected_date`, and `RegistrarIngreso` as `Received` with `actual_date`. In the database: `expected_date` is `NOT NULL`, `actual_date` is nullable, and `CHECK (record_state <> 'Received' OR actual_date IS NOT NULL)` *(proposed)*. |
+| User accounts are unique, and passwords are never stored in plain text. | Both | User Management checks the email and hashes the password before persisting. In the database: `USER.email` is `UNIQUE NOT NULL`, and only `password_hash` is stored. |
+| Balances are not stored; they are always derived from transactions (ADR-0006). | Component logic | The Balance Manager recalculates them on demand from the transactions. There is no balance column, so no stored value can drift from the actual transactions. |
 
 ---
 
 ## 3. Interface Contract
 
-**EecordExpense** (from diagram 1.1, message `recordExpense(expense)`):
+**RecordExpense** (from diagram 1.1, message `recordExpense(expense)`):
 >
 
 | Element | Specification |
@@ -208,24 +225,20 @@ Choose the representation that fits your persistence approach and **justify it i
 
 ## 5. Open Questions
 
-> Anything unresolved about behavior or data. List it here instead of guessing.
+> What happens to the expenses of a category the user deletes?
+> Must an income be greather than zero?
+> What happens to the expenses in case any payment method were delete?
 
 ---
 
-## 6. Optional — AI-Assisted Design Reflection
+## 6. Consistency Checklist
 
-> One design recommendation generated by AI that the team accepted, modified or rejected, and why.
-
----
-
-## 7. Consistency Checklist
-
-- [ ] Two use cases from the project, each traceable to a Use Case written in the requirements.
-- [ ] Each sequence diagram shows the main flow and at least one alternative or exception flow.
-- [ ] No business behavior is invented: anything unspecified is marked as an assumption or Open Question.
-- [ ] Section 2.1 explains what is NOT persisted as well as what is.
-- [ ] The data model has identifiers, relationships and constraints, not only boxes.
-- [ ] Every piece of principal information has one authoritative owner, and consumers are listed (Section 2.3).
-- [ ] The contract defines input, output, preconditions, postconditions and failure outcomes.
-- [ ] Sequence, data model and contract describe the same behavior.
-- [ ] Diagrams render correctly on GitHub (or the exported images are embedded).
+- [x] Two use cases from the project, each traceable to a Use Case written in the requirements.
+- [x] Each sequence diagram shows the main flow and at least one alternative or exception flow.
+- [x] No business behavior is invented: anything unspecified is marked as an assumption or Open Question.
+- [x] Section 2.1 explains what is NOT persisted as well as what is.
+- [x] The data model has identifiers, relationships and constraints, not only boxes.
+- [x] Every piece of principal information has one authoritative owner, and consumers are listed (Section 2.3).
+- [x] The contract defines input, output, preconditions, postconditions and failure outcomes.
+- [x] Sequence, data model and contract describe the same behavior.
+- [x] Diagrams render correctly on GitHub (or the exported images are embedded).
