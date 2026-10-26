@@ -19,117 +19,150 @@ HOW TO USE THIS TEMPLATE
 # [Project Name] — Interaction & Data Design v1.0
 
 | | |
-|---|---|
-| **Team** | |
-| **Members** | |
-| **Status** | Draft / Ready for review |
-| **Date** | |
+| --- | --- |
+| **Team** | UN-budget | Grupo 5 - Ingesoft I |
+| **Members** | David Esteban Sainea Rubio, sabenitez, Kevin Florez, Miguel Angel Guativa Archila, Joger Ivan Munoz Duenas |
+| **Status** | Approved |
+| **Date** | 25/10/2026 October 10th, 2026 |
 | **Inputs** | `docs/design/01_Architectural_and_Detailed_Design.md`, Use Cases in `docs/requirements/`, Interaction & Contracts Design v0.1 (Class 13) |
 
 ---
 
 ## 1. Behavior — Selected Use Cases
 
-Select **two** important use cases from your own project that involve meaningful interaction between components. One of them should be the use case of your capstone requirement.
+<!-- Select **two** important use cases from your own project that involve meaningful interaction between components. One of them should be the use case of your capstone requirement.-->
 
-### 1.1 [Use Case name] — from requirement [REQ-XX]
+### 1.1 Define Monthly Budget — from requirement [REQ-01]
+
+---
 
 ```mermaid
 sequenceDiagram
+    autonumber
     actor User
-    participant A as Component A
-    participant B as Component B
+    participant UI as Frontend UI
+    participant BS as BudgetService
+    participant BR as BudgetRegister
+    participant DB as DefineBudget
+    participant B as Budget
+    participant Repo as FinancialRegistryRepository
 
-    User->>A: operation(param)
-    A->>B: operation(param)
-    alt normal condition
-        B-->>A: result
-        A-->>User: outcome
-    else alternative or failure condition
-        B-->>A: failure outcome
-        A-->>User: outcome
+    User->>UI: Submit monthly budget allocations (COP)
+    activate UI
+    UI->>BS: define_monthly_budget(user_id, month, year, allocations)
+    activate BS
+
+    BS->>BR: get_categories(user_id)
+    activate BR
+    BR-->>BS: categories_list
+    deactivate BR
+
+    alt Invalid month (<1 or >12) or negative allocation amount
+        BS-->>UI: ValueError: Invalid budget parameters
+        UI-->>User: Display validation error message
+    else Valid parameters
+        BS->>B: create(user_id, month, year, currency="COP")
+        activate B
+        B-->>BS: budget_instance
+        deactivate B
+
+        BS->>DB: define_budget(budget_instance)
+        activate DB
+        DB-->>BS: success
+        deactivate DB
+
+        alt Action execution failed
+            BS-->>UI: RuntimeError: Action failed
+            UI-->>User: Display execution error
+        else Action executed successfully
+            BS->>Repo: save(budget_instance)
+            activate Repo
+            Repo-->>BS: saved_budget
+            deactivate Repo
+
+            BS-->>UI: Budget created successfully
+            UI-->>User: Display monthly budget overview in COP
+        end
     end
+
+    deactivate BS
+    deactivate UI
 ```
 
-*(Participants are actors, components or external systems from Deliverable 1. Show the main successful flow and at least one alternative or exception flow with `alt` / `else` or `opt`. Avoid semicolons inside message text. Activation bars (`activate` / `deactivate`) are optional: use them only if you keep them balanced.)*
+| Use Case Step / Flow | Message(s) in the Diagram | Information Exchanged | Operation defined in (Deliverable 1) |
+| --- | --- | --- | --- |
+| **Main Flow - Step 1** | `define_monthly_budget(user_id, month, year, allocations)` | User ID, month, year, category allocation map in COP | `BudgetService.define_monthly_budget` |
+| **Main Flow - Step 2** | `get_categories(user_id)` | Category validation request | `BudgetRegister.get_categories` |
+| **Main Flow - Step 3** | `Budget(user_id, month, year, currency="COP")` | Budget entity initialization parameters | `Budget.__init__` |
+| **Main Flow - Step 4** | `define_budget(budget_instance)` | Configured Budget domain object | `DefineBudget.define_budget` |
+| **Main Flow - Step 5** | `save(budget_instance)` | Validated Budget domain entity | `FinancialRegistryRepository.save` |
+| **Alternative Flow (Input Validation Error)** | `ValueError: Invalid budget parameters` | Exception message raised when allocations are empty, month is not between 1-12, or amount < 0 | Input validation checks in `define_monthly_budget` |
+| **Exception Path (Execution Error)** | `RuntimeError: Action execution failed` | Exception message raised when `DefineBudget.define_budget` returns false | Execution check block in `define_monthly_budget` |
 
-| Use Case step or flow | Message(s) in the diagram | Information exchanged | Operation defined in (Deliverable 1) |
-|---|---|---|---|
-| Main flow, step 1 | | | |
-| Alternative flow | | | |
-| Exception | | | |
+### 1.2 Expenses Regiter — from requirement [REQ-02]
 
-*Check each message: does it have a purpose? Is the order correct? Is every important response shown? Are the relevant failure paths covered? Does the interaction satisfy the use case?*
-
-### 1.2 [Second Use Case name] — from requirement [REQ-YY]
-
-*(Same structure as 1.1.)*
+![Sequence diagram](images/sequence_diagram_expenses.png)
 
 ---
+
+| Use Case Step / Flow | Message(s) in the Diagram | Information Exchanged | Operation defined in (Deliverable 1) |
+| --- | --- | --- | --- |
+| **Main flow, steps 1–4:** User completes and submits expense form | `submitExpense` | `amountCOP`, `date`, `paymentMethod`, `category`, `expenseType` | Handled by `WebApp` (transaction registration capabilitie, **Section 2.2**) |
+| **Main flow, step 5:** Coordinate input validation | `recordExpense` | `expense` domain entity | `RegistroGastos.RegistrarGasto(gasto)` (Section **3.2 Class Diagram(s)** - **Transaction & Movement Manager Class Diagram** and **3.4 Behavior of one key operation**) |
+| **Main flow, step 6:** Persist valid expense in storage | `save` | `expense` domain entity | `Financial Repository` storage capability (Section **2.2 Components, Responsibilities & Capabilities**) |
+| **Main flow, steps 7–9:** Verify category budget limit and detect overrun | `verifyCategoryLimit`, `budgetLimit(isOverrun=True, alert="Overrun detected")` | `userId`, `categoryId`, `amountCOP`; returns overrun boolean=True flag and warning message "Overrun detected" | `Balance Manager` alert on overruns capability (Section **2.2 Components, Responsibilities & Capabilities** and Section **5. Design Decisions & Decision Record** - **Decision A — Architectural**) |
+| **Main flow, step 10:** Confirm registered expense with visual overrun alert | Second nested `alt` branch, final message from `Transaction & Movement Manager` to `WebApp` (`RegistrationResult(status=Success, alert=Overrun)`) | `RegistrationResult` containing `status=Success` and `alert=Overrun` payload | Implements Business Rule BR-02 / RN-02 (non-blocking registration with alert, "7. Verificar si se supera el presupuesto" Section **3.4 Behavior of one key operation**) |
+| **Alternative flow:** Expense remains within budget limit (no overrun) | `budgetLimit(isOverrun=False, alert=None)`, final message from `Transaction & Movement Manager` to `WebApp` (`RegistrationResult(status=Success, alert=None)`) | Success confirmation payload with empty alert | **Alternative flow** in **REQ-02** - **4.3 Use Case section** and **4. Representations** - **4.2 Acceptance Criteria Scenario 1** |
+| **Alternative flow / Edge case:** Category has no budget limit defined | `budgetLimit(isOverrun=False, alert=None)`, final message (`RegistrationResult(status=Success, alert=None)`) | Success confirmation payload without budget comparison | **Exception flow** in **REQ-02** (*Categoría sin límite presupuestario*) |
+| **Exception flow 1:** Invalid expense data or missing mandatory fields | First `alt` branch (`RegistrationResult(status=Rejected, error="Invalid data")`) | Validation rejection status and field error description | `RegistroGastos` validation check (Section **3.4 Behavior of one key operation**: *Validar los datos obligatorios y el monto*) |
+| **Exception flow 2:** Storage / database persistence failure | Second `alt` branch (`RegistrationResult(status=Failed, error="Storage error")`) | Storage failure status and persistence error message | Non-happy path in Section **3.4 Behavior of one key operation**: (*6. Guardar el gasto en el sistema*) |
+
+*Check each message: does it have a purpose? Is the order correct? Is every important response shown? Are the relevant failure paths covered? Does the interaction satisfy the use case?*
 
 ## 2. Data Design
 
 ### 2.1 Principal information the system needs
 
 | Information | Needed by (use cases) | Persisted? | Why (or why not) |
-|---|---|---|---|
-| | | Yes / No | |
-
-*(Data owned by an external system, or recomputable on demand, is often better not persisted. If that is your decision, say so.)*
+| --- | --- | --- | --- |
+| **User Profile & Credentials** (`USER`) | Need-01, REQ-01 | Yes | To authenticate users and guarantee that each person only accesses their own financial data. |
+| **Budgets & Limits** (`BUDGET`, `CATEGORY_BUDGET`) | REQ-01, REQ-06 | Yes | Required to maintain the monthly planning and compare limits against actual spending over time. |
+| **Categories** (`CATEGORY`) | REQ-01, REQ-02, REQ-07 | Yes | Needed to classify transactions (RN-05) and persist custom categories created by the user (RN-04). |
+| **Payment Methods** (`PAYMETHOD`) | REQ-02, REQ-05 | Yes | Essential to track the source of funds (e.g., Cash, Bank Accounts) when recording a transaction. |
+| **Financial Transactions** (`EXPENSE`, `INCOME`) | REQ-02, REQ-03, REQ-04, REQ-06 | Yes | Core accounting data (REQ-11). They use soft deletion (`record_state`) instead of hard deletion to preserve historical data for the Balance Manager. |
 
 ### 2.2 Data model
 
 Choose the representation that fits your persistence approach and **justify it in one or two sentences**:
->
+> **Option A — Relational:** We chose a Relational representation (Entity-Relationship) to strictly enforce data integrity (REQ-11). By linking expenses, incomes, and budgets directly to a `USER`, `CATEGORY`, and `PAYMETHOD` through Foreign Keys (FK), we prevent orphaned financial records and ensure consistent metric calculations. Furthermore, a many-to-many intermediate table (`CATEGORY_BUDGET`) allows a single budget to hold multiple limits and categories to evolve independently across months.
 
-**Option A — Relational:** an Entity-Relationship diagram with entities, relevant attributes, primary identifiers, relationships, cardinalities and constraints.
-
-```mermaid
-erDiagram
-    ENTITY_A ||--o{ ENTITY_B : "relationship"
-    ENTITY_A {
-        int entity_a_id PK
-        string attribute
-    }
-    ENTITY_B {
-        int entity_b_id PK
-        int entity_a_id FK
-        string attribute
-    }
-```
-
-*(Cardinality: `||` exactly one, `o|` zero or one, `}o` zero or many, `}|` one or many.)*
-
-**Option B — Document-oriented:** collections or document types, structure, identifiers, embedded structures, references and constraints.
-
-```json
-{
-  "collection_name": {
-    "id": "identifier",
-    "embedded_structure": [ { "field": "value" } ],
-    "reference_to_other_collection": "identifier"
-  }
-}
-```
-
-**Other representation:** allowed if you justify why it suits your project. The goal is not to force a relational or document database. The goal is to design the information the software needs.
+![Entity-Relationship Data Model](./02_data_model.jpg)
 
 | Entity / document type | Meaning in the system | Identifier | Constraints (required, unique, allowed values) |
-|---|---|---|---|
-| | | | |
+| --- | --- | --- | --- |
+| **USER** | End user profile and authentication data. | `id` (UUID) | `email` (Required, Unique), `password_hash` (Required), `first_name` (Required), `last_name` (Required). |
+| **BUDGET** | A user's financial plan for a specific month or year. | `id` (UUID) | `user_id` (FK, Required), `currency` (Required, always 'COP'). |
+| **CATEGORY** | Classification for expenses (default or custom). | `id` (UUID) | `name` (Unique Key per user), `type` (Enum: Need, Want, Saving/Debt). |
+| **CATEGORY_BUDGET** | The specific monetary limit assigned to a category in a budget. | `id` (UUID) | `budget_id` (FK), `category_id` (FK), `allocated_amount` (Required, >= 0). |
+| **PAYMETHOD** | Source of money (Bank account, Cash, etc.). | `id` (UUID) | `name` (Unique Key per user), `type` (Enum: Bank, Cash), `is_active` (Boolean). |
+| **EXPENSE** | A record of money spent by the user. | `id` (UUID) | `amount_cop` (Required), `record_state` (Enum: Active, Deleted). |
+| **INCOME** | A record of money received or expected to be received. | `id` (UUID) | `amount_cop` (Required), `record_state` (Enum: Scheduled, Received, Deleted). |
 
 ### 2.3 Data Ownership
 
 | Information | Authoritative owner (component responsible for maintaining it) | Consumed by (uses it without owning it) | Access through |
-|---|---|---|---|
-| | | | |
-
-*(Do not assume every component needs its own database. Sharing information does not mean sharing ownership. No component reads or writes another component's data directly.)*
+| --- | --- | --- | --- |
+| User account (credentials, profile, session) | User Management (persisted in User Repository) | Budget Management, Account & Payment Method Manager, Transaction Management, Balance Manager | User Management's authentication and profile capability |
+| Monthly budget and category limits | Budget Management (persisted in Finance Repository) | Balance Manager, Transaction Management | `getBudget(userId, month, year)` |
+| Expense categories and their type | Budget Management (persisted in Finance Repository) | Transaction Management | `getCategories(userId)`. Transactions only reference `categoryId` |
+| Payment methods and bank accounts | Account & Payment Method Manager (persisted in Finance Repository) | Transaction Management | Account & Payment Method Manager's payment method validation capability |
+| Expenses and incomes | Transaction Management (persisted in Finance Repository) | Balance Manager | Transaction Management's transaction query capability |
+| Balances | Balance Manager (not persisted, recomputed on demand per ADR-0006) | Dashboard UI | Balance Manager's metrics capability |
 
 ### 2.4 Business rules and invariants enforced in data
 
 | Business rule or invariant | Where it is enforced (component logic / data constraint / both) | How |
-|---|---|---|
+| --- | --- | --- |
 | | | |
 
 ---
@@ -140,7 +173,7 @@ erDiagram
 >
 
 | Element | Specification |
-|---|---|
+| --- | --- |
 | **Operation and purpose** | recordExpense(expense): RegistrationResult. Registers a new expense by validating its information, saving it in the financial registry, and checking whether it exceeds the budget limit assigned to its category |
 | **Input** (parameters and types) | expense: Expense, containing amountCOP: Decimal, date: Date, paymentMethod: PaymentMethod, categoryId: ID, and expenseType: ExpenseType (Necessity, Desire, or Savings/Investment/Debt) |
 | **Output** (successful result and data structure) | Returns a RegistrationResult containing status: Success, error: None, and alert: Overrun if the expense exceeds the budget limit, or alert: None otherwise |
@@ -152,18 +185,19 @@ erDiagram
 **Testable examples** *(optional but recommended: concrete values make guarantees checkable)*
 
 | Case | Before | Request | Expected |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Valid expense within budget | Category budget: COP 500,000. No expense with this ID exists | Record an expense of $100,000 COP | status: Success, alert: None. The expense is stored successfully |
-| Valid expense exceeding budget	| Category budget: COP 500,000. Existing expenses total COP 450,000	| Record an expense of $100,000 COP 	| status: Success, alert: Overrun. The expense is stored, and the interface displays an overspending alert |
-| Invalid expense amount |	No new expense has been stored	| Record an expense of $0 COP |	status: Rejected, error: InvalidData. No expense is stored |
+| Valid expense exceeding budget | Category budget: COP 500,000. Existing expenses total COP 450,000 | Record an expense of $100,000 COP | status: Success, alert: Overrun. The expense is stored, and the interface displays an overspending alert |
+| Invalid expense amount | No new expense has been stored | Record an expense of $0 COP | status: Rejected, error: InvalidData. No expense is stored |
 | Missing required information | No new expense has been stored | Record an expense without specifying the payment method | status: Rejected, error: InvalidData. The interface displays a validation error |
-| Persistence failure | The registry is unavailable or the save operation fails | Submit a valid expense |	status: Failed, error: StorageError. No partial expense record remains |
+| Persistence failure | The registry is unavailable or the save operation fails | Submit a valid expense | status: Failed, error: StorageError. No partial expense record remains |
+
 ---
 
 ## 4. Cross-Consistency & Changes to Deliverable 1
 
 | Check | Result |
-|---|---|
+| --- | --- |
 | Every participant in a sequence diagram is an actor, a component, a class or an external system from Deliverable 1 | The original structure of the sequence diagram for expense registration is maintained. Its participants represent the user, the application interface, the Transaction & Movement Manager component, the Balance Manager, and the Finance Repository, whose responsibilities are defined in Deliverable 1. Adding new components was not considered necessary, since the existing structure makes it possible to represent the expense registration, storage, and budget verification flow |
 | Every message corresponds to a capability, operation or contract | The messages in the sequence diagram correspond to the capabilities and operations defined in Deliverable 1. For example, submitExpense represents the submission of the form through the interface, recordExpense corresponds to the RegistroGastos.RegistrarGasto(gasto) operation, save represents the storage of the financial transaction, and verifyCategoryLimit corresponds to the Balance Manager's capability to detect budget overruns. In this way, each message has a defined purpose within the process and helps maintain traceability between the components and their responsibilities |
 | Every entity or document type is reflected in the class diagrams, or the reason it is not is stated | The design retains the Gasto, Ingreso, and Categoria classes to represent financial transactions and their classification, while the Budget Manager component contains the classes related to budget and category management. The Gasto and Ingreso objects were kept separate because they have specific attributes and behaviors, such as expense classification and the distinction between the expected date and the actual date of an income. However, entities such as USER and PAYMETHOD appear in the data model without an explicit equivalent representation in the current class diagrams. Their incorporation or justification must be documented to ensure consistency between both models |
