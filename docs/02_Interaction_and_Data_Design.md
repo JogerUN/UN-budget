@@ -38,16 +38,6 @@ HOW TO USE THIS TEMPLATE
 
 
 ### 1.2 Define Monthly Budget — from requirement [REQ-01]
-
-**Participants:**
-* **User (Actor):** user configuring monthly finance plans.
-* **Frontend UI (Component):** Web/Mobile interface capturing COP budget allocations.
-* **BudgetService (Backend Component):** Orchestrates monthly budget validation and workflow execution.
-* **BudgetRegister (Backend Component):** Validates referenced expense categories prior to budget assignment.
-* **DefineBudget (Action Class):** Executes the specific business logic for creating budget allocations.
-* **Budget (Domain Entity):** Holds total COP amount, month, year, and category allocation state.
-* **FinancialRegistryRepository (Persistence Component):** Persists budget data to the database.
-
 ---
 
 ```mermaid
@@ -102,12 +92,6 @@ sequenceDiagram
     deactivate BS
     deactivate UI
 ```
-### 1.1 Expenses Regiter — from requirement [REQ-02]
-
-![Sequence diagram](images/sequence_diagram_expenses.png)
-
----
-
 | Use Case Step / Flow | Message(s) in the Diagram | Information Exchanged | Operation defined in (Deliverable 1) |
 |---|---|---|---|
 | **Main Flow - Step 1** | `define_monthly_budget(user_id, month, year, allocations)` | User ID, month, year, category allocation map in COP | `BudgetService.define_monthly_budget` |
@@ -117,6 +101,13 @@ sequenceDiagram
 | **Main Flow - Step 5** | `save(budget_instance)` | Validated Budget domain entity | `FinancialRegistryRepository.save` |
 | **Alternative Flow (Input Validation Error)** | `ValueError: Invalid budget parameters` | Exception message raised when allocations are empty, month is not between 1-12, or amount < 0 | Input validation checks in `define_monthly_budget` |
 | **Exception Path (Execution Error)** | `RuntimeError: Action execution failed` | Exception message raised when `DefineBudget.define_budget` returns false | Execution check block in `define_monthly_budget` |
+
+
+### 1.1 Expenses Regiter — from requirement [REQ-02]
+
+![Sequence diagram](images/sequence_diagram_expenses.png)
+
+---
 
 | Use Case Step / Flow | Message(s) in the Diagram | Information Exchanged | Operation defined in (Deliverable 1) |
 |---|---|---|---|
