@@ -20,44 +20,35 @@ HOW TO USE THIS TEMPLATE
 
 | | |
 |---|---|
-| **Team** | |
-| **Members** | |
-| **Status** | Draft / Ready for review |
-| **Date** | |
+| **Team** | UN-budget | Grupo 5 - Ingesoft I |
+| **Members** | David Esteban Sainea Rubio, sabenitez, Kevin Florez, Miguel Angel Guativa Archila, Joger Ivan Munoz Duenas |
+| **Status** | Approved |
+| **Date** | 25/10/2026 October 10th, 2026 |
 | **Inputs** | `docs/design/01_Architectural_and_Detailed_Design.md`, Use Cases in `docs/requirements/`, Interaction & Contracts Design v0.1 (Class 13) |
 
 ---
 
 ## 1. Behavior — Selected Use Cases
 
-Select **two** important use cases from your own project that involve meaningful interaction between components. One of them should be the use case of your capstone requirement.
+<!-- Select **two** important use cases from your own project that involve meaningful interaction between components. One of them should be the use case of your capstone requirement.-->
 
-### 1.1 [Use Case name] — from requirement [REQ-XX]
+### 1.1 Expenses Regiter — from requirement [REQ-02]
 
-```mermaid
-sequenceDiagram
-    actor User
-    participant A as Component A
-    participant B as Component B
-
-    User->>A: operation(param)
-    A->>B: operation(param)
-    alt normal condition
-        B-->>A: result
-        A-->>User: outcome
-    else alternative or failure condition
-        B-->>A: failure outcome
-        A-->>User: outcome
-    end
-```
+![Sequence diagram](images/sequence_diagram_expenses.png)
 
 *(Participants are actors, components or external systems from Deliverable 1. Show the main successful flow and at least one alternative or exception flow with `alt` / `else` or `opt`. Avoid semicolons inside message text. Activation bars (`activate` / `deactivate`) are optional: use them only if you keep them balanced.)*
 
 | Use Case step or flow | Message(s) in the diagram | Information exchanged | Operation defined in (Deliverable 1) |
 |---|---|---|---|
-| Main flow, step 1 | | | |
-| Alternative flow | | | |
-| Exception | | | |
+|**Main flow, steps 1–4:** User completes and submits expense form| `submitExpense` | `amountCOP`, `date`, `paymentMethod`, `category`, `expenseType` | Handled by `WebApp` (transaction registration capabilitie, **Section 2.2**)|
+| **Main flow, step 5:** Coordinate input validation | `recordExpense` | `expense` domain entity | `RegistroGastos.RegistrarGasto(gasto)` (Section **3.2 Class Diagram(s)** - **Transaction & Movement Manager Class Diagram** and **3.4 Behavior of one key operation**)|
+| **Main flow, step 6:** Persist valid expense in storage | `save` | `expense` domain entity | `Financial Repository` storage capability (Section **2.2 Components, Responsibilities & Capabilities**)|
+| **Main flow, steps 7–9:** Verify category budget limit and detect overrun | `verifyCategoryLimit`, `budgetLimit(isOverrun=True, alert="Overrun detected")` | `userId`, `categoryId`, `amountCOP`; returns overrun boolean=True flag and warning message "Overrun detected"| `Balance Manager` alert on overruns capability (Section **2.2 Components, Responsibilities & Capabilities** and Section **5. Design Decisions & Decision Record** - **Decision A — Architectural**)|
+| **Main flow, step 10:** Confirm registered expense with visual overrun alert | Second nested `alt` branch, final message from `Transaction & Movement Manager` to `WebApp` (`RegistrationResult(status=Success, alert=Overrun)`) | `RegistrationResult` containing `status=Success` and `alert=Overrun` payload | Implements Business Rule BR-02 / RN-02 (non-blocking registration with alert, "7. Verificar si se supera el presupuesto" Section **3.4 Behavior of one key operation**) |
+| **Alternative flow:** Expense remains within budget limit (no overrun) | `budgetLimit(isOverrun=False, alert=None)`, final message from `Transaction & Movement Manager` to `WebApp` (`RegistrationResult(status=Success, alert=None)`) | Success confirmation payload with empty alert | **Alternative flow** in **REQ-02** - **4.3 Use Case section** and **4. Representations** - **4.2 Acceptance Criteria Scenario 1**|
+| **Alternative flow / Edge case:** Category has no budget limit defined | `budgetLimit(isOverrun=False, alert=None)`, final message (`RegistrationResult(status=Success, alert=None)`) | Success confirmation payload without budget comparison | **Exception flow** in **REQ-02** (*Categoría sin límite presupuestario*)|
+| **Exception flow 1:** Invalid expense data or missing mandatory fields | First `alt` branch (`RegistrationResult(status=Rejected, error="Invalid data")`) | Validation rejection status and field error description | `RegistroGastos` validation check (Section **3.4 Behavior of one key operation**: *Validar los datos obligatorios y el monto*)|
+| **Exception flow 2:** Storage / database persistence failure | Second `alt` branch (`RegistrationResult(status=Failed, error="Storage error")`) | Storage failure status and persistence error message | Non-happy path in Section **3.4 Behavior of one key operation**: (*6. Guardar el gasto en el sistema*)|
 
 *Check each message: does it have a purpose? Is the order correct? Is every important response shown? Are the relevant failure paths covered? Does the interaction satisfy the use case?*
 
