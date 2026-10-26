@@ -109,7 +109,9 @@ sequenceDiagram
 | **Main Flow - Step 5** | `save(budget_instance)` | Validated Budget domain entity | `FinancialRegistryRepository.save` |
 | **Alternative Flow** | `ValueError: Invalid budget parameters` | Exception message for negative allocation or invalid month | Validation block in `define_monthly_budget` |
 | **Exception Path** | `RuntimeError: Action execution failed` | Error message when database or action fails | Action check in `define_monthly_budget` |
-```
+
+---
+
 
 ### 1.2 [Second Use Case name] — from requirement [REQ-YY]
 
