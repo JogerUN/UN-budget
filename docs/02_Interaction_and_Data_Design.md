@@ -16,12 +16,12 @@ HOW TO USE THIS TEMPLATE
 7. Read Design_Deliverable_2_Example.md for the expected level of detail. Do not copy it.
 -->
 
-# [Project Name] — Interaction & Data Design v1.0
+# UN-Budget — Interaction & Data Design v1.0
 
 | | |
 | --- | --- |
 | **Team** | UN-budget | Grupo 5 - Ingesoft I |
-| **Members** | David Esteban Sainea Rubio, sabenitez, Kevin Florez, Miguel Angel Guativa Archila, Joger Ivan Munoz Duenas |
+| **Members** | David Esteban Sainea Rubio, Samuel Benitez, Kevin Florez, Miguel Angel Guativa Archila, Joger Ivan Munoz Duenas |
 | **Status** | Approved |
 | **Date** | 25/10/2026 October 10th, 2026 |
 | **Inputs** | `docs/design/01_Architectural_and_Detailed_Design.md`, Use Cases in `docs/requirements/`, Interaction & Contracts Design v0.1 (Class 13) |
