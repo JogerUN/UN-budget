@@ -32,7 +32,12 @@ HOW TO USE THIS TEMPLATE
 
 Select **two** important use cases from your own project that involve meaningful interaction between components. One of them should be the use case of your capstone requirement.
 
-### 1.1 Define Monthly Budget — from requirement [REQ-01]
+### 1.1
+
+---
+
+
+### 1.2 Define Monthly Budget — from requirement [REQ-01]
 
 **Participants:**
 * **User (Actor):** user configuring monthly finance plans.
@@ -109,13 +114,6 @@ sequenceDiagram
 | **Main Flow - Step 5** | `save(budget_instance)` | Validated Budget domain entity | `FinancialRegistryRepository.save` |
 | **Alternative Flow (Input Validation Error)** | `ValueError: Invalid budget parameters` | Exception message raised when allocations are empty, month is not between 1-12, or amount < 0 | Input validation checks in `define_monthly_budget` |
 | **Exception Path (Execution Error)** | `RuntimeError: Action execution failed` | Exception message raised when `DefineBudget.define_budget` returns false | Execution check block in `define_monthly_budget` |
-
----
-
-
-### 1.2 [Second Use Case name] — from requirement [REQ-YY]
-
-*(Same structure as 1.1.)*
 
 ---
 
