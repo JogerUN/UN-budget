@@ -70,13 +70,13 @@ HOW TO USE THIS TEMPLATE
 
 ## 3. Detailed Design
 
-Cada componente se diseña con el propósito de cumplir los requerimientos establecidos, definiendo claramente la responsabilidad de cada clase, el proceso que ejecuta y el objetivo que persigue. Se busca mantener una alta cohesión dentro del módulo, de manera que sus clases trabajen de forma coordinada y estén relacionadas con una misma finalidad. Asimismo, la separación de responsabilidades permite mantener un código organizado, modular y fácil de comprender, modificar y escalar, facilitando la incorporación de nuevas funcionalidades sin afectar significativamente el funcionamiento de los componentes existentes.
+Each component is designed to fulfill the established requirements by clearly defining the responsibility of each class, the process it executes, and the objective it aims to achieve. The design seeks to maintain high cohesion within each module, ensuring that its classes work together in a coordinated manner and share a common purpose. Furthermore, the separation of responsibilities helps maintain an organized, modular, and understandable codebase that is easy to modify and scale, facilitating the addition of new functionalities without significantly affecting the behavior of existing components.
 
 ### 3.1 Components selected (at least two)
 
 | Component | Why it was selected (risk, complexity, centrality to the drivers) |
 | --- | --- |
-| **Transaction & Movement Management** | Es un componente central para la integridad financiera del sistema, ya que administra el registro, la modificación y la eliminación lógica de los gastos e ingresos. Debe garantizar la consistencia de los movimientos, conservar el historial de los cambios y evitar la pérdida de información financiera. Además, debe gestionar la clasificación de los gastos por categoría, facilitar el control del presupuesto, debe diferenciar entre la fecha esperada y la fecha real, permitiendo programar y actualizar los movimientos sin alterar la confiabilidad de la información financiera del usuario. |
+| **Transaction & Movement Management** | This component is central to the financial integrity of the system, as it manages the creation, modification, and soft deletion of expenses and income records. It must ensure transaction consistency, preserve the history of changes, and prevent the loss of financial information. Additionally, it must handle expense classification by category and facilitate budget monitoring. It must also distinguish between expected and actual dates, allowing transactions to be scheduled and updated without compromising the reliability of the user's financial information. |
 | **Budget Manager** | Core domain logic component responsible for coordinating monthly budget planning, applying budget allocation rules in COP, and enforcing custom/preset category operations (RN-01, RN-04, RN-06). Selected due to its central role in processing domain rules and managing budget life cycles |
 
 ## 3.2 Class Diagram(s)
@@ -87,73 +87,73 @@ Cada componente se diseña con el propósito de cumplir los requerimientos estab
 classDiagram
     direction TB
 
-    class RegistroGastos {
-        + RegistrarGasto(gasto:Gasto) estado:Boolean
+    class RegisterExpense {
+        + registerExpense(expense:Expense) status:ENUM[Success, Rejected, Failed], error:String/None, alert:"Overrun"/None  
     }
 
-    class ModificacionGastos {
-        + modificarGasto(gasto_nuevo:Gasto) estado:Boolean
+    class ModifyExpense {
+        + modifyExpense(new_expense:Expense) status:ENUM[Success, Rejected, Failed], error:String/None, alert:"Overrun"/None  
     }
 
-    class EliminarGastos {
-        + eliminarGasto(gasto:Gasto) estado:Boolean
+    class RemoveExpense {
+        + removeExpense(expense:Expense) status:ENUM[Success, Rejected, Failed], error:String/None
     }
 
-    class Gasto {
+    class Expense {
         +ID: Identificador_DB
-        -montoCOP: Integer
-        -fecha: Date
-        -medioPago: Paymethod
-        -categoria: Categoria
-        -estadoRegistro: STATE
-        -fechaCreacion: Date
-        -fechaUltimaModificacion: Date
+        -amountCOP: Integer
+        -date: Date
+        -payment_method: Paymethod
+        -category: Category
+        -status: ENUM
+        -creation_date: Date
+        -last_modified_date: Date
     }
 
-    class Categoria {
-        - categoria: Categoria
+    class Category {
+        - category: Category
     }
 
-    class RegistrarIngreso {
-        +registrarIngreso(ingreso:Ingreso) estado:Boolean
+    class RegisterIncome {
+        + registerIncome(income:Income) status:ENUM[ValueError,RuntimeError,Success]
     }
 
-    class ProgramarIngreso {
-        +programarIngreso(fechaNueva:Date) estado:Boolean
+    class ProgramIncome {
+        + programIncome(new_date:Date) status:ENUM[ValueError,RuntimeError,Success]
     }
 
-    class ModificarIngreso {
-        +modificarIngreso(ingresoModificado:Ingreso) estado:Boolean
+    class ModifyIncome {
+        + modifyIncome(modified_income:Income) status:ENUM[ValueError,RuntimeError,Success]
     }
 
-    class EliminarIngreso {
-        +eliminarIngreso(ingreso:Ingreso) estado:Boolean
+    class RemoveIncome {
+        + removeIncome(income:Income) status:ENUM[ValueError,RuntimeError,Success]
     }
 
-    class Ingreso {
+    class Income {
         +ID: Identificador_DB
-        -montoCOP: Integer
-        -fuenteIngreso: String
-        -fechaEsperada: Date
-        -fechaReal: Date
-        -estadoRegistro: STATE
-        -fechaCreacion: Date
-        -fechaUltimaModificacion: Date
+        -amountCOP: Integer
+        -income_source: String
+        -expected_date: Date
+        -real_date: Date
+        -status: ENUM
+        -creation_date: Date
+        -last_modified_date: Date
     }
 
-    RegistroGastos --> Gasto : registra
-    ModificacionGastos --> Gasto : modifica
-    EliminarGastos --> Gasto : elimina logicamente
+    RegisterExpense --> Expense : register
+    ModifyExpense --> Expense : modify
+    RemoveExpense --> Expense : soft delete
 
-    Gasto "*" --> "1" Categoria : pertenece a
+    Expense "*" --> "1" Category : belong to 
 
-    RegistrarIngreso --> Ingreso : registra
-    ProgramarIngreso --> Ingreso : programa
-    ModificarIngreso --> Ingreso : modifica
-    EliminarIngreso --> Ingreso : elimina logicamente
+    RegisterIncome --> Income : register
+    ProgramIncome --> Income : program
+    ModifyIncome --> Income : modifica
+    RemoveIncome --> Income : soft delete
 ```
 
-### Budged Manager Class Diagram
+### Budget Manager Class Diagram
 
 ```mermaid
 classDiagram
@@ -189,7 +189,7 @@ classDiagram
         +setAllocatedAmount(amount: Double): Void
     }
 
-    class Categoria {
+    class Category {
         -categoryId: String
         -name: String
         -type: CategoryType
@@ -231,91 +231,94 @@ classDiagram
     CategoryBudget --> DefineBudget
     CategoryBudget --> "1" Categoria : references
 
-    Categoria --> AddCategory
-    Categoria --> ModifyCategory
-    Categoria --> RemoveCategory
+    Category --> AddCategory
+    Category --> ModifyCategory
+    Category --> RemoveCategory
 ```
 
 ## 3.3 Class Responsibilities
 
 | Class | Component it belongs to | Responsibility | Key collaborators |
 | --- | --- | --- | --- |
-| RegistroGastos | Transaction & Movement Management | Validar y coordinar el registro de un nuevo gasto. | Gasto, Categoria |
-| ModificacionGastos | Transaction & Movement Management | Coordinar la modificación de los datos de un gasto existente. | Gasto, Categoria |
-| EliminarGastos | Transaction & Movement Management | Realizar la eliminación lógica de un gasto y conservar su historial. | Gasto |
-| Gasto | Transaction & Movement Management | Mantener la información del gasto, su estado y sus fechas de auditoría. | Categoria, clases de operaciones de gastos |
-| Categoria | Transaction & Movement Management | Representar la categoría utilizada para clasificar los gastos. | Gasto |
-| RegistrarIngreso | Transaction & Movement Management | Validar y coordinar el registro de un nuevo ingreso. | Ingreso |
-| ProgramarIngreso | Transaction & Movement Management | Establecer la fecha esperada de un ingreso sin confundirla con su fecha real. | Ingreso |
-| ModificarIngreso | Transaction & Movement Management | Coordinar la modificación de la información de un ingreso existente. | Ingreso |
-| EliminarIngreso | Transaction & Movement Management | Realizar la eliminación lógica de un ingreso y conservar su historial. | Ingreso |
-| Ingreso | Transaction & Movement Management | Mantener los datos del ingreso, su fuente, las fechas esperada y real, su estado y las fechas de auditoría. | Clases de operaciones de ingresos |
+| `RegisterExpense` | Transaction & Movement Management | Validates and coordinates the registration of a new expense | `Expense`, `Category` |
+| `ModifyExpense` | Transaction & Movement Management | Coordinates modifications to the information of an existing expense | `Expense`, `Category` |
+| `RemoveExpense` | Transaction & Movement Management | Performs the soft deletion of an expense while preserving its history | `Expense` |
+| `Expense` | Transaction & Movement Management | Maintains the expense information, its status, and its audit timestamps | `Category`, clases de operaciones de gastos |
+| `Category` | Transaction & Movement Management | Represents the category used to classify expenses. | `Expense` |
+| `RegisterIncome` | Transaction & Movement Management | Validates and coordinates the registration of a new income record | `Income` |
+| `ProgramIncome` | Transaction & Movement Management | Sets the expected date of an income record without confusing it with its actual date | `Income` |
+| `ModifyIncome` | Transaction & Movement Management | Coordinates modifications to the information of an existing income record | `Income` |
+| `RemoveIncome` | Transaction & Movement Management | Performs the soft deletion of an income record while preserving its history | `Income` |
+| `Income` | Transaction & Movement Management | Maintains the income information, its source, expected and actual dates, status, and audit timestamps | Clases de operaciones de ingresos |
 | `BudgetService` | Budget Manager | Entry point service that coordinates monthly budget creation, delegation of category validation, and retrieval of user budgets. | `BudgetRegister`, `Budget`, `FinancialRegistryRepository` |
-| `BudgetRegister` | Budget Manager | Handles category administration, including adding, removing, and retrieving expense categories. | `FinancialRegistryRepository`, `Categoria` |
+| `BudgetRegister` | Budget Manager | Handles category administration, including adding, removing, and retrieving expense categories. | `FinancialRegistryRepository`, `Category` |
 | `Budget` | Budget Manager | Root domain entity representing a user's monthly budget in COP. | `CategoryBudget` |
-| `CategoryBudget` | Budget Manager | Domain entity encapsulating the monetary limit allocated to a specific category within a budget. | `Budget`, `Categoria`, `DefineBudget`, `ModifyBudget`, `RemoveBudget` |
+| `CategoryBudget` | Budget Manager | Domain entity encapsulating the monetary limit allocated to a specific category within a budget. | `Budget`, `Category`, `DefineBudget`, `ModifyBudget`, `RemoveBudget` |
 | `Categoria` | Budget Manager | Domain entity representing an expense category with name, type, and custom status. | `CategoryBudget`, `AddCategory`, `ModifyCategory`, `RemoveCategory` |
 | `DefineBudget` | Budget Manager | Action class executing the creation logic for defining a new budget allocation. | `CategoryBudget`, `Budget` |
 | `ModifyBudget` | Budget Manager | Action class executing modifications on existing budget category allocations. | `CategoryBudget`, `Budget` |
 | `RemoveBudget` | Budget Manager | Action class executing the deletion or inactivation of a budget record. | `CategoryBudget`, `Budget` |
-| `AddCategory` | Budget Manager | Action class executing the registration of a new expense category. | `Categoria` |
-| `ModifyCategory` | Budget Manager | Action class executing modifications to an existing expense category. | `Categoria` |
-| `RemoveCategory` | Budget Manager | Action class executing the removal of a custom category. | `Categoria` |
+| `AddCategory` | Budget Manager | Action class executing the registration of a new expense category. | `Category` |
+| `ModifyCategory` | Budget Manager | Action class executing modifications to an existing expense category. | `Category` |
+| `RemoveCategory` | Budget Manager | Action class executing the removal of a custom category. | `Category` |
 
 ---
 
 ## 3.4 Behavior of one key operation
 
 ```text
-Operation: RegistrarGasto(gasto:Gasto): Boolean -> Esta operación es importante porque el registro correcto de los gastos contribuye
-directamente a la integridad financiera del sistema.
+Operation: RegistrarGasto(gasto:Gasto): Boolean -> This operation is important because the correct registration of expenses directly contributes to the financial integrity of the system.
 
-Flujo de comportamiento:
+Behavior flow:
 
-        // 1. Recibir la información del gasto
-        Recibir gasto
+        // 1. Receive the expense information
+        Receive expense
 
-        // 2. Validar los datos obligatorios y el monto
-        Si los datos obligatorios están incompletos
-           O el monto no es válido Entonces
-            Devolver false
-        FinSi
+        // 2. Validate the required data and the amount
+        If the required data is incomplete
+           OR the amount is invalid Then
+            Return false
+        EndIf
 
-        // 3. Validar la categoría asociada
-        Si la categoría no existe
-           O no es válida Entonces
-            Devolver false
-        FinSi
+        // 3. Validate the associated category
+        If the category does not exist
+           OR is invalid Then
+            Return false
+        EndIf
 
-        // 4. Asignar el estado inicial
-        gasto.estado <- "Activo"
+        // 4. Assign the initial status
+        gasto.estado <- "Active"
 
-        // 5. Establecer las fechas de control
-        gasto.fechaCreacion <- FechaActual()
-        gasto.fechaUltimaModificacion <- FechaActual()
+        // 5. Set the audit timestamps
+        gasto.fechaCreacion <- CurrentDate()
+        gasto.fechaUltimaModificacion <- CurrentDate()
 
-        // 6. Guardar el gasto en el sistema
-        Si Guardar(gasto) = false Entonces
-            Informar("No se pudo completar el registro")
-            Devolver false
-        FinSi
+        // 6. Save the expense in the system
+        If Save(gasto) = false Then
+            Notify("The registration could not be completed")
+            Return false
+        EndIf
 
-        // 7. Verificar si se supera el presupuesto
-        Si gasto.monto > presupuestoDisponible(gasto.categoria) Entonces
-            GenerarAlertaVisual(
-                "El gasto supera el presupuesto de su categoría"
+        // 7. Check whether the budget limit is exceeded
+        If gasto.monto > availableBudget(gasto.categoria) Then
+            GenerateVisualAlert(
+                "The expense exceeds the budget allocated to its category"
             )
-        FinSi
+        EndIf
 
-        // 8. Confirmar el registro exitoso
-        Devolver true
+        // 8. Confirm successful registration
+        Return true
 
-Happy-path: el sistema registra el gasto cuando los datos son válidos, conserva su información y permite alertar sobre un posible
-exceso del presupuesto sin impedir la transacción.
+Happy-path: The system registers the expense when the provided data is valid,
+preserves its information, and allows the system to issue an alert about a
+potential budget overrun without preventing the transaction.
 
-Non-happy-path: si el monto es inválido, la categoría no existe o el almacenamiento falla, el gasto no debe registrarse como una
-operación exitosa. El sistema debe informar el error y evitar que quede un movimiento duplicado o parcialmente registrado.
-**Operation:** `BudgetService.define_monthly_budget(user_id, month, year, allocations)`
+Non-happy-path: If the amount is invalid, the category does not exist, or
+the storage operation fails, the expense must not be registered as a
+successful operation. The system must report the error and prevent
+duplicate or partially registered transactions.
+
+Operation: BudgetService.define_monthly_budget(user_id, month, year, allocations)
 ```
 
 ---
