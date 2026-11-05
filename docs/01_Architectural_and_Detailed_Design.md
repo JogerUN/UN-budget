@@ -16,7 +16,7 @@ HOW TO USE THIS TEMPLATE
 7. Read Design_Deliverable_1_Example.md for the expected level of detail. Do not copy it.
 -->
 
-# [Project Name] — Architectural & Detailed Design v1.0
+# UN-Budget  — Architectural & Detailed Design v1.0
 
 | | |
 | --- | --- |
