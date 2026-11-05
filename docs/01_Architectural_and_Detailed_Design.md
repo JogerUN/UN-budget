@@ -243,13 +243,13 @@ classDiagram
 | `RegisterExpense` | Transaction & Movement Management | Validates and coordinates the registration of a new expense | `Expense`, `Category` |
 | `ModifyExpense` | Transaction & Movement Management | Coordinates modifications to the information of an existing expense | `Expense`, `Category` |
 | `RemoveExpense` | Transaction & Movement Management | Performs the soft deletion of an expense while preserving its history | `Expense` |
-| `Expense` | Transaction & Movement Management | Maintains the expense information, its status, and its audit timestamps | `Category`, clases de operaciones de gastos |
+| `Expense` | Transaction & Movement Management | Maintains the expense information, its status, and its audit timestamps | `Category`, WebAPI |
 | `Category` | Transaction & Movement Management | Represents the category used to classify expenses. | `Expense` |
 | `RegisterIncome` | Transaction & Movement Management | Validates and coordinates the registration of a new income record | `Income` |
 | `ProgramIncome` | Transaction & Movement Management | Sets the expected date of an income record without confusing it with its actual date | `Income` |
 | `ModifyIncome` | Transaction & Movement Management | Coordinates modifications to the information of an existing income record | `Income` |
 | `RemoveIncome` | Transaction & Movement Management | Performs the soft deletion of an income record while preserving its history | `Income` |
-| `Income` | Transaction & Movement Management | Maintains the income information, its source, expected and actual dates, status, and audit timestamps | Clases de operaciones de ingresos |
+| `Income` | Transaction & Movement Management | Maintains the income information, its source, expected and actual dates, status, and audit timestamps | WebAPI |
 | `BudgetService` | Budget Manager | Entry point service that coordinates monthly budget creation, delegation of category validation, and retrieval of user budgets. | `BudgetRegister`, `Budget`, `FinancialRegistryRepository` |
 | `BudgetRegister` | Budget Manager | Handles category administration, including adding, removing, and retrieving expense categories. | `FinancialRegistryRepository`, `Category` |
 | `Budget` | Budget Manager | Root domain entity representing a user's monthly budget in COP. | `CategoryBudget` |
