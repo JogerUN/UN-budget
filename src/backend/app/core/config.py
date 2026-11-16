@@ -15,7 +15,6 @@ class Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: SecretStr
     POSTGRES_DB: str
-    POSTGRES_SSLMODE: str = "require"
 
     @property
     def database_url(self) -> URL:
@@ -26,7 +25,6 @@ class Settings(BaseSettings):
             host=self.POSTGRES_HOST,
             port=self.POSTGRES_PORT,
             database=self.POSTGRES_DB,
-            query={"sslmode": self.POSTGRES_SSLMODE}
         )
 
 @lru_cache
