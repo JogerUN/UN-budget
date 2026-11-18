@@ -1,0 +1,63 @@
+---
+// src/pages/index.astro
+import BaseLayout from "../layouts/BaseLayout.astro";
+import MessageCard from "../components/MessageCard.astro";
+---
+
+<BaseLayout title="Gestor de Finanzas | Walking Skeleton">
+	 <MessageCard />
+</BaseLayout>
+
+<script> 
+	import { fetchBackendMessage } from "../scripts/api-client";
+
+	const loadingEl = document.getElementById('state-loading');
+  const successEl = document.getElementById('state-success');
+  const errorEl = document.getElementById('state-error');
+  const messageTextEl = document.getElementById('db-message-text');
+  const errorDetailEl = document.getElementById('error-detail-text');
+  const retryBtn = document.getElementById('btn-retry');
+
+  function showState(state) {
+    loadingEl?.classList.toggle('d-none', state !== 'loading');
+    successEl?.classList.toggle('d-none', state !== 'success');
+    errorEl?.classList.toggle('d-none', state !== 'error');
+  }
+
+  async function loadMessage() {
+    showState('loading');
+
+    try {
+      const message = await fetchBackendMessage();
+      if (messageTextEl) {
+        messageTextEl.textContent = message;
+      }
+      showState('success');
+    } catch (err) {
+      if (errorDetailEl) {
+        errorDetailEl.textContent = err instanceof Error ? err.message : 'Error inesperado al consultar /api.';
+      }
+      showState('error');
+    }
+  }
+
+  // Evento del botón de recuperación para el usuario
+  retryBtn?.addEventListener('click', loadMessage);
+
+  // Ejecutar al cargar la página
+  loadMessage();
+</script>
+
+
+
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+</html>
