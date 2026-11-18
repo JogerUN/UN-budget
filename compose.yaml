@@ -1,0 +1,27 @@
+name: un-budget
+
+services:
+  backend:
+    build: 
+      context: ./src/backend
+    restart: unless-stopped
+    env_file:
+      - ./src/backend/.env
+    ports:
+      - "8000:8000"
+    networks:
+      - internal_network
+  frontend:
+    build: 
+      context: ./src/frontend
+    restart: unless-stopped
+    env_file:
+      - ./src/frontend/.env
+    ports:
+      - "3000:3000"
+    networks:
+      - internal_network
+
+networks:
+  internal_network:
+    driver: bridge
