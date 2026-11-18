@@ -1,0 +1,22 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Entornos virtuales y cachés de Python (en cualquier carpeta)
+.venv/
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+
+# Editor de código
+.vscode/
+*.code-workspace
+
+# Secretos y variables de entorno
+**/.env
+**/*.pem
+**/*.key
