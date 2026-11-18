@@ -18,7 +18,7 @@ services:
     env_file:
       - ./src/frontend/.env
     ports:
-      - "3000:3000"
+      - "4321:4321"
     networks:
       - internal_network
 
