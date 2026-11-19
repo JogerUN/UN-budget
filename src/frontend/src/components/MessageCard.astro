@@ -1,0 +1,47 @@
+---
+// src/components/MessageCard.astro
+---
+
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-6">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4 p-md-5 text-center">
+        <h2 class="card-title h4 fw-semibold mb-3">
+          Estado de Conexión End-to-End
+        </h2>
+        <p class="text-muted small mb-4">
+          Flujo: Navegador &rarr; Nginx &rarr; FastAPI &rarr; PostgreSQL
+        </p>
+
+        <!-- ESTADO 1: Cargando (Visible por defecto al abrir la página) -->
+        <div id="state-loading" class="py-3" role="status" aria-live="polite">
+          <div class="spinner-border text-primary mb-3" aria-hidden="true"></div>
+          <p class="mb-0 text-secondary">Consultando mensaje en PostgreSQL...</p>
+        </div>
+
+        <!-- ESTADO 2: Éxito (Oculto hasta recibir respuesta válida de /api) -->
+        <div id="state-success" class="d-none py-3">
+          <div class="alert alert-success mb-0" role="alert">
+            <span class="d-block small text-uppercase fw-bold mb-1">
+              Mensaje desde la Base de Datos:
+            </span>
+            <p id="db-message-text" class="display-6 fw-bold mb-0"></p>
+          </div>
+        </div>
+
+        <!-- ESTADO 3: Error (Oculto a menos que falle la red, Nginx o FastAPI) -->
+        <div id="state-error" class="d-none py-3">
+          <div class="alert alert-danger text-start mb-3" role="alert">
+            <h3 class="h6 fw-bold mb-1">No se pudo obtener el mensaje</h3>
+            <p id="error-detail-text" class="small mb-0">
+              Error de conexión con el servidor backend.
+            </p>
+          </div>
+          <button id="btn-retry" type="button" class="btn btn-outline-primary btn-sm">
+            Reintentar conexión
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

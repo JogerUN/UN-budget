@@ -1,5 +1,5 @@
 # Compilar el frontend
-FROM --platform=arm64 node:26-alpine3.23 as build
+FROM node:26-alpine3.23 as build
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
