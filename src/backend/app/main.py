@@ -7,6 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.db.session import engine, get_db
+from app.models.prueba import Base
 from app.repositories.consultas import ItemRepository
 
 logger = logging.getLogger(__name__)
