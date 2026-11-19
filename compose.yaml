@@ -1,29 +1,17 @@
 name: un-budget
 
 services:
-  db:
-    image: postgres:17-alpine
-    restart: unless-stopped
-    env_file:
-      - ./src/backend/.env
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - internal_network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
-
   backend:
-    build: 
+    build:
       context: ./src/backend
     restart: unless-stopped
     env_file:
       - ./src/backend/.env
+    expose:
+      - "8000"
     networks:
       - internal_network
+
   frontend:
     build: 
       context: ./src/frontend
@@ -32,9 +20,6 @@ services:
       - "80:80"
     networks:
       - internal_network
-
-volumes:
-  postgres_data:
 
 networks:
   internal_network:
