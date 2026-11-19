@@ -23,7 +23,9 @@ def db_disponible() -> bool:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    if not db_disponible():
+    if db_disponible():
+        Base.metadata.create_all(bind=engine)
+    else:
         logger.warning("La app arrancó sin conexión a la base de datos")
     yield
     engine.dispose()
