@@ -7,18 +7,16 @@ services:
     restart: unless-stopped
     env_file:
       - ./src/backend/.env
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     networks:
       - internal_network
   frontend:
     build: 
       context: ./src/frontend
     restart: unless-stopped
-    env_file:
-      - ./src/frontend/.env
     ports:
-      - "4321:4321"
+      - "80:80"
     networks:
       - internal_network
 

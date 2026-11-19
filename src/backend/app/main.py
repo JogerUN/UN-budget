@@ -35,3 +35,16 @@ def health(response: Response):
         return {"status": "ok", "database": "ok"}
     response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
     return {"status": "degraded", "database": "unavailable"}
+
+@app.get("/api")
+def get_mensaje(response: Response):
+    try:
+        with engine.connect() as conn:
+            # Consulta el mensaje persistido en PostgreSQL
+            result = conn.execute(text("SELECT contenido FROM mensajes LIMIT 1")).fetchone()
+            mensaje = result[0] if result else "Conexión exitosa a PostgreSQL (tabla vacía)"
+            return {"mensaje": mensaje}
+    except SQLAlchemyError as e:
+        logger.error(f"Error consultando PostgreSQL: {e}")
+        response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+        return {"detail": "Base de datos PostgreSQL no disponible o tabla 'mensajes' no creada."}
