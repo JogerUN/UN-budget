@@ -1,13 +1,16 @@
 import logging
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Response, status
+from fastapi import Depends, FastAPI, Response, status
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
 
-from app.db.session import engine
+from app.db.session import engine, get_db
+from app.repositories.consultas import ItemRepository
 
 logger = logging.getLogger(__name__)
+
 
 def db_disponible() -> bool:
     try:
@@ -36,15 +39,15 @@ def health(response: Response):
     response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
     return {"status": "degraded", "database": "unavailable"}
 
+
 @app.get("/api")
-def get_mensaje(response: Response):
+def get_mensaje(response: Response, db: Session = Depends(get_db)):
     try:
-        with engine.connect() as conn:
-            # Consulta el mensaje persistido en PostgreSQL
-            result = conn.execute(text("SELECT contenido FROM mensajes LIMIT 1")).fetchone()
-            mensaje = result[0] if result else "Conexión exitosa a PostgreSQL (tabla vacía)"
-            return {"mensaje": mensaje}
+        repo = ItemRepository(db)
+        registro = repo.get_first()
+        mensaje = registro.item if registro else "Conexión exitosa a PostgreSQL (tabla vacía)"
+        return {"mensaje": mensaje}
     except SQLAlchemyError as e:
         logger.error(f"Error consultando PostgreSQL: {e}")
         response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
-        return {"detail": "Base de datos PostgreSQL no disponible o tabla 'mensajes' no creada."}
+        return {"detail": "Base de datos PostgreSQL no disponible o tabla 'item' no creada."}

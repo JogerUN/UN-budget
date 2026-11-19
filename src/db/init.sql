@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS item (
+    id SERIAL PRIMARY KEY,
+    item VARCHAR(255) NOT NULL,
+    fecha DATE NOT NULL DEFAULT CURRENT_DATE
+);
+
+INSERT INTO item (item) VALUES ('Hola Mundo');
