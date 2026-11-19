@@ -3,44 +3,81 @@
 ---
 
 <div class="row justify-content-center">
-  <div class="col-12 col-md-8 col-lg-6">
+  <div class="col-12 col-md-9 col-lg-7">
     <div class="card shadow-sm border-0">
-      <div class="card-body p-4 p-md-5 text-center">
-        <h2 class="card-title h4 fw-semibold mb-3">
-          Estado de Conexión End-to-End
-        </h2>
-        <p class="text-muted small mb-4">
-          Flujo: Navegador &rarr; Nginx &rarr; FastAPI &rarr; PostgreSQL
-        </p>
+      <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+        <h2 class="h5 fw-bold mb-0">Diagnóstico End-to-End (Walking Skeleton)</h2>
+        <span id="overall-badge" class="badge bg-secondary">Verificando...</span>
+      </div>
 
-        <!-- ESTADO 1: Cargando (Visible por defecto al abrir la página) -->
-        <div id="state-loading" class="py-3" role="status" aria-live="polite">
-          <div class="spinner-border text-primary mb-3" aria-hidden="true"></div>
-          <p class="mb-0 text-secondary">Consultando mensaje en PostgreSQL...</p>
+      <div class="card-body p-4">
+        <!-- Trazabilidad de Capas (Fase 0) -->
+        <p class="text-muted small mb-2 fw-semibold text-uppercase">Ruta de la Petición:</p>
+        <ul class="list-group list-group-flush border rounded mb-4">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <span class="fw-semibold">1. Navegador (Astro + Bootstrap)</span>
+              <small class="d-block text-muted">Origen: Cliente Web &rarr; GET /api</small>
+            </div>
+            <span id="step-browser" class="badge bg-success">Activo</span>
+          </li>
+
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <span class="fw-semibold">2. Reverse Proxy (Nginx :80)</span>
+              <small class="d-block text-muted">Enrutamiento interno &rarr; http://backend:8000</small>
+            </div>
+            <span id="step-nginx" class="badge bg-secondary">Esperando</span>
+          </li>
+
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <span class="fw-semibold">3. Backend API (FastAPI)</span>
+              <small class="d-block text-muted">Consulta SQL a tabla de mensajes</small>
+            </div>
+            <span id="step-backend" class="badge bg-secondary">Esperando</span>
+          </li>
+
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <span class="fw-semibold">4. Base de Datos (PostgreSQL)</span>
+              <small class="d-block text-muted">Fila persistida en volumen Docker</small>
+            </div>
+            <span id="step-db" class="badge bg-secondary">Esperando</span>
+          </li>
+        </ul>
+
+        <!-- ESTADO 1: Cargando -->
+        <div id="state-loading" class="text-center py-3" role="status" aria-live="polite">
+          <div class="spinner-border spinner-border-sm text-primary me-2" aria-hidden="true"></div>
+          <span class="text-secondary">Recorriendo capas del sistema...</span>
         </div>
 
-        <!-- ESTADO 2: Éxito (Oculto hasta recibir respuesta válida de /api) -->
-        <div id="state-success" class="d-none py-3">
-          <div class="alert alert-success mb-0" role="alert">
+        <!-- ESTADO 2: Éxito -->
+        <div id="state-success" class="d-none">
+          <div class="alert alert-success mb-0 text-center" role="alert">
             <span class="d-block small text-uppercase fw-bold mb-1">
-              Mensaje desde la Base de Datos:
+              Dato recuperado desde PostgreSQL:
             </span>
-            <p id="db-message-text" class="display-6 fw-bold mb-0"></p>
+            <p id="db-message-text" class="display-6 fw-bold mb-1"></p>
+            <small id="response-meta" class="text-muted d-block"></small>
           </div>
         </div>
 
-        <!-- ESTADO 3: Error (Oculto a menos que falle la red, Nginx o FastAPI) -->
-        <div id="state-error" class="d-none py-3">
-          <div class="alert alert-danger text-start mb-3" role="alert">
-            <h3 class="h6 fw-bold mb-1">No se pudo obtener el mensaje</h3>
-            <p id="error-detail-text" class="small mb-0">
-              Error de conexión con el servidor backend.
-            </p>
+        <!-- ESTADO 3: Error -->
+        <div id="state-error" class="d-none">
+          <div class="alert alert-danger mb-0" role="alert">
+            <h3 class="h6 fw-bold mb-1">Interrupción detectada en el flujo</h3>
+            <p id="error-detail-text" class="small mb-0"></p>
           </div>
-          <button id="btn-retry" type="button" class="btn btn-outline-primary btn-sm">
-            Reintentar conexión
-          </button>
         </div>
+      </div>
+
+      <div class="card-footer bg-light border-top py-3 d-flex justify-content-between align-items-center">
+        <small class="text-muted" id="last-checked">Sin comprobaciones aún</small>
+        <button id="btn-retry" type="button" class="btn btn-primary btn-sm">
+          Probar flujo de nuevo
+        </button>
       </div>
     </div>
   </div>

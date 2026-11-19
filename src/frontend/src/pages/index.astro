@@ -8,46 +8,89 @@ import MessageCard from "../components/MessageCard.astro";
 	 <MessageCard />
 </BaseLayout>
 
-<script> 
-	import { fetchBackendMessage } from "../scripts/api-client";
+<script>
+  import { testEndToEndFlow } from '../scripts/api-client.js';
 
-	const loadingEl = document.getElementById('state-loading');
+  const overallBadge = document.getElementById('overall-badge');
+  const stepNginx = document.getElementById('step-nginx');
+  const stepBackend = document.getElementById('step-backend');
+  const stepDb = document.getElementById('step-db');
+
+  const loadingEl = document.getElementById('state-loading');
   const successEl = document.getElementById('state-success');
   const errorEl = document.getElementById('state-error');
   const messageTextEl = document.getElementById('db-message-text');
+  const responseMetaEl = document.getElementById('response-meta');
   const errorDetailEl = document.getElementById('error-detail-text');
+  const lastCheckedEl = document.getElementById('last-checked');
   const retryBtn = document.getElementById('btn-retry');
 
-  function showState(state) {
-    loadingEl?.classList.toggle('d-none', state !== 'loading');
-    successEl?.classList.toggle('d-none', state !== 'success');
-    errorEl?.classList.toggle('d-none', state !== 'error');
+  function setBadge(el, text, variant) {
+    if (!el) return;
+    el.textContent = text;
+    el.className = `badge bg-${variant}`;
   }
 
-  async function loadMessage() {
-    showState('loading');
+  function showPanel(panel) {
+    loadingEl?.classList.toggle('d-none', panel !== 'loading');
+    successEl?.classList.toggle('d-none', panel !== 'success');
+    errorEl?.classList.toggle('d-none', panel !== 'error');
+  }
+
+  async function runDiagnostics() {
+    showPanel('loading');
+    setBadge(overallBadge, 'Probando...', 'secondary');
+    setBadge(stepNginx, 'En curso', 'warning text-dark');
+    setBadge(stepBackend, 'Esperando', 'secondary');
+    setBadge(stepDb, 'Esperando', 'secondary');
 
     try {
-      const message = await fetchBackendMessage();
-      if (messageTextEl) {
-        messageTextEl.textContent = message;
-      }
-      showState('success');
+      const { message, status, latencyMs } = await testEndToEndFlow();
+
+      // Si hay respuesta 200 OK con dato válido, las 4 capas completaron el recorrido
+      setBadge(stepNginx, 'OK (Proxy)', 'success');
+      setBadge(stepBackend, `OK (${status})`, 'success');
+      setBadge(stepDb, 'Conectada', 'success');
+      setBadge(overallBadge, 'Cadena Completa', 'success');
+
+      if (messageTextEl) messageTextEl.textContent = message;
+      if (responseMetaEl) responseMetaEl.textContent = `Tiempo de respuesta end-to-end: ${latencyMs} ms`;
+      showPanel('success');
     } catch (err) {
-      if (errorDetailEl) {
-        errorDetailEl.textContent = err instanceof Error ? err.message : 'Error inesperado al consultar /api.';
+      const status = err?.status;
+
+      if (status === 502 || status === 504) {
+        // Nginx respondió, pero el contenedor backend:8000 no está disponible
+        setBadge(stepNginx, 'OK (Proxy)', 'success');
+        setBadge(stepBackend, `Fallo (${status})`, 'danger');
+        setBadge(stepDb, 'Sin alcanzar', 'secondary');
+      } else if (status === 500 || status === 503) {
+        // FastAPI respondió con error interno (ej. fallo de conexión a PostgreSQL)
+        setBadge(stepNginx, 'OK (Proxy)', 'success');
+        setBadge(stepBackend, 'Activo', 'warning text-dark');
+        setBadge(stepDb, `Error (${status})`, 'danger');
+      } else {
+        // Error en desarrollo local (404 de Astro) o caída total de red
+        setBadge(stepNginx, `Error (${status || 'Red'})`, 'danger');
+        setBadge(stepBackend, 'Sin alcanzar', 'secondary');
+        setBadge(stepDb, 'Sin alcanzar', 'secondary');
       }
-      showState('error');
+
+      setBadge(overallBadge, 'Flujo Interrumpido', 'danger');
+      if (errorDetailEl) {
+        errorDetailEl.textContent = err instanceof Error ? err.message : 'Error desconocido en la red.';
+      }
+      showPanel('error');
+    } finally {
+      if (lastCheckedEl) {
+        lastCheckedEl.textContent = `Última prueba: ${new Date().toLocaleTimeString()}`;
+      }
     }
   }
 
-  // Evento del botón de recuperación para el usuario
-  retryBtn?.addEventListener('click', loadMessage);
-
-  // Ejecutar al cargar la página
-  loadMessage();
+  retryBtn?.addEventListener('click', runDiagnostics);
+  runDiagnostics();
 </script>
-
 
 
 

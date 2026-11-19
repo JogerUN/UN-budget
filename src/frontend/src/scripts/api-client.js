@@ -1,7 +1,5 @@
 // src/scripts/api-client.js
 
-// Punto unico de configuracion:  cambiar la costatnte i se llega a definir otra subruta (ej. '/api/mensaje')
-
 const API_ENDPOINT = '/api';
 const REQUEST_TIMEOUT_MS = 5000
 
@@ -33,28 +31,37 @@ function extractMessage(payload) {
 /**
  * Consulta el endpoint del backend usando ruta relativa.
  */
-export async function fetchBackendMessage() {
+export async function testEndToEndFlow() {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const startTime = performance.now();
 
   try {
     const response = await fetch(API_ENDPOINT, {
       method: 'GET',
-      headers: {
-        Accept: 'application/json',
-      },
+      headers: { Accept: 'application/json' },
       signal: controller.signal,
     });
 
+    const latencyMs = Math.round(performance.now() - startTime);
+
     if (!response.ok) {
-      throw new Error(`El servidor respondió con estado HTTP ${response.status} (${response.statusText || 'Error'})`);
+      const err = new Error(`HTTP ${response.status} (${response.statusText || 'Error de servidor'})`);
+      err.status = response.status;
+      throw err;
     }
 
     const json = await response.json();
-    return extractMessage(json);
+    return {
+      message: extractMessage(json),
+      status: response.status,
+      latencyMs,
+    };
   } catch (error) {
     if (error.name === 'AbortError') {
-      throw new Error('Tiempo de espera agotado (5s). Verifica que el backend y PostgreSQL estén activos.');
+      const timeoutErr = new Error('Timeout (5s): El servidor no respondió a tiempo.');
+      timeoutErr.status = 504;
+      throw timeoutErr;
     }
     throw error;
   } finally {
