@@ -1,0 +1,4 @@
+/* src/styles/custom.css */
+.badge {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}

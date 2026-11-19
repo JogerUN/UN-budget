@@ -4,4 +4,6 @@ CREATE TABLE IF NOT EXISTS item (
     fecha DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
-INSERT INTO item (item) VALUES ('Hola Mundo');
+INSERT INTO item (item)
+SELECT 'Hola Mundo'
+WHERE NOT EXISTS (SELECT 1 FROM item);

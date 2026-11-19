@@ -7,6 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.db.session import engine, get_db
+from app.models.prueba import Base
 from app.repositories.consultas import ItemRepository
 
 logger = logging.getLogger(__name__)
@@ -23,7 +24,9 @@ def db_disponible() -> bool:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    if not db_disponible():
+    if db_disponible():
+        Base.metadata.create_all(bind=engine)
+    else:
         logger.warning("La app arrancó sin conexión a la base de datos")
     yield
     engine.dispose()

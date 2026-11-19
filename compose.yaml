@@ -2,20 +2,22 @@ name: un-budget
 
 services:
   db:
-    image: postgres:16.4-alpine
+    image: postgres:17-alpine
     restart: unless-stopped
-    env_file:
-      - ./src/backend/.env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-unbudget}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./src/db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
     networks:
       - internal_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-unbudget}"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
 
   backend:
     build:
@@ -23,11 +25,17 @@ services:
     restart: unless-stopped
     env_file:
       - ./src/backend/.env
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST:-db}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-unbudget}
+    expose:
+      - "8000"
     depends_on:
       db:
         condition: service_healthy
-    expose:
-      - "8000"
     networks:
       - internal_network
 
